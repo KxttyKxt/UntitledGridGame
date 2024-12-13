@@ -10,12 +10,20 @@ public class SimpleTileNodeTest {
     @BeforeEach
     public void initializeTileNodes() {
         originNode = new SimpleTileNode(new Tile("origin"));
+
         northNode = new SimpleTileNode(new Tile("north"));
+        northeastNode = new SimpleTileNode(new Tile("northeast"));
         eastNode = new SimpleTileNode(new Tile("east"));
+        southeastNode = new SimpleTileNode(new Tile("southeast"));
+
         southNode = new SimpleTileNode(new Tile("south"));
+        southwestNode = new SimpleTileNode(new Tile("southwest"));
         westNode = new SimpleTileNode(new Tile("west"));
+        northwestNode = new SimpleTileNode(new Tile("northwest"));
     }
-    static SimpleTileNode originNode, northNode, eastNode, southNode, westNode;
+    static SimpleTileNode originNode,
+            northNode, northeastNode, eastNode, southeastNode,
+            southNode, southwestNode, westNode, northwestNode;
 
 
     @Test
@@ -24,6 +32,16 @@ public class SimpleTileNodeTest {
 
         SimpleTileNode expectedNode = northNode;
         SimpleTileNode actualNode = (SimpleTileNode) originNode.getAdjacentNode(TileNodeDirection.NORTH);
+
+        Assertions.assertEquals(expectedNode, actualNode);
+    }
+
+    @Test
+    public void test_setAdjacentNode_northeast_nonBidirectional() {
+        originNode.setAdjacentNode(northeastNode, TileNodeDirection.NORTHEAST, false);
+
+        SimpleTileNode expectedNode = northeastNode;
+        SimpleTileNode actualNode = (SimpleTileNode) originNode.getAdjacentNode(TileNodeDirection.NORTHEAST);
 
         Assertions.assertEquals(expectedNode, actualNode);
     }
@@ -39,6 +57,16 @@ public class SimpleTileNodeTest {
     }
 
     @Test
+    public void test_setAdjacentNode_southeast_nonBidirectional() {
+        originNode.setAdjacentNode(southeastNode, TileNodeDirection.SOUTHEAST, false);
+
+        SimpleTileNode expectedNode = southeastNode;
+        SimpleTileNode actualNode = (SimpleTileNode) originNode.getAdjacentNode(TileNodeDirection.SOUTHEAST);
+
+        Assertions.assertEquals(expectedNode, actualNode);
+    }
+
+    @Test
     public void test_setAdjacentNode_south_nonBidirectional() {
         originNode.setAdjacentNode(southNode, TileNodeDirection.SOUTH, false);
 
@@ -49,11 +77,31 @@ public class SimpleTileNodeTest {
     }
 
     @Test
+    public void test_setAdjacentNode_southwest_nonBidirectional() {
+        originNode.setAdjacentNode(southwestNode, TileNodeDirection.SOUTHWEST, false);
+
+        SimpleTileNode expectedNode = southwestNode;
+        SimpleTileNode actualNode = (SimpleTileNode) originNode.getAdjacentNode(TileNodeDirection.SOUTHWEST);
+
+        Assertions.assertEquals(expectedNode, actualNode);
+    }
+
+    @Test
     public void test_setAdjacentNode_west_nonBidirectional() {
         originNode.setAdjacentNode(westNode, TileNodeDirection.WEST, false);
 
         SimpleTileNode expectedNode = westNode;
         SimpleTileNode actualNode = (SimpleTileNode) originNode.getAdjacentNode(TileNodeDirection.WEST);
+
+        Assertions.assertEquals(expectedNode, actualNode);
+    }
+
+    @Test
+    public void test_setAdjacentNode_northwest_nonBidirectional() {
+        originNode.setAdjacentNode(northwestNode, TileNodeDirection.NORTHWEST, false);
+
+        SimpleTileNode expectedNode = northwestNode;
+        SimpleTileNode actualNode = (SimpleTileNode) originNode.getAdjacentNode(TileNodeDirection.NORTHWEST);
 
         Assertions.assertEquals(expectedNode, actualNode);
     }
@@ -73,6 +121,19 @@ public class SimpleTileNodeTest {
     }
 
     @Test
+    public void test_setAdjacentNode_northeast_bidirectional() {
+        originNode.setAdjacentNode(northeastNode, TileNodeDirection.NORTHEAST, true);
+
+        SimpleTileNode expectedNode = originNode;
+        SimpleTileNode actualNode =
+                (SimpleTileNode) originNode
+                        .getAdjacentNode(TileNodeDirection.NORTHEAST)
+                        .getAdjacentNode(TileNodeDirection.NORTHEAST.opposite());
+
+        Assertions.assertEquals(expectedNode, actualNode);
+    }
+
+    @Test
     public void test_setAdjacentNode_east_bidirectional() {
         originNode.setAdjacentNode(eastNode, TileNodeDirection.EAST, true);
 
@@ -81,6 +142,19 @@ public class SimpleTileNodeTest {
                 (SimpleTileNode) originNode
                 .getAdjacentNode(TileNodeDirection.EAST)
                 .getAdjacentNode(TileNodeDirection.EAST.opposite());
+
+        Assertions.assertEquals(expectedNode, actualNode);
+    }
+
+    @Test
+    public void test_setAdjacentNode_southeast_bidirectional() {
+        originNode.setAdjacentNode(southeastNode, TileNodeDirection.SOUTHEAST, true);
+
+        SimpleTileNode expectedNode = originNode;
+        SimpleTileNode actualNode =
+                (SimpleTileNode) originNode
+                .getAdjacentNode(TileNodeDirection.SOUTHEAST)
+                .getAdjacentNode(TileNodeDirection.SOUTHEAST.opposite());
 
         Assertions.assertEquals(expectedNode, actualNode);
     }
@@ -99,14 +173,40 @@ public class SimpleTileNodeTest {
     }
 
     @Test
+    public void test_setAdjacentNode_southwest_bidirectional() {
+        originNode.setAdjacentNode(southwestNode, TileNodeDirection.SOUTHWEST, true);
+
+        SimpleTileNode expectedNode = originNode;
+        SimpleTileNode actualNode =
+                (SimpleTileNode) originNode
+                        .getAdjacentNode(TileNodeDirection.SOUTHWEST)
+                        .getAdjacentNode(TileNodeDirection.SOUTHWEST.opposite());
+
+        Assertions.assertEquals(expectedNode, actualNode);
+    }
+
+    @Test
     public void test_setAdjacentNode_west_bidirectional() {
-        originNode.setAdjacentNode(eastNode, TileNodeDirection.WEST, true);
+        originNode.setAdjacentNode(westNode, TileNodeDirection.WEST, true);
 
         SimpleTileNode expectedNode = originNode;
         SimpleTileNode actualNode =
                 (SimpleTileNode) originNode
                 .getAdjacentNode(TileNodeDirection.WEST)
                 .getAdjacentNode(TileNodeDirection.WEST.opposite());
+
+        Assertions.assertEquals(expectedNode, actualNode);
+    }
+
+    @Test
+    public void test_setAdjacentNode_northwest_bidirectional() {
+        originNode.setAdjacentNode(northwestNode, TileNodeDirection.NORTHWEST, true);
+
+        SimpleTileNode expectedNode = originNode;
+        SimpleTileNode actualNode =
+                (SimpleTileNode) originNode
+                .getAdjacentNode(TileNodeDirection.NORTHWEST)
+                .getAdjacentNode(TileNodeDirection.NORTHWEST.opposite());
 
         Assertions.assertEquals(expectedNode, actualNode);
     }
@@ -119,10 +219,14 @@ public class SimpleTileNodeTest {
         String expectedToString = """
                 
                 ** origin **
-                north: north
-                east:  east
-                south: south
-                west:  west
+                north:     north
+                northeast: northeast
+                east:      east
+                southeast: southeast
+                south:     south
+                southwest: southwest
+                west:      west
+                northwest: northwest
                 """;
         String actualToString = originNode.toString();
 
@@ -130,9 +234,16 @@ public class SimpleTileNodeTest {
     }
     private void connectOriginAdjacents() {
         originNode.setAdjacentNode(northNode, TileNodeDirection.NORTH, true);
+        originNode.setAdjacentNode(northeastNode, TileNodeDirection.NORTHEAST, true);
+
         originNode.setAdjacentNode(eastNode, TileNodeDirection.EAST, true);
+        originNode.setAdjacentNode(southeastNode, TileNodeDirection.SOUTHEAST, true);
+
         originNode.setAdjacentNode(southNode, TileNodeDirection.SOUTH, true);
+        originNode.setAdjacentNode(southwestNode, TileNodeDirection.SOUTHWEST, true);
+
         originNode.setAdjacentNode(westNode, TileNodeDirection.WEST, true);
+        originNode.setAdjacentNode(northwestNode, TileNodeDirection.NORTHWEST, true);
     }
 
     @Test
@@ -143,10 +254,14 @@ public class SimpleTileNodeTest {
         String expectedToString = """
                 
                 ** origin **
-                north: null
-                east:  null
-                south: null
-                west:  null
+                north:     null
+                northeast: null
+                east:      null
+                southeast: null
+                south:     null
+                southwest: null
+                west:      null
+                northwest: null
                 """;
         String actualToString = originNode.toString();
 

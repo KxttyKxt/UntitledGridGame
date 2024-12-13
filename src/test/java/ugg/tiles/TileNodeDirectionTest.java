@@ -29,7 +29,7 @@ public class TileNodeDirectionTest {
 
     @Test
     public void test_fromOrdinal_null() {
-        TileNodeDirection direction = TileNodeDirection.fromOrdinal(4);
+        TileNodeDirection direction = TileNodeDirection.fromOrdinal(-1);
         Assertions.assertNull(direction);
     }
 
@@ -62,7 +62,7 @@ public class TileNodeDirectionTest {
     @Test
     public void test_clockwise() {
         TileNodeDirection expectedDirection = TileNodeDirection.NORTH;
-        TileNodeDirection actualDirection = TileNodeDirection.WEST.clockwise();
+        TileNodeDirection actualDirection = TileNodeDirection.NORTHWEST.clockwise();
 
         Assertions.assertEquals(expectedDirection, actualDirection);
     }
@@ -74,6 +74,10 @@ public class TileNodeDirectionTest {
                 .clockwise()
                 .clockwise()
                 .clockwise()
+                .clockwise()
+                .clockwise()
+                .clockwise()
+                .clockwise()
                 .clockwise();
 
         Assertions.assertEquals(expectedDirection, actualDirection);
@@ -81,17 +85,22 @@ public class TileNodeDirectionTest {
 
     @Test
     public void test_clockwise_allRotations() {
-        Assertions.assertEquals(TileNodeDirection.NORTH, TileNodeDirection.WEST.clockwise());
-        Assertions.assertEquals(TileNodeDirection.EAST, TileNodeDirection.NORTH.clockwise());
-        Assertions.assertEquals(TileNodeDirection.SOUTH, TileNodeDirection.EAST.clockwise());
-        Assertions.assertEquals(TileNodeDirection.WEST, TileNodeDirection.SOUTH.clockwise());
+        for (int i = 0; i < TileNodeDirection.values().length; i++) {
+            TileNodeDirection expectedDirection = TileNodeDirection.fromOrdinal((i + 1) % 8);
+
+            assert TileNodeDirection.fromOrdinal(i) != null;
+            //noinspection DataFlowIssue -- Mistakenly warns after fix
+            TileNodeDirection actualDirection = TileNodeDirection.fromOrdinal(i).clockwise();
+
+            Assertions.assertEquals(expectedDirection, actualDirection);
+        }
     }
 
 
     @Test
     public void test_counterclockwise() {
         TileNodeDirection expectedDirection = TileNodeDirection.NORTH;
-        TileNodeDirection actualDirection = TileNodeDirection.EAST.counterclockwise();
+        TileNodeDirection actualDirection = TileNodeDirection.NORTHEAST.counterclockwise();
 
         Assertions.assertEquals(expectedDirection, actualDirection);
     }
@@ -103,6 +112,10 @@ public class TileNodeDirectionTest {
                 .counterclockwise()
                 .counterclockwise()
                 .counterclockwise()
+                .counterclockwise()
+                .counterclockwise()
+                .counterclockwise()
+                .counterclockwise()
                 .counterclockwise();
 
         Assertions.assertEquals(expectedDirection, actualDirection);
@@ -110,9 +123,14 @@ public class TileNodeDirectionTest {
 
     @Test
     public void test_counterclockwise_allRotations() {
-        Assertions.assertEquals(TileNodeDirection.NORTH, TileNodeDirection.EAST.counterclockwise());
-        Assertions.assertEquals(TileNodeDirection.WEST, TileNodeDirection.NORTH.counterclockwise());
-        Assertions.assertEquals(TileNodeDirection.SOUTH, TileNodeDirection.WEST.counterclockwise());
-        Assertions.assertEquals(TileNodeDirection.EAST, TileNodeDirection.SOUTH.counterclockwise());
+        for (int i = 0; i < TileNodeDirection.values().length; i++) {
+            TileNodeDirection expectedDirection = TileNodeDirection.fromOrdinal((i + 7) % 8);
+
+            assert TileNodeDirection.fromOrdinal(i) != null;
+            //noinspection DataFlowIssue -- Mistakenly warns after fix
+            TileNodeDirection actualDirection = TileNodeDirection.fromOrdinal(i).counterclockwise();
+
+            Assertions.assertEquals(expectedDirection, actualDirection);
+        }
     }
 }
