@@ -3,20 +3,26 @@ package ugg.tiles.graph.nodes;
 import ugg.tiles.graph.TileNodeDirection;
 import ugg.tiles.tiles.Tile;
 
-// This class and its subclasses are intentionally package-private
+public abstract class TileNode {
+    private Tile key;
 
-abstract class TileNode {
-    Tile key;
-
-    TileNode north, northeast, east, southeast;
-    TileNode south, southwest, west, northwest;
+    private TileNode north, northeast, east, southeast;
+    private TileNode south, southwest, west, northwest;
 
     TileNode(Tile key) {
         this.key = key;
     }
 
 
-    TileNode getAdjacentNode(TileNodeDirection direction) {
+    public Tile getKey() {
+        return key;
+    }
+
+    public void setKey(Tile key) {
+        this.key = key;
+    }
+
+    public TileNode getAdjacentNode(TileNodeDirection direction) {
         return switch (direction) {
             case NORTH -> this.north;
             case NORTHEAST -> this.northeast;
@@ -29,23 +35,26 @@ abstract class TileNode {
         };
     }
 
-    void setAdjacentNode(TileNode nodeToAdd, TileNodeDirection direction, boolean bidirectional) {
+    public void setAdjacentNode(TileNode adjacentNode, TileNodeDirection direction, boolean bidirectional) {
+        if (adjacentNode == null)
+            return;
+
         switch (direction) {
-            case NORTH -> this.north = nodeToAdd;
-            case NORTHEAST -> this.northeast = nodeToAdd;
-            case EAST -> this.east = nodeToAdd;
-            case SOUTHEAST -> this.southeast = nodeToAdd;
-            case SOUTH -> this.south = nodeToAdd;
-            case SOUTHWEST -> this.southwest = nodeToAdd;
-            case WEST -> this.west = nodeToAdd;
-            case NORTHWEST -> this.northwest = nodeToAdd;
+            case NORTH -> this.north = adjacentNode;
+            case NORTHEAST -> this.northeast = adjacentNode;
+            case EAST -> this.east = adjacentNode;
+            case SOUTHEAST -> this.southeast = adjacentNode;
+            case SOUTH -> this.south = adjacentNode;
+            case SOUTHWEST -> this.southwest = adjacentNode;
+            case WEST -> this.west = adjacentNode;
+            case NORTHWEST -> this.northwest = adjacentNode;
         }
 
         if (bidirectional)
-            nodeToAdd.setAdjacentNode(this, direction.opposite(), false);
+            adjacentNode.setAdjacentNode(this, direction.opposite(), false);
     }
 
-    void clearAdjacentNodes() {
+    public void clearAdjacentNodes() {
         north = northeast = east = southeast = south = southwest = west = northwest = null;
     }
 
@@ -77,7 +86,7 @@ abstract class TileNode {
         );
     }
 
-    static String justGetKeyContents(TileNode node) {
+    public static String justGetKeyContents(TileNode node) {
         return (node != null && node.key != null)
                 ? node.key.toString()
                 : "null";
