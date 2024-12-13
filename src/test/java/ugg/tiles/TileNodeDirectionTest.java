@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ugg.tiles.graph.TileNodeDirection;
 
-import java.util.Arrays;
-
 public class TileNodeDirectionTest {
 
     @Test

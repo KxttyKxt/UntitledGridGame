@@ -33,7 +33,7 @@ abstract class TileNode {
             case EAST -> this.east = nodeToAdd;
             case SOUTH -> this.south = nodeToAdd;
             case WEST -> this.west = nodeToAdd;
-        };
+        }
 
         if (bidirectional)
             nodeToAdd.setAdjacentNode(this, direction.opposite(), false);
