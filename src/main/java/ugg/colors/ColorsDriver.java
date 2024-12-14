@@ -2,32 +2,31 @@ package ugg.colors;
 
 public class ColorsDriver {
     public static void main(String[] args) {
-        simpleColors();
+        printAllSimpleColors();
         System.out.printf("%n%n%n");
-
-        eightBitColors();
-        System.out.printf("%n%n%n");
+        printAllEightBitColors();
     }
 
-    private static void simpleColors() {
-        final int COLORS_PER_LINE = 8;
-        int colorsInLine = 0;
+    private static void printAllSimpleColors() {
+        for (int i = 0; i < SimpleColor.values().length; i++) {
+            Color simpleColor = Colorizer.getColor(SimpleColor.values()[i]);
+            System.out.printf("%s ", simpleColor.colorize("test"));
 
-        for (int color : SimpleColors.VALID_COLORS) {
-            System.out.printf("%s ", SimpleColors.colorize("test", color));
-            colorsInLine++;
-
-            if (colorsInLine >= COLORS_PER_LINE) {
+            if ((i + 1) % 8 == 0)
                 System.out.println();
-                colorsInLine = 0;
-            }
         }
     }
-    private static void eightBitColors() {
+
+    private static void printAllEightBitColors() {
         for (int i = 0; i < 256; i++) {
-            System.out.printf("%-3s %-3s ",
-                    EightBitColors.colorize("test", i, false),
-                    EightBitColors.colorize("test", i, true));
+            Color eightBitColorFG = Colorizer.getColor(i, false);
+            Color eightBitColorBG = Colorizer.getColor(i, true);
+
+            System.out.printf(
+                    "%s %s ",
+                    eightBitColorFG.colorize("test"),
+                    eightBitColorBG.colorize("test")
+            );
 
             if ((i + 1) % 16 == 0)
                 System.out.println();

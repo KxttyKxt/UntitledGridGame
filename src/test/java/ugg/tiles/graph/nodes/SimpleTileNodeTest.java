@@ -269,4 +269,13 @@ public class SimpleTileNodeTest {
     }
 
 
+    @Test
+    public void test_justGetKeyContents_nullKey() {
+        TileNode tileNode = new SimpleTileNode(null);
+
+        String expectedContents = "null";
+        String actualContents = TileNode.justGetKeyContents(tileNode);
+
+        Assertions.assertEquals(expectedContents, actualContents);
+    }
 }

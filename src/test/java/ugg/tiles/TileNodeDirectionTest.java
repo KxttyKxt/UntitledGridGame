@@ -28,9 +28,18 @@ public class TileNodeDirectionTest {
     }
 
     @Test
-    public void test_fromOrdinal_null() {
-        TileNodeDirection direction = TileNodeDirection.fromOrdinal(-1);
-        Assertions.assertNull(direction);
+    public void test_fromOrdinal_invalidOrdinal() {
+        boolean threwError = false;
+
+        try {
+            TileNodeDirection.fromOrdinal(-1);
+        }
+        catch (IllegalArgumentException ordinalWasOutOfRangeException) {
+            threwError = true;
+        }
+        finally {
+            Assertions.assertTrue(threwError);
+        }
     }
 
 
@@ -89,7 +98,6 @@ public class TileNodeDirectionTest {
             TileNodeDirection expectedDirection = TileNodeDirection.fromOrdinal((i + 1) % 8);
 
             assert TileNodeDirection.fromOrdinal(i) != null;
-            //noinspection DataFlowIssue -- Mistakenly warns after fix
             TileNodeDirection actualDirection = TileNodeDirection.fromOrdinal(i).clockwise();
 
             Assertions.assertEquals(expectedDirection, actualDirection);
@@ -127,7 +135,6 @@ public class TileNodeDirectionTest {
             TileNodeDirection expectedDirection = TileNodeDirection.fromOrdinal((i + 7) % 8);
 
             assert TileNodeDirection.fromOrdinal(i) != null;
-            //noinspection DataFlowIssue -- Mistakenly warns after fix
             TileNodeDirection actualDirection = TileNodeDirection.fromOrdinal(i).counterclockwise();
 
             Assertions.assertEquals(expectedDirection, actualDirection);

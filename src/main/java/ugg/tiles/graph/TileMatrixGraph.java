@@ -59,7 +59,6 @@ public class TileMatrixGraph {
 
                 TileNodeDirection currentDirection = TileNodeDirection.fromOrdinal(i);
 
-                assert currentDirection != null;
                 TileNode adjacentTileNode =
                         coordinatedTileMap.get(coordinatePair.relativeCoordinates(currentDirection));
 
@@ -87,14 +86,6 @@ record CoordinatePair (int x, int y) {
             case WEST -> new CoordinatePair(x - 1, y);
             case NORTHWEST -> new CoordinatePair(x - 1, y + 1);
         };
-    }
-
-
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CoordinatePair that = (CoordinatePair) o;
-        return x == that.x && y == that.y;
     }
 
     @Override
