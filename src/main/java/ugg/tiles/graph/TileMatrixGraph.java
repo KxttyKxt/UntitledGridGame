@@ -18,7 +18,7 @@ public class TileMatrixGraph {
 
     // ========== Matrix Map ==========
 
-    Map<CoordinatePair, TileNode> coordinatedTileMap = new HashMap<>();
+    private final Map<CoordinatePair, TileNode> coordinatedTileMap = new HashMap<>();
 
     public boolean addTile(int x, int y, Tile tile) {
         if (coordinatedTileMap.get(new CoordinatePair(x, y)) != null)

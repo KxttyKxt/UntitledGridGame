@@ -2,32 +2,17 @@ package ugg.colors;
 
 public class SimpleColors extends AnsiUtil {
 
-    public static void main(String[] args) {
-        final int COLORS_PER_LINE = 8;
-        int colorsInLine = 0;
-
-        for (int color : VALID_COLORS) {
-            System.out.print(colorize("test", color) + " ");
-            colorsInLine++;
-
-            if (colorsInLine >= COLORS_PER_LINE) {
-                System.out.println();
-                colorsInLine = 0;
-            }
-        }
-    }
-
-    public static String colorize(String input, int color) {
-        if (!isValidColor(color)) {
+    public static String colorize(String input, int colorID) {
+        if (!isValidColor(colorID)) {
             throw new IllegalArgumentException(String.format(
-                    "The color provided '%d' is not a valid Simple Color.", color
+                    "The colorID provided '%d' is not a valid Simple Color.", colorID
             ));
         }
 
-        return String.format("%s%s%s", inputColor(color), input, inputColor(RESET));
+        return String.format("%s%s%s", inputColor(colorID), input, ansiReset);
     }
-    private static String inputColor(int color) {
-        return input(String.valueOf(color));
+    private static String inputColor(int colorID) {
+        return input(String.valueOf(colorID));
     }
 
     public static final int BLACK = 30;
@@ -67,9 +52,8 @@ public class SimpleColors extends AnsiUtil {
     public static final int BG_BRIGHT_WHITE = 107;
 
     public static final int DEFAULT = 39;
-    public static final int RESET = 0;
 
-    private static final int[] VALID_COLORS = {
+    public static final int[] VALID_COLORS = {
             BLACK, RED, GREEN, YELLOW,BLUE, MAGENTA, CYAN, WHITE,
 
             BRIGHT_BLACK, BRIGHT_RED, BRIGHT_GREEN, BRIGHT_YELLOW,
@@ -83,9 +67,9 @@ public class SimpleColors extends AnsiUtil {
             DEFAULT
     };
 
-    private static boolean isValidColor(int color) {
+    private static boolean isValidColor(int colorID) {
         for (int validColor : VALID_COLORS)
-            if (color == validColor)
+            if (colorID == validColor)
                 return true;
 
         return false;

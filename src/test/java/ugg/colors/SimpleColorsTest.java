@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class SimpleColorsTest {
-    private void handleColorizedStrings(String expectedColorizedString, String actualColorizedString) {
+    protected void handleColorizedStrings(String expectedColorizedString, String actualColorizedString) {
         Assertions.assertEquals(expectedColorizedString, actualColorizedString);
 
         System.out.printf("Expected: %-40s | Actual: %s%n",
@@ -18,7 +18,7 @@ public class SimpleColorsTest {
         String stringToColorize = "Look, I'm red!";
 
         String expectedColorizedString = String.format("%s%s%s",
-                "\u001B[31m", stringToColorize, "\u001B[39m"
+                "\u001B[31m", stringToColorize, "\u001B[0m"
         );
         String actualColorizedString = SimpleColors.colorize(stringToColorize, SimpleColors.RED);
 
@@ -30,7 +30,7 @@ public class SimpleColorsTest {
         String stringToColorize = "Look, I'm bright green!";
 
         String expectedColorizedString = String.format("%s%s%s",
-                "\u001B[92m", stringToColorize, "\u001B[39m"
+                "\u001B[92m", stringToColorize, "\u001B[0m"
         );
         String actualColorizedString = SimpleColors.colorize(stringToColorize, SimpleColors.BRIGHT_GREEN);
 
@@ -43,7 +43,7 @@ public class SimpleColorsTest {
         String stringToColorize = "Look, it's red!";
 
         String expectedColorizedString = String.format("%s%s%s",
-                "\u001B[41m", stringToColorize, "\u001B[39m"
+                "\u001B[41m", stringToColorize, "\u001B[0m"
         );
         String actualColorizedString = SimpleColors.colorize(stringToColorize, SimpleColors.BG_RED);
 
@@ -55,7 +55,7 @@ public class SimpleColorsTest {
         String stringToColorize = "Look, it's bright green!";
 
         String expectedColorizedString = String.format("%s%s%s",
-                "\u001B[102m", stringToColorize, "\u001B[39m"
+                "\u001B[102m", stringToColorize, "\u001B[0m"
         );
         String actualColorizedString = SimpleColors.colorize(stringToColorize, SimpleColors.BG_BRIGHT_GREEN);
 
