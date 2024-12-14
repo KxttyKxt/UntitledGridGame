@@ -2,6 +2,21 @@ package ugg.colors;
 
 public class SimpleColors extends AnsiUtil {
 
+    public static void main(String[] args) {
+        final int COLORS_PER_LINE = 8;
+        int colorsInLine = 0;
+
+        for (int color : VALID_COLORS) {
+            System.out.print(colorize("test", color) + " ");
+            colorsInLine++;
+
+            if (colorsInLine >= COLORS_PER_LINE) {
+                System.out.println();
+                colorsInLine = 0;
+            }
+        }
+    }
+
     public static String colorize(String input, int color) {
         if (!isValidColor(color)) {
             throw new IllegalArgumentException(String.format(
@@ -9,7 +24,7 @@ public class SimpleColors extends AnsiUtil {
             ));
         }
 
-        return String.format("%s%s%s", inputColor(color), input, inputColor(DEFAULT));
+        return String.format("%s%s%s", inputColor(color), input, inputColor(RESET));
     }
     private static String inputColor(int color) {
         return input(String.valueOf(color));
@@ -64,6 +79,8 @@ public class SimpleColors extends AnsiUtil {
 
             BG_BRIGHT_BLACK, BG_BRIGHT_RED, BG_BRIGHT_GREEN, BG_BRIGHT_YELLOW,
             BG_BRIGHT_BLUE, BG_BRIGHT_MAGENTA, BG_BRIGHT_CYAN, BG_BRIGHT_WHITE,
+
+            DEFAULT
     };
 
     private static boolean isValidColor(int color) {
