@@ -169,21 +169,6 @@ public class TileMatrixGraphTest {
         }
     }
 
-    private void addTilesToMatrixGraph() {
-        matrixGraph.addTile(0, 0, new Tile("origin"));
-
-        matrixGraph.addTile(0, 1, new Tile("north"));
-        matrixGraph.addTile(1, 1, new Tile("northeast"));
-        matrixGraph.addTile(1, 0, new Tile("east"));
-        matrixGraph.addTile(1, -1, new Tile("southeast"));
-        matrixGraph.addTile(0, -1, new Tile("south"));
-        matrixGraph.addTile(-1, -1, new Tile("southwest"));
-        matrixGraph.addTile(-1, 0, new Tile("west"));
-        matrixGraph.addTile(-1, 1, new Tile("northwest"));
-
-        matrixGraph.linkAllTileNodesByCoordinates();
-    }
-
 
     @Test
     public void test_transferTileContents_manual() {
@@ -216,6 +201,51 @@ public class TileMatrixGraphTest {
         Assertions.assertFalse(matrixGraph.moveTileContentsByCoords(0, 0, directions));
 
         Assertions.assertEquals("Occupied", matrixGraph.getTile(2, 0).toString());
+    }
+
+
+    @Test
+    public void test_checkForContiguousPath_true() {
+        addLineSegmentToMatrixGraph();
+
+        TileNodeDirection[] directions = {TileNodeDirection.EAST, TileNodeDirection.EAST};
+
+        Assertions.assertTrue(matrixGraph.checkForContiguousPath(0, 0, directions));
+    }
+
+    @Test
+    public void test_checkForContiguousPath_false_wrongPathMakesNull() {
+        addLineSegmentToMatrixGraph();
+
+        TileNodeDirection[] directions = {TileNodeDirection.NORTH, TileNodeDirection.NORTH};
+
+        Assertions.assertFalse(matrixGraph.checkForContiguousPath(0, 0, directions));
+    }
+
+    @Test
+    public void test_checkForContiguousPath_false_tileInPathIsNotEmpty() {
+        addLineSegmentToMatrixGraph();
+        matrixGraph.setTile(1, 0, new Tile("In the way"));
+
+        TileNodeDirection[] directions = {TileNodeDirection.EAST, TileNodeDirection.EAST};
+
+        Assertions.assertFalse(matrixGraph.checkForContiguousPath(0, 0, directions));
+    }
+
+
+    private void addTilesToMatrixGraph() {
+        matrixGraph.addTile(0, 0, new Tile("origin"));
+
+        matrixGraph.addTile(0, 1, new Tile("north"));
+        matrixGraph.addTile(1, 1, new Tile("northeast"));
+        matrixGraph.addTile(1, 0, new Tile("east"));
+        matrixGraph.addTile(1, -1, new Tile("southeast"));
+        matrixGraph.addTile(0, -1, new Tile("south"));
+        matrixGraph.addTile(-1, -1, new Tile("southwest"));
+        matrixGraph.addTile(-1, 0, new Tile("west"));
+        matrixGraph.addTile(-1, 1, new Tile("northwest"));
+
+        matrixGraph.linkAllTileNodesByCoordinates();
     }
 
     private void addLineSegmentToMatrixGraph() {

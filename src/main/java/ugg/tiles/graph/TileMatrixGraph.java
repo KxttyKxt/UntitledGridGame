@@ -16,11 +16,20 @@ public class TileMatrixGraph {
 
     private final Map<CoordinatePair, TileNode> map = new HashMap<>();
 
+    public int size() {
+        return map.size();
+    }
+    public boolean isEmpty() {
+        return map.isEmpty();
+    }
+
     public boolean addTile(int x, int y, Tile tile) {
         if (map.get(new CoordinatePair(x, y)) != null)
             return false;
 
         map.put(new CoordinatePair(x, y), new TileNode(tile));
+        linkAllTileNodesByCoordinates();
+
         return true;
     }
     public void removeTile(int x, int y) {
@@ -39,28 +48,8 @@ public class TileMatrixGraph {
             tileNode.setTile(tile);
     }
 
-    public boolean moveTileContentsByCoords(int x, int y, TileNodeDirection[] directions) {
-        TileNode sourceNode = getTileNode(x, y);
-        TileNode destinationNode;
-
-        CoordinatePair currentCoords = new CoordinatePair(x, y);
-        for (TileNodeDirection direction : directions)
-            currentCoords = currentCoords.relativeCoordinates(direction);
-
-        destinationNode = map.get(currentCoords);
-
-        return sourceNode.getTile().transferContentsTo(destinationNode.getTile());
-    }
-
     TileNode getTileNode(int x, int y) {
         return map.get(new CoordinatePair(x, y));
-    }
-
-    public int size() {
-        return map.size();
-    }
-    public boolean isEmpty() {
-        return map.isEmpty();
     }
 
     public void linkAllTileNodesByCoordinates() {
@@ -79,6 +68,35 @@ public class TileMatrixGraph {
         });
     }
 
+    public boolean moveTileContentsByCoords(int x, int y, TileNodeDirection[] directions) {
+        TileNode sourceNode = getTileNode(x, y);
+        TileNode destinationNode;
+
+        CoordinatePair currentCoords = new CoordinatePair(x, y);
+        for (TileNodeDirection direction : directions)
+            currentCoords = currentCoords.relativeCoordinates(direction);
+
+        destinationNode = map.get(currentCoords);
+
+        return sourceNode.getTile().transferContentsTo(destinationNode.getTile());
+    }
+
+    public boolean checkForContiguousPath(int x, int y, TileNodeDirection[] directions) {
+        TileNode contiguousNode = getTileNode(x, y);
+        try {
+            for (TileNodeDirection direction : directions) {
+                contiguousNode = contiguousNode.getAdjacentNode(direction);
+
+                if (!contiguousNode.getTile().toString().isEmpty())
+                    return false;
+            }
+
+            return true;
+        }
+        catch (NullPointerException TileNodeNotFoundException) {
+            return false;
+        }
+    }
 }
 
 record CoordinatePair (int x, int y) {
