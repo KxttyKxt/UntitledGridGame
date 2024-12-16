@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 public class TileMatrixGraph {
 
+    // ========== Map Manipulation ==========
+
     private final Map<CoordinatePair, TileNode> map = new HashMap<>();
 
     public int size() {
@@ -28,7 +30,7 @@ public class TileMatrixGraph {
             return false;
 
         map.put(new CoordinatePair(x, y), new TileNode(tile));
-        linkAllTileNodesByCoordinates();
+        updateTileNodeLinks();
 
         return true;
     }
@@ -52,7 +54,7 @@ public class TileMatrixGraph {
         return map.get(new CoordinatePair(x, y));
     }
 
-    public void linkAllTileNodesByCoordinates() {
+    public void updateTileNodeLinks() {
         map.forEach((coordinatePair, tileNode) -> {
             for (int i = 0; i < TileNodeDirection.values().length; i++) {
 
@@ -68,6 +70,12 @@ public class TileMatrixGraph {
         });
     }
 
+    // ======================================
+
+
+    // ============== Pathing ===============
+
+    // Instantaneous, Non-contiguous, directly to destination
     public boolean moveTileContentsByCoords(int x, int y, TileNodeDirection[] directions) {
         TileNode sourceNode = getTileNode(x, y);
         TileNode destinationNode;
@@ -81,6 +89,7 @@ public class TileMatrixGraph {
         return sourceNode.getTile().transferContentsTo(destinationNode.getTile());
     }
 
+    // Checks every tile in directions one at a time
     public boolean checkForContiguousPath(int x, int y, TileNodeDirection[] directions) {
         TileNode contiguousNode = getTileNode(x, y);
         try {
@@ -97,7 +106,11 @@ public class TileMatrixGraph {
             return false;
         }
     }
+
+    // ======================================
+
 }
+
 
 record CoordinatePair (int x, int y) {
 

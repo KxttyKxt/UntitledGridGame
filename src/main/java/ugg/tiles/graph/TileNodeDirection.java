@@ -14,7 +14,7 @@ public enum TileNodeDirection {
             case 6 -> WEST;
             case 7 -> NORTHWEST;
 
-            default -> throw new IllegalArgumentException(String.format("ordinal '%d' is out of range.", ordinal));
+            default -> throw new IndexOutOfBoundsException(String.format("ordinal '%d' is out of range.", ordinal));
         };
     }
 

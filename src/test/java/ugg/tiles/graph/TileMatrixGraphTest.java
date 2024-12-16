@@ -12,8 +12,33 @@ public class TileMatrixGraphTest {
     }
     static TileMatrixGraph matrixGraph;
 
+    private void addTilesToMatrixGraph() {
+        matrixGraph.addTile(0, 0, new Tile("origin"));
+
+        matrixGraph.addTile(0, 1, new Tile("north"));
+        matrixGraph.addTile(1, 1, new Tile("northeast"));
+        matrixGraph.addTile(1, 0, new Tile("east"));
+        matrixGraph.addTile(1, -1, new Tile("southeast"));
+        matrixGraph.addTile(0, -1, new Tile("south"));
+        matrixGraph.addTile(-1, -1, new Tile("southwest"));
+        matrixGraph.addTile(-1, 0, new Tile("west"));
+        matrixGraph.addTile(-1, 1, new Tile("northwest"));
+
+        matrixGraph.updateTileNodeLinks();
+    }
+    private void addEastLineToMatrixGraph() {
+        Tile origin = new Tile("Data");
+        Tile east = new Tile("");
+        Tile eastEast = new Tile("");
+
+        matrixGraph.addTile(0, 0, origin);
+        matrixGraph.addTile(1, 0, east);
+        matrixGraph.addTile(2, 0, eastEast);
+    }
+
+    
     @Test
-    public void test_addTile_tileNotAlreadyOccupied() {
+    public void test_addTile_tileNotOccupied() {
         Assertions.assertTrue(matrixGraph.isEmpty());
         Assertions.assertEquals(0, matrixGraph.size());
 
@@ -60,7 +85,7 @@ public class TileMatrixGraphTest {
 
 
     @Test
-    public void test_setTile_exists() {
+    public void test_setTile_overExisting() {
         Tile tile = new Tile("getTile");
         matrixGraph.addTile(0, 0, tile);
 
@@ -71,7 +96,7 @@ public class TileMatrixGraphTest {
     }
 
     @Test
-    public void test_setTile_doesNotExist() {
+    public void test_setTile_new() {
         Tile newTile = new Tile("new getTile");
         matrixGraph.setTile(0, 0, newTile);
 
@@ -87,7 +112,7 @@ public class TileMatrixGraphTest {
         matrixGraph.addTile(0, 0, originTile);
         matrixGraph.addTile(1, 0, eastTile);
 
-        matrixGraph.linkAllTileNodesByCoordinates();
+        matrixGraph.updateTileNodeLinks();
 
         TileNode originNode = matrixGraph.getTileNode(0, 0);
         TileNode eastNode = matrixGraph.getTileNode(1, 0);
@@ -172,7 +197,7 @@ public class TileMatrixGraphTest {
 
     @Test
     public void test_transferTileContents_manual() {
-        addLineSegmentToMatrixGraph();
+        addEastLineToMatrixGraph();
 
         Assertions.assertEquals("Data", matrixGraph.getTile(0, 0).toString());
         matrixGraph.getTile(0, 0).transferContentsTo(matrixGraph.getTile(1, 0));
@@ -183,7 +208,7 @@ public class TileMatrixGraphTest {
 
     @Test
     public void test_transferTileContents_directionsCoordinates_true() {
-        addLineSegmentToMatrixGraph();
+        addEastLineToMatrixGraph();
 
         TileNodeDirection[] directions = {TileNodeDirection.EAST, TileNodeDirection.EAST};
         Assertions.assertTrue(matrixGraph.moveTileContentsByCoords(0, 0, directions));
@@ -193,7 +218,7 @@ public class TileMatrixGraphTest {
 
     @Test
     public void test_transferTileContents_directionsCoordinates_false() {
-        addLineSegmentToMatrixGraph();
+        addEastLineToMatrixGraph();
 
         matrixGraph.setTile(2, 0, new Tile("Occupied"));
 
@@ -206,7 +231,7 @@ public class TileMatrixGraphTest {
 
     @Test
     public void test_checkForContiguousPath_true() {
-        addLineSegmentToMatrixGraph();
+        addEastLineToMatrixGraph();
 
         TileNodeDirection[] directions = {TileNodeDirection.EAST, TileNodeDirection.EAST};
 
@@ -215,7 +240,7 @@ public class TileMatrixGraphTest {
 
     @Test
     public void test_checkForContiguousPath_false_wrongPathMakesNull() {
-        addLineSegmentToMatrixGraph();
+        addEastLineToMatrixGraph();
 
         TileNodeDirection[] directions = {TileNodeDirection.NORTH, TileNodeDirection.NORTH};
 
@@ -224,7 +249,7 @@ public class TileMatrixGraphTest {
 
     @Test
     public void test_checkForContiguousPath_false_tileInPathIsNotEmpty() {
-        addLineSegmentToMatrixGraph();
+        addEastLineToMatrixGraph();
         matrixGraph.setTile(1, 0, new Tile("In the way"));
 
         TileNodeDirection[] directions = {TileNodeDirection.EAST, TileNodeDirection.EAST};
@@ -233,28 +258,4 @@ public class TileMatrixGraphTest {
     }
 
 
-    private void addTilesToMatrixGraph() {
-        matrixGraph.addTile(0, 0, new Tile("origin"));
-
-        matrixGraph.addTile(0, 1, new Tile("north"));
-        matrixGraph.addTile(1, 1, new Tile("northeast"));
-        matrixGraph.addTile(1, 0, new Tile("east"));
-        matrixGraph.addTile(1, -1, new Tile("southeast"));
-        matrixGraph.addTile(0, -1, new Tile("south"));
-        matrixGraph.addTile(-1, -1, new Tile("southwest"));
-        matrixGraph.addTile(-1, 0, new Tile("west"));
-        matrixGraph.addTile(-1, 1, new Tile("northwest"));
-
-        matrixGraph.linkAllTileNodesByCoordinates();
-    }
-
-    private void addLineSegmentToMatrixGraph() {
-        Tile origin = new Tile("Data");
-        Tile east = new Tile("");
-        Tile eastEast = new Tile("");
-
-        matrixGraph.addTile(0, 0, origin);
-        matrixGraph.addTile(1, 0, east);
-        matrixGraph.addTile(2, 0, eastEast);
-    }
 }

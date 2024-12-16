@@ -6,6 +6,7 @@ public class Colorizer {
 
     static final String ansiReset = "\u001B[0m";
 
+    // Simple Colors, 8-16
     public static Color getColor(SimpleColor simpleColor) {
         return new Color(String.format(parse(simpleColor)));
     }
@@ -18,6 +19,7 @@ public class Colorizer {
         );
     }
 
+    // 8-bit Colors
     public static Color getColor(int colorID, boolean background) {
         validateColor(colorID);
         return new Color(parse(colorID, background));
@@ -37,6 +39,7 @@ public class Colorizer {
         );
     }
 
+    // 24-bit Colors
     public static Color getColor(int[] rgb, boolean background) {
         validateColor(rgb);
         return new Color(parse(rgb, background));
@@ -59,6 +62,7 @@ public class Colorizer {
         );
     }
 
+    // Sub-method
     private static int bgID(boolean background) {
         return (background) ? 48 : 38;
     }

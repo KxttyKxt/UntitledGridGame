@@ -33,7 +33,7 @@ public class TileNodeDirectionTest {
         try {
             TileNodeDirection.fromOrdinal(-1);
         }
-        catch (IllegalArgumentException ordinalWasOutOfRangeException) {
+        catch (IndexOutOfBoundsException ordinalWasOutOfRangeException) {
             threwError = true;
         }
         finally {
