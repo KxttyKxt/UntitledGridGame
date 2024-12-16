@@ -28,7 +28,7 @@ public class TileMatrixGraph {
     }
 
     public Tile getTile(int x, int y) {
-        return getTileNode(x, y).getKey();
+        return getTileNode(x, y).getTile();
     }
     public void setTile(int x, int y, Tile tile) {
             TileNode tileNode = map.get(new CoordinatePair(x, y));
@@ -36,7 +36,20 @@ public class TileMatrixGraph {
         if (tileNode == null)
             map.put(new CoordinatePair(x, y), new TileNode(tile));
         else
-            tileNode.setKey(tile);
+            tileNode.setTile(tile);
+    }
+
+    public boolean moveTileContentsByCoords(int x, int y, TileNodeDirection[] directions) {
+        TileNode sourceNode = getTileNode(x, y);
+        TileNode destinationNode;
+
+        CoordinatePair currentCoords = new CoordinatePair(x, y);
+        for (TileNodeDirection direction : directions)
+            currentCoords = currentCoords.relativeCoordinates(direction);
+
+        destinationNode = map.get(currentCoords);
+
+        return sourceNode.getTile().transferContentsTo(destinationNode.getTile());
     }
 
     TileNode getTileNode(int x, int y) {

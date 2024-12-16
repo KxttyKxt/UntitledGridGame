@@ -17,17 +17,17 @@ public class TileMatrixGraphTest {
         Assertions.assertTrue(matrixGraph.isEmpty());
         Assertions.assertEquals(0, matrixGraph.size());
 
-        Assertions.assertTrue(matrixGraph.addTile(0, 0, new Tile("tile")));
+        Assertions.assertTrue(matrixGraph.addTile(0, 0, new Tile("getTile")));
     }
 
     @Test
     public void test_addTile_tileAlreadyOccupied() {
-        matrixGraph.addTile(0, 0, new Tile("tile"));
+        matrixGraph.addTile(0, 0, new Tile("getTile"));
 
         Assertions.assertFalse(matrixGraph.isEmpty());
         Assertions.assertEquals(1, matrixGraph.size());
 
-        Assertions.assertFalse(matrixGraph.addTile(0, 0, new Tile("new tile")));
+        Assertions.assertFalse(matrixGraph.addTile(0, 0, new Tile("new getTile")));
 
         Assertions.assertFalse(matrixGraph.isEmpty());
         Assertions.assertEquals(1, matrixGraph.size());
@@ -36,7 +36,7 @@ public class TileMatrixGraphTest {
 
     @Test
     public void test_removeTile() {
-        matrixGraph.addTile(0, 0, new Tile("tile"));
+        matrixGraph.addTile(0, 0, new Tile("getTile"));
 
         Assertions.assertFalse(matrixGraph.isEmpty());
         Assertions.assertEquals(1, matrixGraph.size());
@@ -50,7 +50,7 @@ public class TileMatrixGraphTest {
 
     @Test
     public void test_getTile() {
-        Tile tile = new Tile("tile");
+        Tile tile = new Tile("getTile");
         matrixGraph.addTile(0, 0, tile);
 
         Tile actualTile = matrixGraph.getTile(0, 0);
@@ -61,10 +61,10 @@ public class TileMatrixGraphTest {
 
     @Test
     public void test_setTile_exists() {
-        Tile tile = new Tile("tile");
+        Tile tile = new Tile("getTile");
         matrixGraph.addTile(0, 0, tile);
 
-        Tile newTile = new Tile("new tile");
+        Tile newTile = new Tile("new getTile");
         matrixGraph.setTile(0, 0, newTile);
 
         Assertions.assertEquals(newTile, matrixGraph.getTile(0, 0));
@@ -72,7 +72,7 @@ public class TileMatrixGraphTest {
 
     @Test
     public void test_setTile_doesNotExist() {
-        Tile newTile = new Tile("new tile");
+        Tile newTile = new Tile("new getTile");
         matrixGraph.setTile(0, 0, newTile);
 
         Assertions.assertEquals(newTile, matrixGraph.getTile(0, 0));
@@ -92,8 +92,8 @@ public class TileMatrixGraphTest {
         TileNode originNode = matrixGraph.getTileNode(0, 0);
         TileNode eastNode = matrixGraph.getTileNode(1, 0);
 
-        Assertions.assertEquals(eastTile, originNode.getAdjacentNode(TileNodeDirection.EAST).getKey());
-        Assertions.assertEquals(originTile, eastNode.getAdjacentNode(TileNodeDirection.WEST).getKey());
+        Assertions.assertEquals(eastTile, originNode.getAdjacentNode(TileNodeDirection.EAST).getTile());
+        Assertions.assertEquals(originTile, eastNode.getAdjacentNode(TileNodeDirection.WEST).getTile());
     }
 
     @Test
@@ -115,20 +115,6 @@ public class TileMatrixGraphTest {
         String actualOriginNodeToString = matrixGraph.getTileNode(0, 0).toString();
 
         Assertions.assertEquals(expectedOriginNodeToString, actualOriginNodeToString);
-    }
-    private void addTilesToMatrixGraph() {
-        matrixGraph.addTile(0, 0, new Tile("origin"));
-
-        matrixGraph.addTile(0, 1, new Tile("north"));
-        matrixGraph.addTile(1, 1, new Tile("northeast"));
-        matrixGraph.addTile(1, 0, new Tile("east"));
-        matrixGraph.addTile(1, -1, new Tile("southeast"));
-        matrixGraph.addTile(0, -1, new Tile("south"));
-        matrixGraph.addTile(-1, -1, new Tile("southwest"));
-        matrixGraph.addTile(-1, 0, new Tile("west"));
-        matrixGraph.addTile(-1, 1, new Tile("northwest"));
-
-        matrixGraph.linkAllTileNodesByCoordinates();
     }
 
     @Test
@@ -181,5 +167,64 @@ public class TileMatrixGraphTest {
                             .getAdjacentNode(currentDirection.opposite())
             );
         }
+    }
+
+    private void addTilesToMatrixGraph() {
+        matrixGraph.addTile(0, 0, new Tile("origin"));
+
+        matrixGraph.addTile(0, 1, new Tile("north"));
+        matrixGraph.addTile(1, 1, new Tile("northeast"));
+        matrixGraph.addTile(1, 0, new Tile("east"));
+        matrixGraph.addTile(1, -1, new Tile("southeast"));
+        matrixGraph.addTile(0, -1, new Tile("south"));
+        matrixGraph.addTile(-1, -1, new Tile("southwest"));
+        matrixGraph.addTile(-1, 0, new Tile("west"));
+        matrixGraph.addTile(-1, 1, new Tile("northwest"));
+
+        matrixGraph.linkAllTileNodesByCoordinates();
+    }
+
+
+    @Test
+    public void test_transferTileContents_manual() {
+        addLineSegmentToMatrixGraph();
+
+        Assertions.assertEquals("Data", matrixGraph.getTile(0, 0).toString());
+        matrixGraph.getTile(0, 0).transferContentsTo(matrixGraph.getTile(1, 0));
+        Assertions.assertEquals("Data", matrixGraph.getTile(1, 0).toString());
+        matrixGraph.getTile(1, 0).transferContentsTo(matrixGraph.getTile(2, 0));
+        Assertions.assertEquals("Data", matrixGraph.getTile(2, 0).toString());
+    }
+
+    @Test
+    public void test_transferTileContents_directionsCoordinates_true() {
+        addLineSegmentToMatrixGraph();
+
+        TileNodeDirection[] directions = {TileNodeDirection.EAST, TileNodeDirection.EAST};
+        Assertions.assertTrue(matrixGraph.moveTileContentsByCoords(0, 0, directions));
+
+        Assertions.assertEquals("Data", matrixGraph.getTile(2, 0).toString());
+    }
+
+    @Test
+    public void test_transferTileContents_directionsCoordinates_false() {
+        addLineSegmentToMatrixGraph();
+
+        matrixGraph.setTile(2, 0, new Tile("Occupied"));
+
+        TileNodeDirection[] directions = {TileNodeDirection.EAST, TileNodeDirection.EAST};
+        Assertions.assertFalse(matrixGraph.moveTileContentsByCoords(0, 0, directions));
+
+        Assertions.assertEquals("Occupied", matrixGraph.getTile(2, 0).toString());
+    }
+
+    private void addLineSegmentToMatrixGraph() {
+        Tile origin = new Tile("Data");
+        Tile east = new Tile("");
+        Tile eastEast = new Tile("");
+
+        matrixGraph.addTile(0, 0, origin);
+        matrixGraph.addTile(1, 0, east);
+        matrixGraph.addTile(2, 0, eastEast);
     }
 }

@@ -13,12 +13,12 @@ class TileNode {
     }
 
 
-    public Tile getKey() {
+    public Tile getTile() {
         return key;
     }
 
-    public void setKey(Tile key) {
-        this.key = key;
+    public void setTile(Tile tile) {
+        this.key = tile;
     }
 
     public TileNode getAdjacentNode(TileNodeDirection direction) {
