@@ -8,12 +8,21 @@ public class Tile {
     }
 
 
-    public void swapContents(Tile that) {
+    public void swapContentsWith(Tile that) {
         String temp = this.contents;
         this.contents = that.contents;
         that.contents = temp;
     }
 
+    public boolean transferContentsTo(Tile that) {
+        if (that.contents.isEmpty()) {
+            that.contents = this.contents;
+            this.contents = "";
+            return true;
+        }
+        else
+            return false;
+    }
 
     @Override
     public String toString() {

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 public class TileTest {
     @Test
-    public void test_swapContents() {
+    public void test_swapContentsWith() {
         Tile tile1 = new Tile("A");
         Tile tile2 = new Tile("B");
 
@@ -13,7 +13,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_swapContents_oneEmpty() {
+    public void test_swapContents_With_oneEmpty() {
         Tile tile1 = new Tile("A");
         Tile tile2 = new Tile("");
 
@@ -21,7 +21,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_swapContents_oneNull() {
+    public void test_swapContents_With_oneNull() {
         Tile tile1 = new Tile("A");
         Tile tile2 = new Tile(null);
 
@@ -32,9 +32,32 @@ public class TileTest {
         String tile1Contents = tile1.toString();
         String tile2Contents = tile2.toString();
 
-        tile1.swapContents(tile2);
+        tile1.swapContentsWith(tile2);
 
         Assertions.assertEquals(tile1Contents, tile2.toString());
         Assertions.assertEquals(tile2Contents, tile1.toString());
+    }
+
+
+    @Test
+    public void test_transferContents_To_true() {
+        Tile tile1 = new Tile("Contents");
+        Tile tile2 = new Tile("");
+
+        Assertions.assertTrue(tile1.transferContentsTo(tile2));
+
+        Assertions.assertEquals("", tile1.toString());
+        Assertions.assertEquals("Contents", tile2.toString());
+    }
+
+    @Test
+    public void test_transferContents_To_false() {
+        Tile tile1 = new Tile("Contents");
+        Tile tile2 = new Tile("Also Contents");
+
+        Assertions.assertFalse(tile1.transferContentsTo(tile2));
+
+        Assertions.assertEquals("Contents", tile1.toString());
+        Assertions.assertEquals("Also Contents", tile2.toString());
     }
 }
