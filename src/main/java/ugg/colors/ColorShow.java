@@ -1,7 +1,8 @@
 package ugg.colors;
 
-public class ColorsDriver {
+public class ColorShow {
     public static void main(String[] args) {
+        System.out.println();
         printAllSimpleColors();
         System.out.printf("%n%n%n");
         printAllEightBitColors();

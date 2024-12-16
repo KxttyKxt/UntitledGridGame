@@ -1,9 +1,8 @@
-package ugg.tiles.graph.nodes;
+package ugg.tiles.graph;
 
-import ugg.tiles.graph.TileNodeDirection;
 import ugg.tiles.tiles.Tile;
 
-public abstract class TileNode {
+class TileNode {
     private Tile key;
 
     private TileNode north, northeast, east, southeast;

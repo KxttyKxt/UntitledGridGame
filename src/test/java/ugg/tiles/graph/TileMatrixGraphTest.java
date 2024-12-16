@@ -1,11 +1,8 @@
-package ugg.tiles;
+package ugg.tiles.graph;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ugg.tiles.graph.TileMatrixGraph;
-import ugg.tiles.graph.TileNodeDirection;
-import ugg.tiles.graph.nodes.TileNode;
 import ugg.tiles.tiles.Tile;
 
 public class TileMatrixGraphTest {

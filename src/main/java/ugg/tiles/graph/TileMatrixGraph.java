@@ -1,7 +1,5 @@
 package ugg.tiles.graph;
 
-import ugg.tiles.graph.nodes.SimpleTileNode;
-import ugg.tiles.graph.nodes.TileNode;
 import ugg.tiles.tiles.Tile;
 
 import java.util.HashMap;
@@ -16,51 +14,50 @@ import java.util.Objects;
  */
 public class TileMatrixGraph {
 
-    // ========== Matrix Map ==========
-
-    private final Map<CoordinatePair, TileNode> coordinatedTileMap = new HashMap<>();
+    private final Map<CoordinatePair, TileNode> map = new HashMap<>();
 
     public boolean addTile(int x, int y, Tile tile) {
-        if (coordinatedTileMap.get(new CoordinatePair(x, y)) != null)
+        if (map.get(new CoordinatePair(x, y)) != null)
             return false;
 
-        coordinatedTileMap.put(new CoordinatePair(x, y), new SimpleTileNode(tile));
+        map.put(new CoordinatePair(x, y), new TileNode(tile));
         return true;
     }
     public void removeTile(int x, int y) {
-        coordinatedTileMap.remove(new CoordinatePair(x, y));
+        map.remove(new CoordinatePair(x, y));
     }
 
     public Tile getTile(int x, int y) {
         return getTileNode(x, y).getKey();
     }
     public void setTile(int x, int y, Tile tile) {
-        TileNode tileNode = coordinatedTileMap.get(new CoordinatePair(x, y));
+            TileNode tileNode = map.get(new CoordinatePair(x, y));
 
         if (tileNode == null)
-            coordinatedTileMap.put(new CoordinatePair(x, y), new SimpleTileNode(tile));
+            map.put(new CoordinatePair(x, y), new TileNode(tile));
         else
             tileNode.setKey(tile);
     }
 
-    public int size() {
-        return coordinatedTileMap.size();
-    }
-    public boolean isEmpty() {
-        return coordinatedTileMap.isEmpty();
+    TileNode getTileNode(int x, int y) {
+        return map.get(new CoordinatePair(x, y));
     }
 
-    public TileNode getTileNode(int x, int y) {
-        return coordinatedTileMap.get(new CoordinatePair(x, y));
+    public int size() {
+        return map.size();
     }
+    public boolean isEmpty() {
+        return map.isEmpty();
+    }
+
     public void linkAllTileNodesByCoordinates() {
-        coordinatedTileMap.forEach((coordinatePair, tileNode) -> {
+        map.forEach((coordinatePair, tileNode) -> {
             for (int i = 0; i < TileNodeDirection.values().length; i++) {
 
                 TileNodeDirection currentDirection = TileNodeDirection.fromOrdinal(i);
 
                 TileNode adjacentTileNode =
-                        coordinatedTileMap.get(coordinatePair.relativeCoordinates(currentDirection));
+                        map.get(coordinatePair.relativeCoordinates(currentDirection));
 
                 tileNode.setAdjacentNode(
                         adjacentTileNode, currentDirection, true
@@ -68,8 +65,6 @@ public class TileMatrixGraph {
             }
         });
     }
-
-    // ================================
 
 }
 

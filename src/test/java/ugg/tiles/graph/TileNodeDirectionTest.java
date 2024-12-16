@@ -1,8 +1,7 @@
-package ugg.tiles;
+package ugg.tiles.graph;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ugg.tiles.graph.TileNodeDirection;
 
 public class TileNodeDirectionTest {
 
