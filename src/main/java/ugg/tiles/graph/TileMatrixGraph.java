@@ -35,7 +35,7 @@ public class TileMatrixGraph {
         return true;
     }
     public void removeTile(int x, int y) {
-        map.remove(new CoordinatePair(x, y));
+        map.remove(new CoordinatePair(x, y)).clearAdjacentNodes();
     }
 
     public Tile getTile(int x, int y) {
@@ -75,7 +75,7 @@ public class TileMatrixGraph {
 
     // ============== Pathing ===============
 
-    // Instantaneous, Non-contiguous, directly to destination
+    // Moving is Instantaneous, Non-contiguous, directly to destination
     public boolean moveTileContentsByCoords(int x, int y, TileNodeDirection[] directions) {
         TileNode sourceNode = getTileNode(x, y);
         TileNode destinationNode;
@@ -89,14 +89,31 @@ public class TileMatrixGraph {
         return sourceNode.getTile().transferContentsTo(destinationNode.getTile());
     }
 
-    // Checks every tile in directions one at a time
+    // Moving is Tile-by-Tile, Contiguous
+    public boolean moveTileContentsContiguously(int x, int y, TileNodeDirection[] directions) {
+        if (!checkForContiguousPath(x, y, directions))
+            return false;
+
+        TileNode currentNode = getTileNode(x, y);
+
+        for (TileNodeDirection direction : directions) {
+            TileNode nextNode = currentNode.getAdjacentNode(direction);
+            currentNode.getTile().transferContentsTo(nextNode.getTile());
+            currentNode = nextNode;
+        }
+
+        return true;
+    }
+
+
+    // Checks every tile in the directions one at a time if they are all open for transfer.
     public boolean checkForContiguousPath(int x, int y, TileNodeDirection[] directions) {
         TileNode contiguousNode = getTileNode(x, y);
         try {
             for (TileNodeDirection direction : directions) {
                 contiguousNode = contiguousNode.getAdjacentNode(direction);
 
-                if (!contiguousNode.getTile().toString().isEmpty())
+                if (!contiguousNode.getTile().openForTransfer())
                     return false;
             }
 
@@ -126,6 +143,7 @@ record CoordinatePair (int x, int y) {
             case NORTHWEST -> new CoordinatePair(x - 1, y + 1);
         };
     }
+
 
     @Override
     public int hashCode() {

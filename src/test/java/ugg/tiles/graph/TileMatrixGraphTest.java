@@ -36,7 +36,7 @@ public class TileMatrixGraphTest {
         matrixGraph.addTile(2, 0, eastEast);
     }
 
-    
+
     @Test
     public void test_addTile_tileNotOccupied() {
         Assertions.assertTrue(matrixGraph.isEmpty());
@@ -207,7 +207,7 @@ public class TileMatrixGraphTest {
     }
 
     @Test
-    public void test_transferTileContents_directionsCoordinates_true() {
+    public void test_moveTileContentsByCoords_true() {
         addEastLineToMatrixGraph();
 
         TileNodeDirection[] directions = {TileNodeDirection.EAST, TileNodeDirection.EAST};
@@ -217,7 +217,18 @@ public class TileMatrixGraphTest {
     }
 
     @Test
-    public void test_transferTileContents_directionsCoordinates_false() {
+    public void test_moveTileContentsByCoords_true_nullBetween() {
+        addEastLineToMatrixGraph();
+        matrixGraph.removeTile(1, 0);
+
+        TileNodeDirection[] directions = {TileNodeDirection.EAST, TileNodeDirection.EAST};
+        Assertions.assertTrue(matrixGraph.moveTileContentsByCoords(0, 0, directions));
+
+        Assertions.assertEquals("Data", matrixGraph.getTile(2, 0).toString());
+    }
+
+    @Test
+    public void test_moveTileContentsByCoords_false() {
         addEastLineToMatrixGraph();
 
         matrixGraph.setTile(2, 0, new Tile("Occupied"));
@@ -226,6 +237,54 @@ public class TileMatrixGraphTest {
         Assertions.assertFalse(matrixGraph.moveTileContentsByCoords(0, 0, directions));
 
         Assertions.assertEquals("Occupied", matrixGraph.getTile(2, 0).toString());
+    }
+
+
+    @Test
+    public void test_moveTileContentsContiguously_true() {
+        addEastLineToMatrixGraph();
+
+        int x = 0; int y = 0;
+        TileNodeDirection[] directions = {TileNodeDirection.EAST, TileNodeDirection.EAST};
+
+        Assertions.assertTrue(matrixGraph.moveTileContentsContiguously(x, y, directions));
+
+        Assertions.assertEquals("", matrixGraph.getTile(0, 0).toString());
+        Assertions.assertEquals("", matrixGraph.getTile(1, 0).toString());
+        Assertions.assertEquals("Data", matrixGraph.getTile(2, 0).toString());
+    }
+
+    @Test
+    public void test_moveTileContentsContiguously_falseByNullTile() {
+        addEastLineToMatrixGraph();
+        matrixGraph.removeTile(1, 0);
+
+        int x = 0; int y = 0;
+        TileNodeDirection[] directions = {TileNodeDirection.EAST, TileNodeDirection.EAST};
+
+        Assertions.assertFalse(matrixGraph.moveTileContentsContiguously(x, y, directions));
+    }
+
+    @Test
+    public void test_moveTileContentsContiguously_falseByNotEmptyOnWay() {
+        addEastLineToMatrixGraph();
+        matrixGraph.setTile(1, 0, new Tile("Occupied"));
+
+        int x = 0; int y = 0;
+        TileNodeDirection[] directions = {TileNodeDirection.EAST, TileNodeDirection.EAST};
+
+        Assertions.assertFalse(matrixGraph.moveTileContentsContiguously(x, y, directions));
+    }
+
+    @Test
+    public void test_moveTileContentsContiguously_falseByNotEmptyAtEnd() {
+        addEastLineToMatrixGraph();
+        matrixGraph.setTile(2, 0, new Tile("Occupied"));
+
+        int x = 0; int y = 0;
+        TileNodeDirection[] directions = {TileNodeDirection.EAST, TileNodeDirection.EAST};
+
+        Assertions.assertFalse(matrixGraph.moveTileContentsContiguously(x, y, directions));
     }
 
 
@@ -256,6 +315,4 @@ public class TileMatrixGraphTest {
 
         Assertions.assertFalse(matrixGraph.checkForContiguousPath(0, 0, directions));
     }
-
-
 }

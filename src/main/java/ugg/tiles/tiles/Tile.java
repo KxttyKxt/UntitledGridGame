@@ -15,13 +15,17 @@ public class Tile {
     }
 
     public boolean transferContentsTo(Tile that) {
-        if (that.contents.isEmpty()) {
+        if (that.openForTransfer()) {
             that.contents = this.contents;
             this.contents = "";
             return true;
         }
         else
             return false;
+    }
+
+    public boolean openForTransfer() {
+        return this.contents.isEmpty();
     }
 
     @Override

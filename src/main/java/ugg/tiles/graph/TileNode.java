@@ -35,8 +35,6 @@ class TileNode {
     }
 
     public void setAdjacentNode(TileNode adjacentNode, TileNodeDirection direction, boolean bidirectional) {
-        if (adjacentNode == null)
-            return;
 
         switch (direction) {
             case NORTH -> this.north = adjacentNode;
@@ -49,12 +47,14 @@ class TileNode {
             case NORTHWEST -> this.northwest = adjacentNode;
         }
 
-        if (bidirectional)
+        if (bidirectional && adjacentNode != null)
             adjacentNode.setAdjacentNode(this, direction.opposite(), false);
     }
 
     public void clearAdjacentNodes() {
-        north = northeast = east = southeast = south = southwest = west = northwest = null;
+        for (TileNodeDirection direction : TileNodeDirection.values()) {
+            this.setAdjacentNode(null, direction, true);
+        }
     }
 
 
