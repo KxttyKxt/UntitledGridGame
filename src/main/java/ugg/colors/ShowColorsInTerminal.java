@@ -1,6 +1,6 @@
 package ugg.colors;
 
-public class ColorShow {
+public class ShowColorsInTerminal {
     public static void main(String[] args) {
         System.out.println();
         printAllSimpleColors();

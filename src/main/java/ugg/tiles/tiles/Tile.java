@@ -46,8 +46,8 @@ public class Tile implements Displayable {
 
     @Override
     public String display() {
-        String contentDisplay = gatherDisplayFromContents();
-        return color.colorize(contentDisplay);
+        String contentsDisplay = gatherDisplayFromContents();
+        return color.colorize(contentsDisplay);
     }
 
     private String gatherDisplayFromContents() {

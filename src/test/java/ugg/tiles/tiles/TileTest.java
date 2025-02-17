@@ -3,13 +3,13 @@ package ugg.tiles.tiles;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ugg.colors.Color;
+import ugg.colors.ColorMerger;
 import ugg.colors.Colorizer;
-import ugg.colors.CompoundColorizer;
 import ugg.colors.SimpleColor;
 
 public class TileTest {
     @Test
-    public void test_swapContentsWith() {
+    public void test_swapContents() {
         Tile tile1 = new Tile("A");
         Tile tile2 = new Tile("B");
 
@@ -17,7 +17,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_swapContents_With_oneEmpty() {
+    public void test_swapContents_withEmpty() {
         Tile tile1 = new Tile("A");
         Tile tile2 = new Tile("");
 
@@ -25,7 +25,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_swapContents_With_oneNull() {
+    public void test_swapContents_withNull() {
         Tile tile1 = new Tile("A");
         Tile tile2 = new Tile(null);
 
@@ -44,7 +44,7 @@ public class TileTest {
 
 
     @Test
-    public void test_transferContents_To_true() {
+    public void test_transferContents_to_true() {
         Tile tile1 = new Tile("Contents");
         Tile tile2 = new Tile("");
 
@@ -55,7 +55,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_transferContents_To_false() {
+    public void test_transferContents_to_false() {
         Tile tile1 = new Tile("Contents");
         Tile tile2 = new Tile("Also Contents");
 
@@ -67,7 +67,7 @@ public class TileTest {
 
 
     @Test
-    public void test_displayContents_nullContent() {
+    public void test_displayContents_nullContents() {
         Tile nullTile = new Tile(null);
 
         String expectedDisplay = String.format(Colorizer.getColor(SimpleColor.BLACK).colorize("-"));
@@ -78,7 +78,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_displayContents_emptyContent() {
+    public void test_displayContents_emptyContents() {
         Tile emptyTile = new Tile("");
 
         String expectedDisplay = String.format(Colorizer.getColor(SimpleColor.BRIGHT_BLACK).colorize("."));
@@ -89,7 +89,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_displayContents_colored_singleColorFG() {
+    public void test_displayContents_singleColorFG() {
         Color tileColor = Colorizer.getColor(SimpleColor.RED);
         Tile coloredTile = new Tile("#", tileColor);
 
@@ -101,7 +101,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_displayContents_colored_singleColorBG() {
+    public void test_displayContents_singleColorBG() {
         Color tileColor = Colorizer.getColor(SimpleColor.BG_RED);
         Tile coloredTile = new Tile("#", tileColor);
 
@@ -113,13 +113,14 @@ public class TileTest {
     }
 
     @Test
-    public void test_displayContents_colored_compoundColor() {
+    public void test_displayContents_mergedColor() {
         Color tileColorFG = Colorizer.getColor(SimpleColor.RED);
         Color tileColorBG = Colorizer.getColor(SimpleColor.BG_BLUE);
-        Color compoundTileColor = CompoundColorizer.getCompoundColor(new Color[]{tileColorFG, tileColorBG});
-        Tile coloredTile = new Tile("#", compoundTileColor);
 
-        String expectedDisplay = String.format(compoundTileColor.colorize("#"));
+        Color mergedTileColor = ColorMerger.mergeColors(new Color[]{tileColorFG, tileColorBG});
+        Tile coloredTile = new Tile("#", mergedTileColor);
+
+        String expectedDisplay = String.format(mergedTileColor.colorize("#"));
         String actualDisplay = coloredTile.display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);

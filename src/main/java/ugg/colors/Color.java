@@ -1,8 +1,8 @@
 package ugg.colors;
 
 public class Color {
+    // Intentionally package-private
     final String ansiCode;
-
     Color(String ansiCode) {
         this.ansiCode = ansiCode;
     }

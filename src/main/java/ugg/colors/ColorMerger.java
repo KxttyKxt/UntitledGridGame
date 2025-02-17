@@ -1,10 +1,14 @@
 package ugg.colors;
 
-public class CompoundColorizer {
-    public static Color getCompoundColor(Color[] colors) {
+public class ColorMerger {
+    public static Color mergeColors(Color[] colors) {
         if (colors.length == 1)
             return colors[0];
+        else
+            return new Color(constructMergedAnsiCode(colors));
+    }
 
+    private static String constructMergedAnsiCode(Color[] colors) {
         StringBuilder returnColorAnsiCodeBuilder = new StringBuilder();
 
         for (Color color : colors) {
@@ -14,6 +18,6 @@ public class CompoundColorizer {
                 returnColorAnsiCodeBuilder.append(color.ansiCode);
         }
 
-        return new Color(returnColorAnsiCodeBuilder.toString());
+        return returnColorAnsiCodeBuilder.toString();
     }
 }

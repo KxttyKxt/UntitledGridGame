@@ -3,41 +3,43 @@ package ugg.colors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class CompoundColorizerTest {
+public class ColorMergerTest {
     @Test
-    public void test_getCompoundColor_singleColorSoReturnExactSameObject() {
+    public void test_mergeColors_singleColorSoSameExactObject() {
         Color expectedColor = Colorizer.getColor(SimpleColor.GREEN);
         Color[] arrayOfOneColor = new Color[]{expectedColor};
-        Color actualColor = CompoundColorizer.getCompoundColor(arrayOfOneColor);
+        Color actualColor = ColorMerger.mergeColors(arrayOfOneColor);
 
         Assertions.assertSame(expectedColor, actualColor);
         System.out.println(actualColor.colorize("sample"));
     }
 
     @Test
-    public void test_getCompoundColors_multipleColors() {
+    public void test_mergeColors_multipleColors() {
         Color fgColor = Colorizer.getColor(SimpleColor.MAGENTA);
         Color bgColor = Colorizer.getColor(SimpleColor.BG_BLUE);
+
         Color[] colorsArray = new Color[]{fgColor, bgColor};
-        Color compoundColor = CompoundColorizer.getCompoundColor(colorsArray);
+        Color mergedColor = ColorMerger.mergeColors(colorsArray);
 
         String expectedAnsiCode = "\u001B[35m\u001B[44m";
-        String actualAnsiCode = compoundColor.ansiCode;
+        String actualAnsiCode = mergedColor.ansiCode;
 
         Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
-        System.out.println(compoundColor.colorize("sample"));
+        System.out.println(mergedColor.colorize("sample"));
     }
 
 
     @Test
-    public void test_getCompoundColors_nullColorError() {
+    public void test_mergeColors_error() {
         boolean errorThrown = false;
 
         try {
-            Color compoundColor = CompoundColorizer.getCompoundColor(new Color[]{
+            Color mergedColor = ColorMerger.mergeColors(new Color[]{
                     Colorizer.getColor(SimpleColor.RED), null
             });
-            System.out.printf("%s%n", compoundColor);
+
+            System.out.printf("%s%n", mergedColor);
         }
         catch (IllegalArgumentException nullColorWasPassedInArray) {
             errorThrown = true;
