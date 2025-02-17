@@ -3,9 +3,8 @@ package ugg.tiles.tiles;
 import ugg.colors.Color;
 import ugg.colors.Colorizer;
 import ugg.colors.SimpleColor;
-import ugg.tiles.interfaces.Displayable;
 
-public class Tile implements Displayable {
+public class Tile {
 
     // =============== Tile =================
 
@@ -44,7 +43,6 @@ public class Tile implements Displayable {
         this.color = color;
     }
 
-    @Override
     public String display() {
         String contentsDisplay = gatherDisplayFromContents();
         return color.colorize(contentsDisplay);
