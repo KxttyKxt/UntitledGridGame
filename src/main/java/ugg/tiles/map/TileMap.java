@@ -1,4 +1,4 @@
-package ugg.tiles.graph;
+package ugg.tiles.map;
 
 import ugg.tiles.tiles.Tile;
 
@@ -12,7 +12,7 @@ import java.util.Objects;
  * <p>
  * A {@code TileMatrixGraph} is a graph in that TileNodes effectively harbor their own adjacency lists.
  */
-public class TileMatrixGraph {
+public class TileMap {
 
     // ========== Map Manipulation ==========
 
@@ -104,8 +104,6 @@ public class TileMatrixGraph {
 
         return true;
     }
-
-
     // Checks every tile in the directions one at a time if they are all open for transfer.
     public boolean checkForContiguousPath(int x, int y, TileNodeDirection[] directions) {
         TileNode contiguousNode = getTileNode(x, y);
@@ -126,6 +124,12 @@ public class TileMatrixGraph {
 
     // ======================================
 
+
+    // ============== Display ===============
+
+
+
+    // ======================================
 }
 
 

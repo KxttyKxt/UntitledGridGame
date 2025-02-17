@@ -1,4 +1,4 @@
-package ugg.tiles.graph;
+package ugg.tiles.map;
 
 import ugg.tiles.tiles.Tile;
 

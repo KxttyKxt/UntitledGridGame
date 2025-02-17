@@ -1,4 +1,4 @@
-package ugg.tiles.graph;
+package ugg.tiles.map;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
