@@ -27,7 +27,7 @@ public class Colorizer {
     private static void validateColor(int colorID) {
         if (colorID > 255 || colorID < 0)
             throw new IllegalArgumentException(String.format(
-                    "The color ID provided '%d' is not in range.", colorID));
+                    "The color ID provided '%d' is not in range [0-255].", colorID));
     }
     private static String parse(int colorID, boolean background) {
         return String.format(
@@ -46,7 +46,8 @@ public class Colorizer {
     }
     private static void validateColor(int[] rgb) {
         if (rgb.length != 3)
-            throw new IllegalArgumentException("RGB value array is not the correct length.");
+            throw new IllegalArgumentException(String.format(
+                    "RGB value array is not the correct length; is %d, must be 3", rgb.length));
 
         validateColor(rgb[0]);
         validateColor(rgb[1]);

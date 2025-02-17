@@ -13,6 +13,7 @@ public class ColorTest {
         String actualOutput = color.colorize(input);
 
         Assertions.assertEquals(expectedOutput, actualOutput);
+        System.out.println(color.colorize("sample"));
     }
 
     @Test
@@ -24,6 +25,7 @@ public class ColorTest {
         String actualOutput = color.colorize(input);
 
         Assertions.assertEquals(expectedOutput, actualOutput);
+        System.out.println(color.colorize("sample"));
     }
 
     @Test
@@ -36,5 +38,6 @@ public class ColorTest {
         String actualOutput = color.colorize(input);
 
         Assertions.assertEquals(expectedOutput, actualOutput);
+        System.out.println(color.colorize("sample"));
     }
 }

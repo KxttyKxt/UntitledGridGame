@@ -2,7 +2,6 @@ package ugg.tiles.tiles;
 
 import ugg.colors.Color;
 import ugg.colors.Colorizer;
-import ugg.colors.MultiColorizer;
 import ugg.colors.SimpleColor;
 import ugg.tiles.interfaces.Displayable;
 
@@ -39,26 +38,25 @@ public class Tile implements Displayable {
 
     // ============== Display ===============
 
-    private Color fgColor;
-    private Color bgColor;
+    private Color color;
+    public Tile(String contents, Color color) {
+        this.contents = contents;
+        this.color = color;
+    }
 
     @Override
     public String display() {
-        Color[] colors = {fgColor, bgColor};
-        String toColorize = gatherDisplayFromContents();
-
-        return MultiColorizer.colorize(colors, toColorize);
+        String contentDisplay = gatherDisplayFromContents();
+        return color.colorize(contentDisplay);
     }
 
     private String gatherDisplayFromContents() {
         if (contents == null) {
-            fgColor = Colorizer.getColor(SimpleColor.BLACK);
-            bgColor = null;
+            color = Colorizer.getColor(SimpleColor.BLACK);
             return "-";
         }
         else if (contents.isEmpty()) {
-            fgColor = Colorizer.getColor(SimpleColor.BRIGHT_BLACK);
-            bgColor = null;
+            color = Colorizer.getColor(SimpleColor.BRIGHT_BLACK);
             return ".";
         }
         else {

@@ -2,6 +2,10 @@ package ugg.tiles.tiles;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ugg.colors.Color;
+import ugg.colors.Colorizer;
+import ugg.colors.CompoundColorizer;
+import ugg.colors.SimpleColor;
 
 public class TileTest {
     @Test
@@ -60,4 +64,67 @@ public class TileTest {
         Assertions.assertEquals("Contents", tile1.toString());
         Assertions.assertEquals("Also Contents", tile2.toString());
     }
+
+
+    @Test
+    public void test_displayContents_nullContent() {
+        Tile nullTile = new Tile(null);
+
+        String expectedDisplay = String.format(Colorizer.getColor(SimpleColor.BLACK).colorize("-"));
+        String actualDisplay = nullTile.display();
+
+        Assertions.assertEquals(expectedDisplay, actualDisplay);
+        System.out.printf("%s%n", actualDisplay);
+    }
+
+    @Test
+    public void test_displayContents_emptyContent() {
+        Tile emptyTile = new Tile("");
+
+        String expectedDisplay = String.format(Colorizer.getColor(SimpleColor.BRIGHT_BLACK).colorize("."));
+        String actualDisplay = emptyTile.display();
+
+        Assertions.assertEquals(expectedDisplay, actualDisplay);
+        System.out.printf("%s%n", actualDisplay);
+    }
+
+    @Test
+    public void test_displayContents_colored_singleColorFG() {
+        Color tileColor = Colorizer.getColor(SimpleColor.RED);
+        Tile coloredTile = new Tile("#", tileColor);
+
+        String expectedDisplay = String.format(tileColor.colorize("#"));
+        String actualDisplay = coloredTile.display();
+
+        Assertions.assertEquals(expectedDisplay, actualDisplay);
+        System.out.printf("%s%n", actualDisplay);
+    }
+
+    @Test
+    public void test_displayContents_colored_singleColorBG() {
+        Color tileColor = Colorizer.getColor(SimpleColor.BG_RED);
+        Tile coloredTile = new Tile("#", tileColor);
+
+        String expectedDisplay = String.format(tileColor.colorize("#"));
+        String actualDisplay = coloredTile.display();
+
+        Assertions.assertEquals(expectedDisplay, actualDisplay);
+        System.out.printf("%s%n", actualDisplay);
+    }
+
+    @Test
+    public void test_displayContents_colored_compoundColor() {
+        Color tileColorFG = Colorizer.getColor(SimpleColor.RED);
+        Color tileColorBG = Colorizer.getColor(SimpleColor.BG_BLUE);
+        Color compoundTileColor = CompoundColorizer.getCompoundColor(new Color[]{tileColorFG, tileColorBG});
+        Tile coloredTile = new Tile("#", compoundTileColor);
+
+        String expectedDisplay = String.format(compoundTileColor.colorize("#"));
+        String actualDisplay = coloredTile.display();
+
+        Assertions.assertEquals(expectedDisplay, actualDisplay);
+        System.out.printf("%s%n", actualDisplay);
+    }
+
+
 }
