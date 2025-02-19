@@ -1,4 +1,4 @@
-package ugg.tiles.map;
+package ugg.tiles.tilemap;
 
 public enum TileNodeDirection {
     NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST;

@@ -1,4 +1,4 @@
-package ugg.tiles.map;
+package ugg.tiles.tilemap;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
