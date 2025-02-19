@@ -12,7 +12,6 @@ public class ColorizerTest {
         String actualAnsiCode = color.ansiCode;
 
         Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
-        System.out.println(color.colorize("sample"));
     }
 
 
@@ -24,7 +23,6 @@ public class ColorizerTest {
         String actualAnsiCode = color.ansiCode;
 
         Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
-        System.out.println(color.colorize("sample"));
     }
 
     @Test
@@ -35,7 +33,6 @@ public class ColorizerTest {
         String actualAnsiCode = color.ansiCode;
 
         Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
-        System.out.println(color.colorize("sample"));
     }
 
     @Test
@@ -78,7 +75,6 @@ public class ColorizerTest {
         String actualAnsiCode = color.ansiCode;
 
         Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
-        System.out.println(color.colorize("sample"));
     }
 
     @Test
@@ -90,7 +86,6 @@ public class ColorizerTest {
         String actualAnsiCode = color.ansiCode;
 
         Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
-        System.out.println(color.colorize("sample"));
     }
 
     @Test

@@ -40,4 +40,25 @@ public class ColorTest {
         Assertions.assertEquals(expectedOutput, actualOutput);
         System.out.println(color.colorize("sample"));
     }
+
+
+    @Test
+    public void test_equals_sameExactObject() {
+        Color color = Colorizer.getColor(SimpleColor.RED);
+        Assertions.assertEquals(color, color);
+    }
+
+    @Test
+    public void test_equals_nullComparison() {
+        Color color = Colorizer.getColor(SimpleColor.RED);
+        Assertions.assertNotEquals(color, null);
+    }
+
+    @Test
+    public void test_equals_otherClass() {
+        // Intentional redundant call for complete coverage
+        Color color = Colorizer.getColor(SimpleColor.RED);
+        //noinspection AssertBetweenInconvertibleTypes
+        Assertions.assertNotEquals(color, "this is a string");
+    }
 }

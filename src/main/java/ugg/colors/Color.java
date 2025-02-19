@@ -1,5 +1,7 @@
 package ugg.colors;
 
+import java.util.Objects;
+
 public class Color {
     // Intentionally package-private
     final String ansiCode;
@@ -9,5 +11,13 @@ public class Color {
 
     public String colorize(String input) {
         return String.format("%s%s%s", ansiCode, input, Colorizer.ansiReset);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Color color = (Color) o;
+        return Objects.equals(ansiCode, color.ansiCode);
     }
 }

@@ -11,7 +11,6 @@ public class ColorMergerTest {
         Color actualColor = ColorMerger.mergeColors(arrayOfOneColor);
 
         Assertions.assertSame(expectedColor, actualColor);
-        System.out.println(actualColor.colorize("sample"));
     }
 
     @Test
@@ -26,26 +25,81 @@ public class ColorMergerTest {
         String actualAnsiCode = mergedColor.ansiCode;
 
         Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
-        System.out.println(mergedColor.colorize("sample"));
     }
 
 
     @Test
-    public void test_mergeColors_error() {
-        boolean errorThrown = false;
+    public void test_deduplicateColors_onePairWithNonDuplicate() {
+        Color[] colors = {
+                Colorizer.getColor(SimpleColor.RED),
+                Colorizer.getColor(SimpleColor.RED),
+                Colorizer.getColor(SimpleColor.GREEN)
+        };
+        Color mergedColor = ColorMerger.mergeColors(colors);
 
-        try {
-            Color mergedColor = ColorMerger.mergeColors(new Color[]{
-                    Colorizer.getColor(SimpleColor.RED), null
-            });
+        String expectedAnsiCode = "\u001B[31m\u001B[32m";
+        String actualAnsiCode = mergedColor.ansiCode;
 
-            System.out.printf("%s%n", mergedColor);
-        }
-        catch (IllegalArgumentException nullColorWasPassedInArray) {
-            errorThrown = true;
-        }
-        finally {
-            Assertions.assertTrue(errorThrown);
-        }
+        Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
+    }
+
+    @Test
+    public void test_deduplicateColors_onlyOneDuplicatePair() {
+        Color[] colors = {
+                Colorizer.getColor(SimpleColor.RED),
+                Colorizer.getColor(SimpleColor.RED)
+        };
+        Color mergedColor = ColorMerger.mergeColors(colors);
+
+        String expectedAnsiCode = "\u001B[31m";
+        String actualAnsiCode = mergedColor.ansiCode;
+
+        Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
+    }
+
+    @Test
+    public void test_deduplicateColors_twoDuplicatePairs() {
+        Color[] colors = {
+                Colorizer.getColor(SimpleColor.RED),
+                Colorizer.getColor(SimpleColor.RED),
+                Colorizer.getColor(SimpleColor.GREEN),
+                Colorizer.getColor(SimpleColor.GREEN),
+                Colorizer.getColor(SimpleColor.BLUE)
+        };
+        Color mergedColor = ColorMerger.mergeColors(colors);
+
+        String expectedAnsiCode = "\u001B[31m\u001B[32m\u001B[34m";
+        String actualAnsiCode = mergedColor.ansiCode;
+
+        Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
+    }
+
+    @Test
+    public void test_deduplicateColors_noPairButHasNull() {
+        Color[] colors = {
+                Colorizer.getColor(SimpleColor.RED),
+                null
+        };
+        Color mergedColor = ColorMerger.mergeColors(colors);
+
+        String expectedAnsiCode = "\u001B[31m";
+        String actualAnsiCode = mergedColor.ansiCode;
+
+        Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
+    }
+
+    @Test
+    public void test_deduplicateColors_onePairButHasNull() {
+        Color[] colors = {
+                Colorizer.getColor(SimpleColor.RED),
+                Colorizer.getColor(SimpleColor.RED),
+                null
+        };
+        Color mergedColor = ColorMerger.mergeColors(colors);
+
+        String expectedAnsiCode = "\u001B[31m";
+        String actualAnsiCode = mergedColor.ansiCode;
+
+        Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
     }
 }
