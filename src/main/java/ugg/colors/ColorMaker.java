@@ -1,14 +1,15 @@
 package ugg.colors;
 
-public class Colorizer {
+public class ColorMaker {
     private static final String ansiPrefix = "\u001B[";
     private static final String ansiSuffix = "m";
 
+    // Intentionally package-private
     static final String ansiReset = "\u001B[0m";
 
     // Simple Colors, 8-16
-    public static Color getColor(SimpleColor simpleColor) {
-        return new Color(String.format(parse(simpleColor)));
+    public static Color make(SimpleColor simpleColor) {
+        return new Color(parse(simpleColor));
     }
     private static String parse(SimpleColor simpleColor) {
         return String.format(
@@ -20,7 +21,7 @@ public class Colorizer {
     }
 
     // 8-bit Colors
-    public static Color getColor(int colorID, boolean background) {
+    public static Color make(int colorID, boolean background) {
         validateColor(colorID);
         return new Color(parse(colorID, background));
     }
@@ -40,7 +41,7 @@ public class Colorizer {
     }
 
     // 24-bit Colors
-    public static Color getColor(int[] rgb, boolean background) {
+    public static Color make(int[] rgb, boolean background) {
         validateColor(rgb);
         return new Color(parse(rgb, background));
     }

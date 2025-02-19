@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class ColorMergerTest {
     @Test
     public void test_mergeColors_singleColorSoSameExactObject() {
-        Color expectedColor = Colorizer.getColor(SimpleColor.GREEN);
+        Color expectedColor = ColorMaker.make(SimpleColor.GREEN);
         Color[] arrayOfOneColor = new Color[]{expectedColor};
         Color actualColor = ColorMerger.mergeColors(arrayOfOneColor);
 
@@ -15,8 +15,8 @@ public class ColorMergerTest {
 
     @Test
     public void test_mergeColors_multipleColors() {
-        Color fgColor = Colorizer.getColor(SimpleColor.MAGENTA);
-        Color bgColor = Colorizer.getColor(SimpleColor.BG_BLUE);
+        Color fgColor = ColorMaker.make(SimpleColor.MAGENTA);
+        Color bgColor = ColorMaker.make(SimpleColor.BG_BLUE);
 
         Color[] colorsArray = new Color[]{fgColor, bgColor};
         Color mergedColor = ColorMerger.mergeColors(colorsArray);
@@ -31,9 +31,9 @@ public class ColorMergerTest {
     @Test
     public void test_deduplicateColors_onePairWithNonDuplicate() {
         Color[] colors = {
-                Colorizer.getColor(SimpleColor.RED),
-                Colorizer.getColor(SimpleColor.RED),
-                Colorizer.getColor(SimpleColor.GREEN)
+                ColorMaker.make(SimpleColor.RED),
+                ColorMaker.make(SimpleColor.RED),
+                ColorMaker.make(SimpleColor.GREEN)
         };
         Color mergedColor = ColorMerger.mergeColors(colors);
 
@@ -46,8 +46,8 @@ public class ColorMergerTest {
     @Test
     public void test_deduplicateColors_onlyOneDuplicatePair() {
         Color[] colors = {
-                Colorizer.getColor(SimpleColor.RED),
-                Colorizer.getColor(SimpleColor.RED)
+                ColorMaker.make(SimpleColor.RED),
+                ColorMaker.make(SimpleColor.RED)
         };
         Color mergedColor = ColorMerger.mergeColors(colors);
 
@@ -60,11 +60,11 @@ public class ColorMergerTest {
     @Test
     public void test_deduplicateColors_twoDuplicatePairs() {
         Color[] colors = {
-                Colorizer.getColor(SimpleColor.RED),
-                Colorizer.getColor(SimpleColor.RED),
-                Colorizer.getColor(SimpleColor.GREEN),
-                Colorizer.getColor(SimpleColor.GREEN),
-                Colorizer.getColor(SimpleColor.BLUE)
+                ColorMaker.make(SimpleColor.RED),
+                ColorMaker.make(SimpleColor.RED),
+                ColorMaker.make(SimpleColor.GREEN),
+                ColorMaker.make(SimpleColor.GREEN),
+                ColorMaker.make(SimpleColor.BLUE)
         };
         Color mergedColor = ColorMerger.mergeColors(colors);
 
@@ -77,7 +77,7 @@ public class ColorMergerTest {
     @Test
     public void test_deduplicateColors_noPairButHasNull() {
         Color[] colors = {
-                Colorizer.getColor(SimpleColor.RED),
+                ColorMaker.make(SimpleColor.RED),
                 null
         };
         Color mergedColor = ColorMerger.mergeColors(colors);
@@ -91,8 +91,8 @@ public class ColorMergerTest {
     @Test
     public void test_deduplicateColors_onePairButHasNull() {
         Color[] colors = {
-                Colorizer.getColor(SimpleColor.RED),
-                Colorizer.getColor(SimpleColor.RED),
+                ColorMaker.make(SimpleColor.RED),
+                ColorMaker.make(SimpleColor.RED),
                 null
         };
         Color mergedColor = ColorMerger.mergeColors(colors);

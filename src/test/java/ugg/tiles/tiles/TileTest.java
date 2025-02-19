@@ -3,8 +3,8 @@ package ugg.tiles.tiles;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ugg.colors.Color;
+import ugg.colors.ColorMaker;
 import ugg.colors.ColorMerger;
-import ugg.colors.Colorizer;
 import ugg.colors.SimpleColor;
 
 public class TileTest {
@@ -70,52 +70,48 @@ public class TileTest {
     public void test_displayContents_nullContents() {
         Tile nullTile = new Tile(null);
 
-        String expectedDisplay = String.format(Colorizer.getColor(SimpleColor.BLACK).colorize("-"));
+        String expectedDisplay = String.format(ColorMaker.make(SimpleColor.BLACK).colorize("-"));
         String actualDisplay = nullTile.display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
-        System.out.printf("%s%n", actualDisplay);
     }
 
     @Test
     public void test_displayContents_emptyContents() {
         Tile emptyTile = new Tile("");
 
-        String expectedDisplay = String.format(Colorizer.getColor(SimpleColor.BRIGHT_BLACK).colorize("."));
+        String expectedDisplay = String.format(ColorMaker.make(SimpleColor.BRIGHT_BLACK).colorize("."));
         String actualDisplay = emptyTile.display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
-        System.out.printf("%s%n", actualDisplay);
     }
 
     @Test
     public void test_displayContents_singleColorFG() {
-        Color tileColor = Colorizer.getColor(SimpleColor.RED);
+        Color tileColor = ColorMaker.make(SimpleColor.RED);
         Tile coloredTile = new Tile("#", tileColor);
 
         String expectedDisplay = String.format(tileColor.colorize("#"));
         String actualDisplay = coloredTile.display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
-        System.out.printf("%s%n", actualDisplay);
     }
 
     @Test
     public void test_displayContents_singleColorBG() {
-        Color tileColor = Colorizer.getColor(SimpleColor.BG_RED);
+        Color tileColor = ColorMaker.make(SimpleColor.BG_RED);
         Tile coloredTile = new Tile("#", tileColor);
 
         String expectedDisplay = String.format(tileColor.colorize("#"));
         String actualDisplay = coloredTile.display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
-        System.out.printf("%s%n", actualDisplay);
     }
 
     @Test
     public void test_displayContents_mergedColor() {
-        Color tileColorFG = Colorizer.getColor(SimpleColor.RED);
-        Color tileColorBG = Colorizer.getColor(SimpleColor.BG_BLUE);
+        Color tileColorFG = ColorMaker.make(SimpleColor.RED);
+        Color tileColorBG = ColorMaker.make(SimpleColor.BG_BLUE);
 
         Color mergedTileColor = ColorMerger.mergeColors(new Color[]{tileColorFG, tileColorBG});
         Tile coloredTile = new Tile("#", mergedTileColor);
@@ -124,7 +120,6 @@ public class TileTest {
         String actualDisplay = coloredTile.display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
-        System.out.printf("%s%n", actualDisplay);
     }
 
 

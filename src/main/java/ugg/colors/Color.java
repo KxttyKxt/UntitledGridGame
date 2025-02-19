@@ -10,7 +10,7 @@ public class Color {
     }
 
     public String colorize(String input) {
-        return String.format("%s%s%s", ansiCode, input, Colorizer.ansiReset);
+        return String.format("%s%s%s", ansiCode, input, ColorMaker.ansiReset);
     }
 
     @Override

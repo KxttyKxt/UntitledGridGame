@@ -1,7 +1,7 @@
 package ugg.tiles.tiles;
 
 import ugg.colors.Color;
-import ugg.colors.Colorizer;
+import ugg.colors.ColorMaker;
 import ugg.colors.SimpleColor;
 
 public class Tile {
@@ -50,11 +50,11 @@ public class Tile {
 
     private String gatherDisplayFromContents() {
         if (contents == null) {
-            color = Colorizer.getColor(SimpleColor.BLACK);
+            color = ColorMaker.make(SimpleColor.BLACK);
             return "-";
         }
         else if (contents.isEmpty()) {
-            color = Colorizer.getColor(SimpleColor.BRIGHT_BLACK);
+            color = ColorMaker.make(SimpleColor.BRIGHT_BLACK);
             return ".";
         }
         else {

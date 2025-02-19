@@ -10,7 +10,7 @@ public class ShowColorsInTerminal {
 
     private static void printAllSimpleColors() {
         for (int i = 0; i < SimpleColor.values().length; i++) {
-            Color simpleColor = Colorizer.getColor(SimpleColor.values()[i]);
+            Color simpleColor = ColorMaker.make(SimpleColor.values()[i]);
             System.out.printf("%s ", simpleColor.colorize("test"));
 
             if ((i + 1) % 8 == 0)
@@ -20,8 +20,8 @@ public class ShowColorsInTerminal {
 
     private static void printAllEightBitColors() {
         for (int i = 0; i < 256; i++) {
-            Color eightBitColorFG = Colorizer.getColor(i, false);
-            Color eightBitColorBG = Colorizer.getColor(i, true);
+            Color eightBitColorFG = ColorMaker.make(i, false);
+            Color eightBitColorBG = ColorMaker.make(i, true);
 
             System.out.printf(
                     "%s %s ",
