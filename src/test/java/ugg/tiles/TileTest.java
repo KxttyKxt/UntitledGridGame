@@ -1,4 +1,4 @@
-package ugg.tiles.tiles;
+package ugg.tiles;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

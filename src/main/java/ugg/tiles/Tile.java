@@ -1,4 +1,4 @@
-package ugg.tiles.tiles;
+package ugg.tiles;
 
 import ugg.colors.Color;
 import ugg.colors.ColorMaker;
