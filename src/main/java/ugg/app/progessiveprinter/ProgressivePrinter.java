@@ -6,6 +6,7 @@ public class ProgressivePrinter {
     private final PrintStream printStream;
     private long millisBetweenCharacters;
     private int charLimitPerLine;
+    private boolean closed = false;
 
     public ProgressivePrinter() {
         printStream = System.out;
@@ -26,6 +27,8 @@ public class ProgressivePrinter {
     }
 
     public void print(String toPrint) {
+        throwExceptionIfClosed();
+
         try {
             printAndWait(toPrint);
         }
@@ -43,8 +46,17 @@ public class ProgressivePrinter {
         }
     }
 
+    public void close() {
+        printStream.close();
+        closed = true;
+    }
+    private void throwExceptionIfClosed() {
+        if (closed)
+            throw new IllegalStateException("ProgressivePrinter is closed");
+    }
 
 
+    // Driver for testing
     public static void main(String[] args) {
         ProgressivePrinter progPrinter = new ProgressivePrinter();
         progPrinter.print(String.format("I am a really long string so that I can actually have a chance to see that it prints progressively in case it decides to lag or something because gradle is building.......%n"));
@@ -65,6 +77,12 @@ public class ProgressivePrinter {
         errPrinter.print(String.format("%nYou can choose any PrintStream, including the error stream!%n"));
         errPrinter.print(String.format("Although, you probably can't tell this is an error message since it's not red...%n"));
 
+        progPrinter.print(String.format("%nNow let's go out with a bang!"));
+
         System.out.printf("%n"); // Line break before terminal shows pause dialog
+
+        progPrinter.close();
+        progPrinter.print("This will crash at runtime because the printer is closed.");
     }
+
 }
