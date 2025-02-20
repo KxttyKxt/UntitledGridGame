@@ -18,14 +18,22 @@ public class ProgressivePrinter {
         this.millisBetweenCharacters = millisBetweenCharacters;
     }
 
-    void setMillis(long millis) {
+    public void setMillis(long millis) {
         millisBetweenCharacters = millis;
     }
-    void setCharLimitPerLine(int limit) {
+    public void setCharLimitPerLine(int limit) {
         charLimitPerLine = limit;
     }
 
-    synchronized private void printAndWait(String toPrint) throws InterruptedException {
+    public void print(String toPrint) {
+        try {
+            printAndWait(toPrint);
+        }
+        catch (InterruptedException printingWasInterruptedException) {
+            printingWasInterruptedException.printStackTrace(System.err);
+        }
+    }
+    private synchronized void printAndWait(String toPrint) throws InterruptedException {
         for (int i = 0; i < toPrint.length(); i++) {
             if ((i + 1) % charLimitPerLine == 0)
                 printStream.printf("%n");
@@ -34,14 +42,7 @@ public class ProgressivePrinter {
             wait(millisBetweenCharacters);
         }
     }
-    void print(String toPrint) {
-        try {
-            printAndWait(toPrint);
-        }
-        catch (InterruptedException printingWasInterruptedException) {
-            printingWasInterruptedException.printStackTrace(System.err);
-        }
-    }
+
 
 
     public static void main(String[] args) {
