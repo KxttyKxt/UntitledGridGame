@@ -19,4 +19,19 @@ public class TileMatrix {
     public Tile getTile(int row, int column) {
         return matrix[row][column];
     }
+
+    public boolean addTile(Tile tileToAdd, int row, int column) {
+        if (matrix[row][column] != null)
+            return false;
+
+        setTile(tileToAdd, row, column);
+        return true;
+    }
+
+    public Tile removeTile(int row, int column) {
+        Tile toReturn = matrix[row][column];
+        matrix[row][column] = null;
+
+        return toReturn;
+    }
 }

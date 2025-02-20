@@ -20,7 +20,7 @@ public class Tile {
     }
 
     public boolean transferContentsTo(Tile that) {
-        if (that.openForTransfer()) {
+        if (that.isEmpty()) {
             that.contents = this.contents;
             this.contents = "";
             return true;
@@ -28,7 +28,7 @@ public class Tile {
         else
             return false;
     }
-    public boolean openForTransfer() {
+    public boolean isEmpty() {
         return this.contents.isEmpty();
     }
 

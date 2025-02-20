@@ -13,6 +13,14 @@ public class TileMatrixTest {
     static TileMatrix tileMatrix;
     static Tile tileA, tileB;
 
+    private void tileMatrixSizeOne() {
+        tileMatrix = new TileMatrix(1, 1);
+    }
+    private void tileMatrixSizeOne(Tile tileToSet) {
+        tileMatrixSizeOne();
+        tileMatrix.setTile(tileToSet, 0, 0);
+    }
+
 
     @Test
     public void test_constructor_nonPositiveValuesException_rows() {
@@ -61,7 +69,7 @@ public class TileMatrixTest {
         boolean errorWasThrown = false;
 
         try {
-            tileMatrix = new TileMatrix(1, 1);
+            tileMatrixSizeOne();
         }
         catch (IllegalArgumentException arraySizesCannotBeNegativeException) {
             errorWasThrown = true;
@@ -73,9 +81,7 @@ public class TileMatrixTest {
 
     @Test
     public void test_setAndGetTile_oneTile() {
-        tileMatrix = new TileMatrix(1, 1);
-        tileMatrix.setTile(tileA, 0, 0);
-
+        tileMatrixSizeOne(tileA);
         Assertions.assertEquals(tileA, tileMatrix.getTile(0, 0));
     }
 
@@ -92,7 +98,48 @@ public class TileMatrixTest {
 
     @Test
     public void test_getTile_null() {
-        tileMatrix = new TileMatrix(1, 1);
+        tileMatrixSizeOne();
+        Assertions.assertNull(tileMatrix.getTile(0, 0));
+    }
+
+
+    @Test
+    public void test_addTile_true() {
+        tileMatrixSizeOne();
+        Assertions.assertTrue(tileMatrix.addTile(tileA, 0, 0));
+    }
+
+    @Test
+    public void test_addTile_false() {
+        tileMatrixSizeOne();
+        tileMatrix.setTile(tileA, 0, 0);
+
+        Assertions.assertFalse(tileMatrix.addTile(tileB, 0, 0));
+    }
+
+
+    @Test
+    public void test_removeTile_returnNull() {
+        tileMatrixSizeOne();
+        Assertions.assertNull(tileMatrix.removeTile(0, 0));
+    }
+
+    @Test
+    public void test_removeTile_returnTileA() {
+        tileMatrixSizeOne(tileA);
+
+        Tile expectedTileRemoved = tileA;
+        Tile actualTileRemoved = tileMatrix.removeTile(0, 0);
+
+        Assertions.assertEquals(expectedTileRemoved, actualTileRemoved);
+    }
+
+    @Test
+    public void test_removeTile_ensureIndexIsNowNull() {
+        tileMatrixSizeOne(tileA);
+        Assertions.assertEquals(tileA, tileMatrix.getTile(0, 0));
+
+        tileMatrix.removeTile(0, 0);
         Assertions.assertNull(tileMatrix.getTile(0, 0));
     }
 }
