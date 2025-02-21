@@ -165,19 +165,19 @@ public class TileMatrixTest {
 
 
     @Test
-    public void test_toString_sizeOneNull() {
+    public void test_toString_sizeOne_null() {
         tileMatrixSizeOne();
         assertEqualAndPrintMatrixToString("Size-One Null", cellForEmptyTileDisplay);
     }
 
     @Test
-    public void test_toString_sizeOneTile() {
+    public void test_toString_sizeOne_tile() {
         tileMatrixSizeOne(tileA);
         assertEqualAndPrintMatrixToString("Size-One Tile", "[ A ]");
     }
 
     @Test
-    public void test_toString_sizeOneColored() {
+    public void test_toString_sizeOne_colored() {
         tileMatrixSizeOne(redTile);
 
         String expectedToString = String.format(
@@ -188,19 +188,19 @@ public class TileMatrixTest {
 
 
     @Test
-    public void test_toString_sizeTwoNull() {
+    public void test_toString_sizeTwo_null() {
         tileMatrixSizeTwoAcross();
         assertEqualAndPrintMatrixToString("Size-Two Null", cellForEmptyTileDisplay.repeat(2));
     }
 
     @Test
-    public void test_toString_sizeTwoTile() {
+    public void test_toString_sizeTwo_tile() {
         tileMatrixSizeTwoAcross(tileA, tileB);
         assertEqualAndPrintMatrixToString("Size-Two Tiles", "[ A ][ B ]");
     }
 
     @Test
-    public void test_toString_sizeTwoColored() {
+    public void test_toString_sizeTwo_colored() {
         tileMatrixSizeTwoAcross(redTile, greenTile);
 
         String expectedToString = String.format(
@@ -213,7 +213,7 @@ public class TileMatrixTest {
 
 
     @Test
-    public void test_toString_sizeTwoByTwoNull() {
+    public void test_toString_sizeTwoByTwo_null() {
         initializeTileMatrix(2, 2);
         assertEqualAndPrintMatrixToString(
                 "Size Two-By-Two Null",
@@ -226,7 +226,7 @@ public class TileMatrixTest {
     }
 
     @Test
-    public void test_toString_sizeTwoByTwoTile() {
+    public void test_toString_sizeTwoByTwo_tile() {
         Tile[][] tilesForMatrix = {
                 {tileA, tileB},
                 {tileC, tileD}
@@ -240,7 +240,7 @@ public class TileMatrixTest {
     }
 
     @Test
-    public void test_toString_sizeTwoByTwoColored() {
+    public void test_toString_sizeTwoByTwo_colored() {
         Tile[][] tilesForMatrix = {
                 {redTile, greenTile},
                 {yellowTile, magentaTile}
@@ -260,7 +260,7 @@ public class TileMatrixTest {
     }
 
     @Test
-    public void test_toString_sizeTwoByTwoFreeStyle() {
+    public void test_toString_sizeTwoByTwo_freestyle() {
 
         Tile[][] tilesForMatrix = {
                 {mergedColorTile, tileC},
@@ -269,7 +269,7 @@ public class TileMatrixTest {
         initializeTileMatrix(tilesForMatrix);
 
         assertEqualAndPrintMatrixToString(
-                "Size Two-By-Two Colored",
+                "Size Two-By-Two Freestyle",
                 String.format(
                         "[ %s ][ C ]%n[ . ][ %s ]",
                         MERGED_COLOR.colorize(COLORED_CONTENTS),
@@ -279,5 +279,38 @@ public class TileMatrixTest {
     }
 
 
+    @Test
+    public void test_toString_sizeThreeByFour_freestyle() {
+        Tile[][] tilesForMatrix = {
+                {tileA, tileB, tileC, tileD},
+                {redTile, greenTile, yellowTile, magentaTile},
+                {emptyTile, nullTile, uncoloredTile, mergedColorTile}
+        };
+        initializeTileMatrix(tilesForMatrix);
+
+        // It's a lot, but at least it's comprehensive.
+        final String ROW_TEMPLATE = "[ %s ][ %s ][ %s ][ %s ]";
+        String expectedToString = String.format("%s%n%s%n%s",
+                String.format(
+                        ROW_TEMPLATE,
+                        "A", "B", "C", "D"
+                ),
+                String.format(
+                        ROW_TEMPLATE,
+                        RED.colorize(COLORED_CONTENTS),
+                        GREEN.colorize(COLORED_CONTENTS),
+                        YELLOW.colorize(COLORED_CONTENTS),
+                        MAGENTA.colorize(COLORED_CONTENTS)
+                ),
+                String.format(
+                        ROW_TEMPLATE,
+                        Tile.EMPTY_CONTENTS_DISPLAY,
+                        Tile.EMPTY_CONTENTS_DISPLAY,
+                        COLORED_CONTENTS,
+                        MERGED_COLOR.colorize(COLORED_CONTENTS)
+                )
+        );
+        assertEqualAndPrintMatrixToString("Ultimate Freestyle", expectedToString);
+    }
 
 }
