@@ -67,16 +67,6 @@ public class TileTest {
 
 
     @Test
-    public void test_displayContents_nullContents() {
-        Tile nullTile = new Tile(null);
-
-        String expectedDisplay = String.format(ColorMaker.make(SimpleColor.BLACK).colorize("-"));
-        String actualDisplay = nullTile.display();
-
-        Assertions.assertEquals(expectedDisplay, actualDisplay);
-    }
-
-    @Test
     public void test_displayContents_emptyContents() {
         Tile emptyTile = new Tile("");
 
@@ -121,6 +111,18 @@ public class TileTest {
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
     }
+
+    @Test
+    public void test_displayContents_nullColor() {
+        Tile coloredTile = new Tile("#");
+
+        String expectedDisplay = "#";
+        String actualDisplay = coloredTile.display();
+
+        Assertions.assertEquals(expectedDisplay, actualDisplay);
+    }
+
+
 
 
 }

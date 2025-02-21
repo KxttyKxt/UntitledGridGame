@@ -9,8 +9,19 @@ public class Tile {
     // =============== Tile =================
 
     private String contents;
+
+    public Tile() {
+        contents = "";
+        color = null;
+    }
     public Tile(String contents) {
+        this.contents = (contents != null)
+                ? contents
+                : "";
+    }
+    public Tile(String contents, Color color) {
         this.contents = contents;
+        this.color = color;
     }
 
     public void swapContentsWith(Tile that) {
@@ -38,27 +49,22 @@ public class Tile {
     // ============== Display ===============
 
     private Color color;
-    public Tile(String contents, Color color) {
-        this.contents = contents;
-        this.color = color;
-    }
+    static final String EMPTY_CONTENTS_DISPLAY = ColorMaker.make(SimpleColor.BRIGHT_BLACK).colorize(".");
 
     public String display() {
-        String contentsDisplay = gatherDisplayFromContents();
-        return color.colorize(contentsDisplay);
+        return gatherDisplayFromContents();
     }
 
     private String gatherDisplayFromContents() {
-        if (contents == null) {
-            color = ColorMaker.make(SimpleColor.BLACK);
-            return "-";
-        }
-        else if (contents.isEmpty()) {
-            color = ColorMaker.make(SimpleColor.BRIGHT_BLACK);
-            return ".";
-        }
+        if (contents.isEmpty())
+            return EMPTY_CONTENTS_DISPLAY;
         else {
-            return contents.substring(0, 1);
+            String toReturn = this.contents.substring(0,1);
+
+            if (this.color != null)
+                toReturn = this.color.colorize(toReturn);
+
+            return toReturn;
         }
     }
 
@@ -69,5 +75,22 @@ public class Tile {
         return (contents != null)
                 ? contents
                 : "null";
+    }
+
+    public boolean isIdenticalTo(Tile that) {
+        boolean contentsAreIdentical = this.contents.equals(that.contents);
+        boolean colorsAreIdentical;
+
+        boolean oneColorIsNull = (this.color == null && that.color != null)
+                              || (this.color != null && that.color == null);
+
+        if (oneColorIsNull)
+            colorsAreIdentical = false;
+        else if (this.color != null)
+            colorsAreIdentical = this.color.equals(that.color);
+        else // both colors are null
+            colorsAreIdentical = true;
+
+        return contentsAreIdentical && colorsAreIdentical;
     }
 }
