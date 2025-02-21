@@ -1,41 +1,16 @@
 package ugg.tiles;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import ugg.colors.Color;
 import ugg.colors.ColorMaker;
-import ugg.colors.ColorMerger;
 import ugg.colors.SimpleColor;
 
+import static ugg.tiles.PresetTestingTiles.*;
+import static ugg.tiles.TileMatrix.cellForEmptyTileDisplay;
+
 public class TileMatrixTest {
-    @BeforeAll
-    public static void initializeTiles() {
-        tileA = new Tile("A");
-        tileB = new Tile("B");
-        tileC = new Tile("C");
-        tileD = new Tile("D");
-
-        redTile = new Tile("#", ColorMaker.make(SimpleColor.RED));
-        greenTile = new Tile("#", ColorMaker.make(SimpleColor.GREEN));
-        yellowTile = new Tile("#", ColorMaker.make(SimpleColor.YELLOW));
-        magentaTile = new Tile("#", ColorMaker.make(SimpleColor.MAGENTA));
-
-        wildTileColor = ColorMerger.mergeColors(new Color[]{
-                ColorMaker.make(SimpleColor.BLUE),
-                ColorMaker.make(SimpleColor.BG_BRIGHT_BLACK)
-        });
-        wildTile = new Tile("&", wildTileColor);
-    }
     private static TileMatrix tileMatrix;
-    private static Tile tileA, tileB, tileC, tileD;
-    private static Tile redTile, greenTile, yellowTile, magentaTile;
-
-    private static Color wildTileColor;
-    private static Tile wildTile;
-
-    private static final String EMPTY_TILE_DISPLAY =
-            String.format("[ %s ]", Tile.EMPTY_CONTENTS_DISPLAY);
+    private static final boolean SHOULD_PRINT_MATRICES = false;
 
     private void tileMatrixSizeOne() {
         initializeTileMatrix(1, 1);
@@ -67,6 +42,9 @@ public class TileMatrixTest {
         printMatrixToStringComparison(title, expectedToString);
     }
     private void printMatrixToStringComparison(String title, String expectedToString) {
+        if (!SHOULD_PRINT_MATRICES)
+            return;
+
         String header = String.format("===== %s =====", title);
         String footer = "=".repeat(header.length());
 
@@ -81,10 +59,8 @@ public class TileMatrixTest {
     public void test_constructor_nonPositiveValuesException_rows() {
         boolean errorWasThrown = false;
 
-        try {
-            tileMatrix = new TileMatrix(-1, 2);
-        }
-        catch (IllegalArgumentException arraySizesCannotBeNegativeException) {
+        try { tileMatrix = new TileMatrix(-1, 2); }
+        catch (IllegalArgumentException arraySizesCannotBeNonpositiveException) {
             errorWasThrown = true;
         }
 
@@ -95,10 +71,8 @@ public class TileMatrixTest {
     public void test_constructor_nonPositiveValuesException_columns() {
         boolean errorWasThrown = false;
 
-        try {
-            tileMatrix = new TileMatrix(2, 0);
-        }
-        catch (IllegalArgumentException arraySizesCannotBeNegativeException) {
+        try { tileMatrix = new TileMatrix(2, 0); }
+        catch (IllegalArgumentException arraySizesCannotBeNonpositiveException) {
             errorWasThrown = true;
         }
 
@@ -109,10 +83,8 @@ public class TileMatrixTest {
     public void test_constructor_nonPositiveValuesException_both() {
         boolean errorWasThrown = false;
 
-        try {
-            tileMatrix = new TileMatrix(0, -1);
-        }
-        catch (IllegalArgumentException arraySizesCannotBeNegativeException) {
+        try { tileMatrix = new TileMatrix(0, -1); }
+        catch (IllegalArgumentException arraySizesCannotBeNonpositiveException) {
             errorWasThrown = true;
         }
 
@@ -123,10 +95,8 @@ public class TileMatrixTest {
     public void test_constructor_nonPositiveValuesException_noException() {
         boolean errorWasThrown = false;
 
-        try {
-            tileMatrixSizeOne();
-        }
-        catch (IllegalArgumentException arraySizesCannotBeNegativeException) {
+        try { tileMatrixSizeOne(); }
+        catch (IllegalArgumentException arraySizesCannotBeNonpositiveException) {
             errorWasThrown = true;
         }
 
@@ -142,10 +112,7 @@ public class TileMatrixTest {
 
     @Test
     public void test_setAndGetTile_twoTiles() {
-        tileMatrix = new TileMatrix(1, 2);
-
-        tileMatrix.setTile(tileA, 0, 0);
-        tileMatrix.setTile(tileB, 0, 1);
+        tileMatrixSizeTwoAcross(tileA, tileB);
 
         Assertions.assertEquals(tileA, tileMatrix.getTile(0, 0));
         Assertions.assertEquals(tileB, tileMatrix.getTile(0, 1));
@@ -167,8 +134,8 @@ public class TileMatrixTest {
     @Test
     public void test_addTile_false() {
         tileMatrixSizeOne();
-        tileMatrix.setTile(tileA, 0, 0);
 
+        tileMatrix.setTile(tileA, 0, 0);
         Assertions.assertFalse(tileMatrix.addTile(tileB, 0, 0));
     }
 
@@ -183,10 +150,8 @@ public class TileMatrixTest {
     public void test_removeTile_returnTileA() {
         tileMatrixSizeOne(tileA);
 
-        Tile expectedTileRemoved = tileA;
         Tile actualTileRemoved = tileMatrix.removeTile(0, 0);
-
-        Assertions.assertEquals(expectedTileRemoved, actualTileRemoved);
+        Assertions.assertEquals(tileA, actualTileRemoved);
     }
 
     @Test
@@ -195,16 +160,14 @@ public class TileMatrixTest {
         Assertions.assertEquals(tileA, tileMatrix.getTile(0, 0));
 
         tileMatrix.removeTile(0, 0);
-        Tile expectedExample = new Tile();
-
-        Assertions.assertTrue(expectedExample.isIdenticalTo(tileMatrix.getTile(0, 0)));
+        Assertions.assertTrue(tileMatrix.getTile(0, 0).isIdenticalTo(emptyTile));
     }
 
 
     @Test
     public void test_toString_sizeOneNull() {
         tileMatrixSizeOne();
-        assertEqualAndPrintMatrixToString("Size-One Null", EMPTY_TILE_DISPLAY);
+        assertEqualAndPrintMatrixToString("Size-One Null", cellForEmptyTileDisplay);
     }
 
     @Test
@@ -218,8 +181,7 @@ public class TileMatrixTest {
         tileMatrixSizeOne(redTile);
 
         String expectedToString = String.format(
-                "[ %s ]",
-                ColorMaker.make(SimpleColor.RED).colorize("#")
+                "[ %s ]", ColorMaker.make(SimpleColor.RED).colorize("#")
         );
         assertEqualAndPrintMatrixToString("Size-One Colored", expectedToString);
     }
@@ -228,7 +190,7 @@ public class TileMatrixTest {
     @Test
     public void test_toString_sizeTwoNull() {
         tileMatrixSizeTwoAcross();
-        assertEqualAndPrintMatrixToString("Size-Two Null", EMPTY_TILE_DISPLAY.repeat(2));
+        assertEqualAndPrintMatrixToString("Size-Two Null", cellForEmptyTileDisplay.repeat(2));
     }
 
     @Test
@@ -243,8 +205,8 @@ public class TileMatrixTest {
 
         String expectedToString = String.format(
                 "[ %s ][ %s ]",
-                ColorMaker.make(SimpleColor.RED).colorize("#"),
-                ColorMaker.make(SimpleColor.GREEN).colorize("#")
+                RED.colorize(COLORED_CONTENTS),
+                GREEN.colorize(COLORED_CONTENTS)
         );
         assertEqualAndPrintMatrixToString("Size-Two Colored", expectedToString);
     }
@@ -257,8 +219,8 @@ public class TileMatrixTest {
                 "Size Two-By-Two Null",
                 String.format(
                         "%s%n%s",
-                        EMPTY_TILE_DISPLAY.repeat(2),
-                        EMPTY_TILE_DISPLAY.repeat(2)
+                        cellForEmptyTileDisplay.repeat(2),
+                        cellForEmptyTileDisplay.repeat(2)
                 )
         );
     }
@@ -289,10 +251,10 @@ public class TileMatrixTest {
                 "Size Two-By-Two Colored",
                 String.format(
                         "[ %s ][ %s ]%n[ %s ][ %s ]",
-                        ColorMaker.make(SimpleColor.RED).colorize("#"),
-                        ColorMaker.make(SimpleColor.GREEN).colorize("#"),
-                        ColorMaker.make(SimpleColor.YELLOW).colorize("#"),
-                        ColorMaker.make(SimpleColor.MAGENTA).colorize("#")
+                        RED.colorize(COLORED_CONTENTS),
+                        GREEN.colorize(COLORED_CONTENTS),
+                        YELLOW.colorize(COLORED_CONTENTS),
+                        MAGENTA.colorize(COLORED_CONTENTS)
                 )
         );
     }
@@ -301,7 +263,7 @@ public class TileMatrixTest {
     public void test_toString_sizeTwoByTwoFreeStyle() {
 
         Tile[][] tilesForMatrix = {
-                {wildTile, tileC},
+                {mergedColorTile, tileC},
                 {null, yellowTile}
         };
         initializeTileMatrix(tilesForMatrix);
@@ -310,8 +272,8 @@ public class TileMatrixTest {
                 "Size Two-By-Two Colored",
                 String.format(
                         "[ %s ][ C ]%n[ . ][ %s ]",
-                        wildTileColor.colorize("&"),
-                        ColorMaker.make(SimpleColor.YELLOW).colorize("#")
+                        MERGED_COLOR.colorize(COLORED_CONTENTS),
+                        YELLOW.colorize(COLORED_CONTENTS)
                 )
         );
     }

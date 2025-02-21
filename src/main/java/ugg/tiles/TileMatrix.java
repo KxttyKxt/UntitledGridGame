@@ -3,6 +3,7 @@ package ugg.tiles;
 public class TileMatrix {
 
     private final Tile[][] matrix;
+    static final String cellForEmptyTileDisplay = String.format("[ %s ]", Tile.EMPTY_CONTENTS_DISPLAY);
 
     public TileMatrix(int rows, int columns) {
         if (rows <= 0 || columns <= 0)
@@ -27,12 +28,11 @@ public class TileMatrix {
     }
 
     public boolean addTile(Tile tileToAdd, int row, int column) {
-        if (!matrix[row][column].isEmpty())
-            return false;
-        else {
+        if (matrix[row][column].isEmpty()) {
             setTile(tileToAdd, row, column);
             return true;
         }
+        else return false;
     }
 
     public Tile removeTile(int row, int column) {

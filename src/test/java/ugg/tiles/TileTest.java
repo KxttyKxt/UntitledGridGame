@@ -4,77 +4,65 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ugg.colors.Color;
 import ugg.colors.ColorMaker;
-import ugg.colors.ColorMerger;
 import ugg.colors.SimpleColor;
+
+import static ugg.tiles.PresetTestingTiles.*;
 
 public class TileTest {
     @Test
     public void test_swapContents() {
-        Tile tile1 = new Tile("A");
-        Tile tile2 = new Tile("B");
-
-        swapAndTest(tile1, tile2);
+        swapWithTileAAndTest(tileB);
     }
 
     @Test
     public void test_swapContents_withEmpty() {
-        Tile tile1 = new Tile("A");
-        Tile tile2 = new Tile("");
-
-        swapAndTest(tile1, tile2);
+        swapWithTileAAndTest(emptyTile);
     }
 
     @Test
-    public void test_swapContents_withNull() {
-        Tile tile1 = new Tile("A");
-        Tile tile2 = new Tile(null);
-
-        swapAndTest(tile1, tile2);
+    public void test_swapContents_withNullWhichMeansEmpty() {
+        swapWithTileAAndTest(nullTile);
     }
 
-    private void swapAndTest(Tile tile1, Tile tile2) {
-        String tile1Contents = tile1.toString();
+    private void swapWithTileAAndTest(Tile tile2) {
+        String tile1Contents = tileA.toString();
         String tile2Contents = tile2.toString();
 
-        tile1.swapContentsWith(tile2);
+        tileA.swapContentsWith(tile2);
 
         Assertions.assertEquals(tile1Contents, tile2.toString());
-        Assertions.assertEquals(tile2Contents, tile1.toString());
+        Assertions.assertEquals(tile2Contents, PresetTestingTiles.tileA.toString());
+
+        tileA.swapContentsWith(tile2);
     }
 
 
     @Test
     public void test_transferContents_to_true() {
-        Tile tile1 = new Tile("Contents");
-        Tile tile2 = new Tile("");
+        resetTileTransfers();
 
-        Assertions.assertTrue(tile1.transferContentsTo(tile2));
+        Assertions.assertTrue(transferTileA.transferContentsTo(emptyTransferTile));
 
-        Assertions.assertEquals("", tile1.toString());
-        Assertions.assertEquals("Contents", tile2.toString());
+        Assertions.assertEquals("", transferTileA.toString());
+        Assertions.assertEquals("A", emptyTransferTile.toString());
     }
 
     @Test
     public void test_transferContents_to_false() {
-        Tile tile1 = new Tile("Contents");
-        Tile tile2 = new Tile("Also Contents");
+        resetTileTransfers();
 
-        Assertions.assertFalse(tile1.transferContentsTo(tile2));
+        Assertions.assertFalse(transferTileA.transferContentsTo(transferTileB));
 
-        Assertions.assertEquals("Contents", tile1.toString());
-        Assertions.assertEquals("Also Contents", tile2.toString());
+        Assertions.assertEquals("A", transferTileA.toString());
+        Assertions.assertEquals("B", transferTileB.toString());
     }
 
-
-    @Test
-    public void test_displayContents_emptyContents() {
-        Tile emptyTile = new Tile("");
-
-        String expectedDisplay = String.format(ColorMaker.make(SimpleColor.BRIGHT_BLACK).colorize("."));
-        String actualDisplay = emptyTile.display();
-
-        Assertions.assertEquals(expectedDisplay, actualDisplay);
+    private void resetTileTransfers() {
+        transferTileA = new Tile("A");
+        transferTileB = new Tile("B");
+        emptyTransferTile = new Tile("");
     }
+    private Tile transferTileA, transferTileB, emptyTransferTile;
 
     @Test
     public void test_displayContents_singleColorFG() {
@@ -89,40 +77,61 @@ public class TileTest {
 
     @Test
     public void test_displayContents_singleColorBG() {
-        Color tileColor = ColorMaker.make(SimpleColor.BG_RED);
-        Tile coloredTile = new Tile("#", tileColor);
-
-        String expectedDisplay = String.format(tileColor.colorize("#"));
-        String actualDisplay = coloredTile.display();
+        String expectedDisplay = String.format(BG_RED.colorize("#"));
+        String actualDisplay = bgRedTile.display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
     }
 
     @Test
     public void test_displayContents_mergedColor() {
-        Color tileColorFG = ColorMaker.make(SimpleColor.RED);
-        Color tileColorBG = ColorMaker.make(SimpleColor.BG_BLUE);
+        String expectedDisplay = String.format(MERGED_COLOR.colorize(COLORED_CONTENTS));
+        String actualDisplay = mergedColorTile.display();
 
-        Color mergedTileColor = ColorMerger.mergeColors(new Color[]{tileColorFG, tileColorBG});
-        Tile coloredTile = new Tile("#", mergedTileColor);
+        Assertions.assertEquals(expectedDisplay, actualDisplay);
+    }
 
-        String expectedDisplay = String.format(mergedTileColor.colorize("#"));
-        String actualDisplay = coloredTile.display();
+    @Test
+    public void test_displayContents_emptyContents() {
+        String expectedDisplay = Tile.EMPTY_CONTENTS_DISPLAY;
+        String actualDisplay = emptyTile.display();
+
+        Assertions.assertEquals(expectedDisplay, actualDisplay);
+    }
+
+    @Test
+    public void test_displayContents_nullWhichMeansEmptyContents() {
+        String expectedDisplay = Tile.EMPTY_CONTENTS_DISPLAY;
+        String actualDisplay = nullTile.display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
     }
 
     @Test
     public void test_displayContents_nullColor() {
-        Tile coloredTile = new Tile("#");
-
         String expectedDisplay = "#";
-        String actualDisplay = coloredTile.display();
+        String actualDisplay = uncoloredTile.display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
     }
 
 
+    @Test
+    public void test_toString_contents() {
+        Tile notNullTile = new Tile("test");
+        Assertions.assertEquals("test", notNullTile.toString());
+    }
 
+    @Test
+    public void test_toString_empty() {
+        Tile emptyTile = new Tile("");
+        Assertions.assertEquals("", emptyTile.toString());
+    }
+
+    @Test
+    public void test_toString_nullWhichMeansEmpty() {
+        Tile nullTile = new Tile(null);
+        Assertions.assertEquals("", nullTile.toString());
+    }
 
 }

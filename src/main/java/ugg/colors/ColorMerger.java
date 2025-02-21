@@ -1,7 +1,7 @@
 package ugg.colors;
 
 public class ColorMerger {
-    public static Color mergeColors(Color[] colors) {
+    public static Color merge(Color[] colors) {
         if (colors.length == 1)
             return colors[0];
         else

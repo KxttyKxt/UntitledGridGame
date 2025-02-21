@@ -4,9 +4,13 @@ import ugg.colors.Color;
 import ugg.colors.ColorMaker;
 import ugg.colors.SimpleColor;
 
+
 public class Tile {
 
     // =============== Tile =================
+
+    // Tile contents can never be null, but their colors can.
+    // A null space in a matrix is a Tile that is itself null.
 
     private String contents;
 
@@ -32,12 +36,10 @@ public class Tile {
 
     public boolean transferContentsTo(Tile that) {
         if (that.isEmpty()) {
-            that.contents = this.contents;
-            this.contents = "";
+            this.swapContentsWith(that);
             return true;
         }
-        else
-            return false;
+        else return false;
     }
     public boolean isEmpty() {
         return this.contents.isEmpty();
@@ -72,11 +74,11 @@ public class Tile {
 
     @Override
     public String toString() {
-        return (contents != null)
-                ? contents
-                : "null";
+        return contents;
     }
 
+    // Tile#equals() is basically Tile this == Tile that, which is by design.
+    // Tile#isIdenticalTo() sees of the contents and colors match via String#equals().
     public boolean isIdenticalTo(Tile that) {
         boolean contentsAreIdentical = this.contents.equals(that.contents);
         boolean colorsAreIdentical;
