@@ -134,4 +134,42 @@ public class TileTest {
         Assertions.assertEquals("", nullTile.toString());
     }
 
+
+    @Test
+    public void test_isIdenticalTo_true_noColor() {
+        Tile newTileA = new Tile("A");
+        Assertions.assertTrue(tileA.isIdenticalTo(newTileA));
+        Assertions.assertTrue(newTileA.isIdenticalTo(tileA));
+    }
+
+    @Test
+    public void test_isIdenticalTo_true_yesColor() {
+        Tile newRedTile = new Tile(COLORED_CONTENTS, RED);
+        Assertions.assertTrue(redTile.isIdenticalTo(newRedTile));
+        Assertions.assertTrue(newRedTile.isIdenticalTo(redTile));
+    }
+
+    @Test
+    public void test_isIdenticalTo_false_oneColorIsNull() {
+        Assertions.assertFalse(tileA.isIdenticalTo(redTile));
+        Assertions.assertFalse(redTile.isIdenticalTo(tileA));
+    }
+
+    @Test
+    public void test_isIdenticalTo_false_contentsDoNotMatch() {
+        Assertions.assertFalse(tileA.isIdenticalTo(tileB));
+        Assertions.assertFalse(tileB.isIdenticalTo(tileA));
+    }
+
+    @Test
+    public void test_isIdenticalTo_false_colorsDoNotMatch() {
+        Assertions.assertFalse(redTile.isIdenticalTo(greenTile));
+        Assertions.assertFalse(greenTile.isIdenticalTo(redTile));
+    }
+
+    @Test
+    public void test_isIdenticalTo_false_allDoNotMatch() {
+        Assertions.assertFalse(tileA.isIdenticalTo(redTile));
+        Assertions.assertFalse(redTile.isIdenticalTo(tileA));
+    }
 }
