@@ -9,11 +9,12 @@ import ugg.colors.ColorMerger;
 import ugg.colors.SimpleColor;
 
 import static ugg.tiles.Tile.COLORED_CONTENTS;
-import static ugg.tiles.TileMatrix.cellForEmptyTileDisplay;
+import static ugg.tiles.TileMatrix.EMPTY_CELL;
+import static ugg.tiles.TileMatrix.NULL_CELL;
 
 public class TileMatrixTest {
     private static TileMatrix tileMatrix;
-    private static final boolean SHOULD_PRINT_MATRICES = false;
+    private static final boolean SHOULD_PRINT_MATRICES = true;
 
     @BeforeAll
     public static void initializeTilesAndColors() {
@@ -180,12 +181,6 @@ public class TileMatrixTest {
 
 
     @Test
-    public void test_toString_sizeOne_null() {
-        tileMatrixSizeOne();
-        assertEqualAndPrintMatrixToString("Size-One Null", cellForEmptyTileDisplay);
-    }
-
-    @Test
     public void test_toString_sizeOne_tile() {
         tileMatrixSizeOne(tileA);
         assertEqualAndPrintMatrixToString("Size-One Tile", "[ A ]");
@@ -201,12 +196,18 @@ public class TileMatrixTest {
         assertEqualAndPrintMatrixToString("Size-One Colored", expectedToString);
     }
 
+    @Test
+    public void test_toString_sizeOne_empty() {
+        tileMatrixSizeOne();
+        assertEqualAndPrintMatrixToString("Size-One Empty", EMPTY_CELL);
+    }
 
     @Test
-    public void test_toString_sizeTwo_null() {
-        tileMatrixSizeTwoAcross();
-        assertEqualAndPrintMatrixToString("Size-Two Null", cellForEmptyTileDisplay.repeat(2));
+    public void test_toString_sizeOne_null() {
+        initializeTileMatrix(new Tile[][]{{null}});
+        assertEqualAndPrintMatrixToString("Size-One null", NULL_CELL);
     }
+
 
     @Test
     public void test_toString_sizeTwo_tile() {
@@ -226,19 +227,18 @@ public class TileMatrixTest {
         assertEqualAndPrintMatrixToString("Size-Two Colored", expectedToString);
     }
 
+    @Test
+    public void test_toString_sizeTwo_empty() {
+        tileMatrixSizeTwoAcross();
+        assertEqualAndPrintMatrixToString("Size-Two Empty", EMPTY_CELL.repeat(2));
+    }
 
     @Test
-    public void test_toString_sizeTwoByTwo_null() {
-        initializeTileMatrix(2, 2);
-        assertEqualAndPrintMatrixToString(
-                "Size Two-By-Two Null",
-                String.format(
-                        "%s%n%s",
-                        cellForEmptyTileDisplay.repeat(2),
-                        cellForEmptyTileDisplay.repeat(2)
-                )
-        );
+    public void test_toString_sizeTwo_null() {
+        initializeTileMatrix(new Tile[][]{{null, null}});
+        assertEqualAndPrintMatrixToString("Size-Two Null", NULL_CELL.repeat(2));
     }
+
 
     @Test
     public void test_toString_sizeTwoByTwo_tile() {
@@ -275,6 +275,37 @@ public class TileMatrixTest {
     }
 
     @Test
+    public void test_toString_sizeTwoByTwo_empty() {
+        initializeTileMatrix(2, 2);
+        assertEqualAndPrintMatrixToString(
+                "Size Two-By-Two Empty",
+                String.format(
+                        "%s%n%s",
+                        EMPTY_CELL.repeat(2),
+                        EMPTY_CELL.repeat(2)
+                )
+        );
+    }
+
+    @Test
+    public void test_toString_sizeTwoByTwo_null() {
+        Tile[][] nullTileMatrix = {
+                {null, null},
+                {null, null}
+        };
+        initializeTileMatrix(nullTileMatrix);
+
+        assertEqualAndPrintMatrixToString(
+                "Size Two-By-Two Null",
+                String.format(
+                        "%s%n%s",
+                        NULL_CELL.repeat(2),
+                        NULL_CELL.repeat(2)
+                )
+        );
+    }
+
+    @Test
     public void test_toString_sizeTwoByTwo_freestyle() {
 
         Tile[][] tilesForMatrix = {
@@ -286,7 +317,7 @@ public class TileMatrixTest {
         assertEqualAndPrintMatrixToString(
                 "Size Two-By-Two Freestyle",
                 String.format(
-                        "[ %s ][ C ]%n[ . ][ %s ]",
+                        "[ %s ][ C ]%n     [ %s ]",
                         mergedColor.colorize(COLORED_CONTENTS),
                         yellow.colorize(COLORED_CONTENTS)
                 )
