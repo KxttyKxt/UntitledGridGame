@@ -1,16 +1,49 @@
 package ugg.tiles;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import ugg.colors.Color;
 import ugg.colors.ColorMaker;
+import ugg.colors.ColorMerger;
 import ugg.colors.SimpleColor;
 
-import static ugg.tiles.PresetTestingResources.*;
+import static ugg.tiles.Tile.COLORED_CONTENTS;
 import static ugg.tiles.TileMatrix.cellForEmptyTileDisplay;
 
 public class TileMatrixTest {
     private static TileMatrix tileMatrix;
     private static final boolean SHOULD_PRINT_MATRICES = false;
+
+    @BeforeAll
+    public static void initializeTilesAndColors() {
+        tileA = new Tile("A");
+        tileB = new Tile("B");
+        tileC = new Tile("C");
+        tileD = new Tile("D");
+        emptyTile = new Tile();
+        nullContentsTile = new Tile((String) null);
+
+        red = ColorMaker.make(SimpleColor.RED);
+        green = ColorMaker.make(SimpleColor.GREEN);
+        yellow = ColorMaker.make(SimpleColor.YELLOW);
+        magenta = ColorMaker.make(SimpleColor.MAGENTA);
+        mergedColor = ColorMerger.merge(new Color[]{
+                red, ColorMaker.make(SimpleColor.BG_GREEN)
+        });
+
+        redTile = new Tile(red);
+        greenTile = new Tile(green);
+        yellowTile = new Tile(yellow);
+        magentaTile = new Tile(magenta);
+        mergedColorTile = new Tile(mergedColor);
+        uncoloredTile = new Tile((Color) null);
+    }
+
+    private static Tile tileA, tileB, tileC, tileD, emptyTile, nullContentsTile;
+
+    private static Color red, green, yellow, magenta, mergedColor;
+    private static Tile redTile, greenTile, yellowTile, magentaTile, mergedColorTile, uncoloredTile;
 
     private void tileMatrixSizeOne() {
         initializeTileMatrix(1, 1);
@@ -205,8 +238,8 @@ public class TileMatrixTest {
 
         String expectedToString = String.format(
                 "[ %s ][ %s ]",
-                RED.colorize(COLORED_CONTENTS),
-                GREEN.colorize(COLORED_CONTENTS)
+                red.colorize(COLORED_CONTENTS),
+                green.colorize(COLORED_CONTENTS)
         );
         assertEqualAndPrintMatrixToString("Size-Two Colored", expectedToString);
     }
@@ -251,10 +284,10 @@ public class TileMatrixTest {
                 "Size Two-By-Two Colored",
                 String.format(
                         "[ %s ][ %s ]%n[ %s ][ %s ]",
-                        RED.colorize(COLORED_CONTENTS),
-                        GREEN.colorize(COLORED_CONTENTS),
-                        YELLOW.colorize(COLORED_CONTENTS),
-                        MAGENTA.colorize(COLORED_CONTENTS)
+                        red.colorize(COLORED_CONTENTS),
+                        green.colorize(COLORED_CONTENTS),
+                        yellow.colorize(COLORED_CONTENTS),
+                        magenta.colorize(COLORED_CONTENTS)
                 )
         );
     }
@@ -272,8 +305,8 @@ public class TileMatrixTest {
                 "Size Two-By-Two Freestyle",
                 String.format(
                         "[ %s ][ C ]%n[ . ][ %s ]",
-                        MERGED_COLOR.colorize(COLORED_CONTENTS),
-                        YELLOW.colorize(COLORED_CONTENTS)
+                        mergedColor.colorize(COLORED_CONTENTS),
+                        yellow.colorize(COLORED_CONTENTS)
                 )
         );
     }
@@ -284,7 +317,7 @@ public class TileMatrixTest {
         Tile[][] tilesForMatrix = {
                 {tileA, tileB, tileC, tileD},
                 {redTile, greenTile, yellowTile, magentaTile},
-                {emptyTile, nullTile, uncoloredTile, mergedColorTile}
+                {emptyTile, nullContentsTile, uncoloredTile, mergedColorTile}
         };
         initializeTileMatrix(tilesForMatrix);
 
@@ -297,17 +330,17 @@ public class TileMatrixTest {
                 ),
                 String.format(
                         ROW_TEMPLATE,
-                        RED.colorize(COLORED_CONTENTS),
-                        GREEN.colorize(COLORED_CONTENTS),
-                        YELLOW.colorize(COLORED_CONTENTS),
-                        MAGENTA.colorize(COLORED_CONTENTS)
+                        red.colorize(COLORED_CONTENTS),
+                        green.colorize(COLORED_CONTENTS),
+                        yellow.colorize(COLORED_CONTENTS),
+                        magenta.colorize(COLORED_CONTENTS)
                 ),
                 String.format(
                         ROW_TEMPLATE,
                         Tile.EMPTY_CONTENTS_DISPLAY,
                         Tile.EMPTY_CONTENTS_DISPLAY,
                         COLORED_CONTENTS,
-                        MERGED_COLOR.colorize(COLORED_CONTENTS)
+                        mergedColor.colorize(COLORED_CONTENTS)
                 )
         );
         assertEqualAndPrintMatrixToString("Ultimate Freestyle", expectedToString);

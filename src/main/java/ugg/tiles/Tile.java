@@ -6,6 +6,8 @@ import ugg.colors.SimpleColor;
 
 
 public class Tile {
+    static final String COLORED_CONTENTS = "#";
+
     private String contents;
     private Color color;
 
@@ -20,6 +22,10 @@ public class Tile {
     }
     public Tile(String contents, Color color) {
         this.contents = contents;
+        this.color = color;
+    }
+    public Tile(Color color) {
+        this.contents = COLORED_CONTENTS;
         this.color = color;
     }
 

@@ -1,12 +1,40 @@
 package ugg.tiles;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ugg.colors.Color;
+import ugg.colors.ColorMaker;
+import ugg.colors.ColorMerger;
+import ugg.colors.SimpleColor;
 
-import static ugg.tiles.PresetTestingResources.*;
+import static ugg.tiles.Tile.COLORED_CONTENTS;
 
 public class TileTest {
+    @BeforeAll
+    public static void initializeTestingObjects() {
+        tileA = new Tile("A");
+        tileB = new Tile("B");
+        emptyContentsTile = new Tile();
+        nullContentsTile = new Tile((String) null);
+
+        red = ColorMaker.make(SimpleColor.RED);
+        bgRed = ColorMaker.make(SimpleColor.BG_RED);
+        mergedColor = ColorMerger.merge(new Color[]{
+                red, ColorMaker.make(SimpleColor.BG_GREEN)
+        });
+
+        redTile = new Tile(red);
+        bgRedTile = new Tile(bgRed);
+        mergedColorTile = new Tile(mergedColor);
+        uncoloredTile = new Tile((Color) null);
+    }
+
+    private static Tile tileA, tileB, emptyContentsTile, nullContentsTile;
+
+    private static Color red, bgRed, mergedColor;
+    private static Tile redTile, bgRedTile, mergedColorTile, uncoloredTile;
+
     @Test
     public void test_swapContents() {
         swapWithTileAAndTest(tileB);
@@ -14,12 +42,12 @@ public class TileTest {
 
     @Test
     public void test_swapContents_withEmpty() {
-        swapWithTileAAndTest(emptyTile);
+        swapWithTileAAndTest(emptyContentsTile);
     }
 
     @Test
     public void test_swapContents_withNullWhichMeansEmpty() {
-        swapWithTileAAndTest(nullTile);
+        swapWithTileAAndTest(nullContentsTile);
     }
 
     private void swapWithTileAAndTest(Tile toSwapWith) {
@@ -29,7 +57,7 @@ public class TileTest {
         tileA.swapContentsWith(toSwapWith);
 
         Assertions.assertEquals(tileAContents, toSwapWith.toString());
-        Assertions.assertEquals(tileToSwapWithContents, PresetTestingResources.tileA.toString());
+        Assertions.assertEquals(tileToSwapWithContents, tileA.toString());
 
         tileA.swapContentsWith(toSwapWith);
     }
@@ -114,7 +142,7 @@ public class TileTest {
     @Test
     public void test_displayContents_emptyContents() {
         String expectedDisplay = Tile.EMPTY_CONTENTS_DISPLAY;
-        String actualDisplay = emptyTile.display();
+        String actualDisplay = emptyContentsTile.display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
     }
@@ -122,24 +150,24 @@ public class TileTest {
     @Test
     public void test_displayContents_nullWhichMeansEmptyContents() {
         String expectedDisplay = Tile.EMPTY_CONTENTS_DISPLAY;
-        String actualDisplay = nullTile.display();
+        String actualDisplay = nullContentsTile.display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
     }
 
     @Test
     public void test_displayContents_singleColorFG() {
-        testColoredSymbolEqualsColoredTileDisplay(RED, redTile);
+        testColoredSymbolEqualsColoredTileDisplay(red, redTile);
     }
 
     @Test
     public void test_displayContents_singleColorBG() {
-        testColoredSymbolEqualsColoredTileDisplay(BG_RED, bgRedTile);
+        testColoredSymbolEqualsColoredTileDisplay(bgRed, bgRedTile);
     }
 
     @Test
     public void test_displayContents_mergedColor() {
-        testColoredSymbolEqualsColoredTileDisplay(MERGED_COLOR, mergedColorTile);
+        testColoredSymbolEqualsColoredTileDisplay(mergedColor, mergedColorTile);
     }
 
     @Test
@@ -164,12 +192,12 @@ public class TileTest {
 
     @Test
     public void test_toString_empty() {
-        Assertions.assertEquals("", emptyTile.toString());
+        Assertions.assertEquals("", emptyContentsTile.toString());
     }
 
     @Test
     public void test_toString_nullWhichMeansEmpty() {
-        Assertions.assertEquals("", nullTile.toString());
+        Assertions.assertEquals("", nullContentsTile.toString());
     }
 
 
@@ -181,7 +209,7 @@ public class TileTest {
 
     @Test
     public void test_isIdenticalTo_true_yesColor() {
-        Tile newRedTile = new Tile(COLORED_CONTENTS, RED);
+        Tile newRedTile = new Tile(COLORED_CONTENTS, red);
         testIsIdenticalToBiconditionally(redTile, newRedTile, true);
     }
 
@@ -197,7 +225,7 @@ public class TileTest {
 
     @Test
     public void test_isIdenticalTo_false_colorsDoNotMatch() {
-        testIsIdenticalToBiconditionally(redTile, greenTile, false);
+        testIsIdenticalToBiconditionally(redTile, bgRedTile, false);
     }
 
     @Test
