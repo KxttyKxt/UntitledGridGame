@@ -4,6 +4,8 @@ import ugg.colors.Color;
 import ugg.colors.ColorMaker;
 import ugg.colors.SimpleColor;
 
+import java.util.Objects;
+
 
 public class Tile {
     static final String COLORED_CONTENTS = "#";
@@ -73,22 +75,11 @@ public class Tile {
         return contents;
     }
 
-    // Tile#equals() is basically Tile this == Tile that, which is by design.
-    // Tile#isIdenticalTo() sees of the contents and colors match via String#equals().
-    public boolean isIdenticalTo(Tile that) {
-        boolean contentsAreIdentical = this.contents.equals(that.contents);
-        boolean colorsAreIdentical;
-
-        boolean oneColorIsNull = (this.color == null && that.color != null)
-                              || (this.color != null && that.color == null);
-
-        if (oneColorIsNull)
-            colorsAreIdentical = false;
-        else if (this.color != null)
-            colorsAreIdentical = this.color.equals(that.color);
-        else // both colors are null
-            colorsAreIdentical = true;
-
-        return contentsAreIdentical && colorsAreIdentical;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tile that = (Tile) o;
+        return Objects.equals(this.contents, that.contents) && Objects.equals(this.color, that.color);
     }
 }

@@ -53,7 +53,7 @@ public class ColorTest {
 
     @Test
     public void test_equals_otherClass() {
-        // Intentional redundant call for complete coverage
+        // Applies coverage to Color#equals()
         Color color = ColorMaker.make(SimpleColor.RED);
         //noinspection AssertBetweenInconvertibleTypes
         Assertions.assertNotEquals(color, "this is a string");

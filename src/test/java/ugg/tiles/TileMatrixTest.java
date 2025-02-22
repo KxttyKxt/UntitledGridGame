@@ -175,7 +175,7 @@ public class TileMatrixTest {
         Assertions.assertEquals(tileA, tileMatrix.getTile(0, 0));
 
         tileMatrix.removeTile(0, 0);
-        Assertions.assertTrue(tileMatrix.getTile(0, 0).isIdenticalTo(emptyTile));
+        Assertions.assertEquals(tileMatrix.getTile(0, 0), emptyTile);
     }
 
 

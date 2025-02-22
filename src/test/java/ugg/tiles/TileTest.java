@@ -204,39 +204,56 @@ public class TileTest {
 
 
     @Test
-    public void test_isIdenticalTo_true_noColor() {
+    public void test_equals_same() {
+        // Applies coverage to Tile#equals()
+        //noinspection EqualsWithItself
+        Assertions.assertSame(tileA, tileA);
+    }
+
+    @Test
+    public void test_equals_true_noColor() {
         Tile newTileA = new Tile("A");
-        testIsIdenticalToBiconditionally(tileA, newTileA, true);
+
+        Assertions.assertNotSame(tileA, newTileA);
+        Assertions.assertEquals(tileA, newTileA);
     }
 
     @Test
-    public void test_isIdenticalTo_true_yesColor() {
-        Tile newRedTile = new Tile(COLORED_CONTENTS, red);
-        testIsIdenticalToBiconditionally(redTile, newRedTile, true);
+    public void test_equals_true_yesColor() {
+        Tile newRedTile = new Tile(red);
+        Assertions.assertEquals(redTile, newRedTile);
     }
 
     @Test
-    public void test_isIdenticalTo_false_oneColorIsNull() {
-        testIsIdenticalToBiconditionally(redTile, tileA, false);
+    public void test_equals_false_oneColorIsNull() {
+        Tile tileARed = new Tile("A", red);
+        Assertions.assertNotEquals(tileA, tileARed);
     }
 
     @Test
-    public void test_isIdenticalTo_false_contentsDoNotMatch() {
-        testIsIdenticalToBiconditionally(tileA, tileB, false);
+    public void test_equals_false_contentsDoNotMatch() {
+        Assertions.assertNotEquals(tileA, tileB);
     }
 
     @Test
-    public void test_isIdenticalTo_false_colorsDoNotMatch() {
-        testIsIdenticalToBiconditionally(redTile, bgRedTile, false);
+    public void test_equals_false_colorsDoNotMatch() {
+        Assertions.assertNotEquals(redTile, bgRedTile);
     }
 
     @Test
-    public void test_isIdenticalTo_false_allDoNotMatch() {
-        testIsIdenticalToBiconditionally(tileA, redTile, false);
+    public void test_equals_false_allDoNotMatch() {
+        Assertions.assertNotEquals(tileA, redTile);
     }
 
-    private void testIsIdenticalToBiconditionally(Tile tile1, Tile tile2, boolean expectedResult) {
-        Assertions.assertEquals(expectedResult, tile1.isIdenticalTo(tile2));
-        Assertions.assertEquals(expectedResult, tile2.isIdenticalTo(tile1));
+    @Test
+    public void test_equals_false_nullComparison() {
+        Assertions.assertNotEquals(tileA, null);
+    }
+
+    @Test
+    public void test_equals_false_notATileObject() {
+        // Applies coverage to Tile#equals()
+        //noinspection AssertBetweenInconvertibleTypes
+        Assertions.assertNotEquals(redTile, red);
     }
 }
