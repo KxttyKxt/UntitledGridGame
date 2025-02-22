@@ -18,6 +18,10 @@ public class TileTest {
         emptyContentsTile = new Tile();
         nullContentsTile = new Tile((String) null);
 
+        transferTileA = new Tile("A");
+        transferTileB = new Tile("B");
+        emptyTransferTile = new Tile();
+
         red = ColorMaker.make(SimpleColor.RED);
         bgRed = ColorMaker.make(SimpleColor.BG_RED);
         mergedColor = ColorMerger.merge(new Color[]{
@@ -31,9 +35,11 @@ public class TileTest {
     }
 
     private static Tile tileA, tileB, emptyContentsTile, nullContentsTile;
+    private static Tile transferTileA, transferTileB, emptyTransferTile;
 
     private static Color red, bgRed, mergedColor;
     private static Tile redTile, bgRedTile, mergedColorTile, uncoloredTile;
+
 
     @Test
     public void test_swapContents() {
@@ -74,7 +80,7 @@ public class TileTest {
     }
 
     private void resetTransferTilesAndRunTransferTest(Tile toTransferTo, boolean expectedResult) {
-        resetTileTransfers();
+        resetTransferTiles();
         transferWithTransferTileAAndTest(toTransferTo, expectedResult);
     }
     private void transferWithTransferTileAAndTest(Tile targetTile, boolean expectedResult) {
@@ -96,7 +102,7 @@ public class TileTest {
             Assertions.assertEquals(targetTileContentsBefore, targetTileContentsAfter);
         }
     }
-    private void resetTileTransfers() {
+    private void resetTransferTiles() {
         boolean transferTileAIsCorrect;
         boolean transferTileBIsCorrect;
         boolean emptyTransferTileIsCorrect;
@@ -133,10 +139,6 @@ public class TileTest {
             }
         }
     }
-
-    private final Tile transferTileA = new Tile("A");
-    private final Tile transferTileB = new Tile("B");
-    private final Tile emptyTransferTile = new Tile();
 
 
     @Test

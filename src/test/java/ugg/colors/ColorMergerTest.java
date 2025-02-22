@@ -13,6 +13,7 @@ public class ColorMergerTest {
         Assertions.assertSame(expectedColor, actualColor);
     }
 
+
     @Test
     public void test_mergeColors_multiple() {
         Color fgColor = ColorMaker.make(SimpleColor.MAGENTA);

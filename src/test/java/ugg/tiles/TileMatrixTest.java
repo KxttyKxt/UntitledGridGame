@@ -70,24 +70,6 @@ public class TileMatrixTest {
     }
 
 
-    private void assertEqualAndPrintMatrixToString(String title, String expectedToString) {
-        Assertions.assertEquals(expectedToString, tileMatrix.toString());
-        printMatrixToStringComparison(title, expectedToString);
-    }
-    private void printMatrixToStringComparison(String title, String expectedToString) {
-        if (!SHOULD_PRINT_MATRICES)
-            return;
-
-        String header = String.format("===== %s =====", title);
-        String footer = "=".repeat(header.length());
-
-        System.out.printf("%n%s%n", header);
-        System.out.printf("Expected:%n%s%n", expectedToString);
-        System.out.printf("Actual:%n%s%n", tileMatrix.toString());
-        System.out.printf("%s%n", footer);
-    }
-
-
     @Test
     public void test_constructor_nonPositiveValuesException_rows() {
         boolean errorWasThrown = false;
@@ -344,6 +326,24 @@ public class TileMatrixTest {
                 )
         );
         assertEqualAndPrintMatrixToString("Ultimate Freestyle", expectedToString);
+    }
+
+
+    private void assertEqualAndPrintMatrixToString(String title, String expectedToString) {
+        Assertions.assertEquals(expectedToString, tileMatrix.toString());
+        printMatrixToStringComparison(title, expectedToString);
+    }
+    private void printMatrixToStringComparison(String title, String expectedToString) {
+        if (!SHOULD_PRINT_MATRICES)
+            return;
+
+        String header = String.format("===== %s =====", title);
+        String footer = "=".repeat(header.length());
+
+        System.out.printf("%n%s%n", header);
+        System.out.printf("Expected:%n%s%n", expectedToString);
+        System.out.printf("Actual:%n%s%n", tileMatrix.toString());
+        System.out.printf("%s%n", footer);
     }
 
 }

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 public class ColorMakerTest {
     @Test
-    public void test_make() {
+    public void test_make_simple() {
         Color color = ColorMaker.make(SimpleColor.RED);
 
         String expectedAnsiCode = "\u001B[31m";
@@ -16,7 +16,7 @@ public class ColorMakerTest {
 
 
     @Test
-    public void test_make_idNoBG() {
+    public void test_make_id_noBG() {
         Color color = ColorMaker.make(65, false);
 
         String expectedAnsiCode = "\u001B[38;5;65m";
@@ -26,7 +26,7 @@ public class ColorMakerTest {
     }
 
     @Test
-    public void test_make_idYesBG() {
+    public void test_make_id_yesBG() {
         Color color = ColorMaker.make(65, true);
 
         String expectedAnsiCode = "\u001B[48;5;65m";
@@ -35,8 +35,32 @@ public class ColorMakerTest {
         Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
     }
 
+
     @Test
-    public void test_make_idInvalid_tooHigh() {
+    public void test_make_rgb_noBG() {
+        int[] rgb = {200, 100, 50};
+        Color color = ColorMaker.make(rgb, false);
+
+        String expectedAnsiCode = "\u001B[38;2;200;100;50m";
+        String actualAnsiCode = color.ansiCode;
+
+        Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
+    }
+
+    @Test
+    public void test_make_rgb_yesBG() {
+        int[] rgb = {200, 100, 50};
+        Color color = ColorMaker.make(rgb, true);
+
+        String expectedAnsiCode = "\u001B[48;2;200;100;50m";
+        String actualAnsiCode = color.ansiCode;
+
+        Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
+    }
+
+
+    @Test
+    public void test_make_id_invalid_tooHigh() {
         boolean errorThrown = false;
 
         try {
@@ -51,7 +75,7 @@ public class ColorMakerTest {
     }
 
     @Test
-    public void test_make_idInvalid_tooLow() {
+    public void test_make_id_invalid_tooLow() {
         boolean errorThrown = false;
 
         try {
@@ -65,31 +89,8 @@ public class ColorMakerTest {
         }
     }
 
-
     @Test
-    public void test_make_rgbNoBG() {
-        int[] rgb = {200, 100, 50};
-        Color color = ColorMaker.make(rgb, false);
-
-        String expectedAnsiCode = "\u001B[38;2;200;100;50m";
-        String actualAnsiCode = color.ansiCode;
-
-        Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
-    }
-
-    @Test
-    public void test_make_rgbYesBG() {
-        int[] rgb = {200, 100, 50};
-        Color color = ColorMaker.make(rgb, true);
-
-        String expectedAnsiCode = "\u001B[48;2;200;100;50m";
-        String actualAnsiCode = color.ansiCode;
-
-        Assertions.assertEquals(expectedAnsiCode, actualAnsiCode);
-    }
-
-    @Test
-    public void test_make_rgbInvalid_outOfRange() {
+    public void test_make_rgb_invalid_outOfRange() {
         int[] rgb = {300, -3, 50};
         boolean errorThrown = false;
 
