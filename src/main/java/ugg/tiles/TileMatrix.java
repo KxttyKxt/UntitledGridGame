@@ -2,13 +2,11 @@ package ugg.tiles;
 
 public class TileMatrix {
 
-    private final Tile[][] matrix;
-
     static final String FORMAT_FOR_CELL = "[ %s ]";
-
     static final String NULL_CELL = " ".repeat(5);
     static final String EMPTY_CELL = String.format(FORMAT_FOR_CELL, Tile.EMPTY_CONTENTS_DISPLAY);
 
+    private final Tile[][] matrix;
 
     public TileMatrix(int rows, int columns) {
         if (rows <= 0 || columns <= 0)
@@ -25,30 +23,32 @@ public class TileMatrix {
     }
 
 
-    public void setTile(Tile tileToSet, int row, int column) {
-        matrix[row][column] = tileToSet;
+    public void swapContents(Tile tile1, Tile tile2) {
+        confirmInMatrix(tile1);
+        confirmInMatrix(tile2);
+
+        tile1.swapContentsWith(tile2);
     }
 
-    public Tile getTile(int row, int column) {
-        return matrix[row][column];
+    public boolean transferContents(Tile origin, Tile destination) {
+        confirmInMatrix(origin);
+        confirmInMatrix(destination);
+
+        return origin.transferContentsTo(destination);
     }
 
-    public boolean addTile(Tile tileToAdd, int row, int column) {
-        if (matrix[row][column].isEmpty()) {
-            setTile(tileToAdd, row, column);
-            return true;
-        }
-        else return false;
+    private void confirmInMatrix(Tile tile) {
+        if (!matrixContains(tile))
+            throw new IllegalArgumentException(String.format("Tile %s is not in matrix.", tile));
     }
 
-    public Tile removeTile(int row, int column) {
-        Tile toRemove = matrix[row][column];
-        matrix[row][column] = new Tile();
+    private boolean matrixContains(Tile tile) {
+        for (Tile[] row : matrix)
+            for (Tile cell : row)
+                if (tile == cell)
+                    return true;
 
-        if (toRemove.isEmpty())
-            return null;
-        else
-            return toRemove;
+        return false;
     }
 
 

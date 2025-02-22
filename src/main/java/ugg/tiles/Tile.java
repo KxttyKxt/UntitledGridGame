@@ -36,6 +36,10 @@ public class Tile {
         String temp = this.contents;
         this.contents = that.contents;
         that.contents = temp;
+
+        Color tempColor = this.color;
+        this.color = that.color;
+        that.color = tempColor;
     }
 
     public boolean transferContentsTo(Tile that) {

@@ -2,6 +2,7 @@ package ugg.tiles;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ugg.colors.Color;
 import ugg.colors.ColorMaker;
@@ -13,17 +14,12 @@ import static ugg.tiles.TileMatrix.EMPTY_CELL;
 import static ugg.tiles.TileMatrix.NULL_CELL;
 
 public class TileMatrixTest {
-    private static TileMatrix tileMatrix;
-    private static final boolean SHOULD_PRINT_MATRICES = true;
-
     @BeforeAll
     public static void initializeTilesAndColors() {
         tileA = new Tile("A");
         tileB = new Tile("B");
         tileC = new Tile("C");
         tileD = new Tile("D");
-        emptyTile = new Tile();
-        nullContentsTile = new Tile((String) null);
 
         red = ColorMaker.make(SimpleColor.RED);
         green = ColorMaker.make(SimpleColor.GREEN);
@@ -38,29 +34,37 @@ public class TileMatrixTest {
         yellowTile = new Tile(yellow);
         magentaTile = new Tile(magenta);
         mergedColorTile = new Tile(mergedColor);
-        uncoloredTile = new Tile((Color) null);
     }
 
-    private static Tile tileA, tileB, tileC, tileD, emptyTile, nullContentsTile;
+    @BeforeEach
+    public void resetExceptionThrownStatus() {
+        exceptionWasThrown = false;
+    }
+
+    // Initialize as true for matrices to display in the console.
+    private final boolean SHOULD_PRINT_MATRICES = true;
+
+    private static TileMatrix tileMatrix;
+    private boolean exceptionWasThrown;
+
+    private static Tile tileA, tileB, tileC, tileD;
+    private static Tile redTile, greenTile, yellowTile, magentaTile, mergedColorTile;
 
     private static Color red, green, yellow, magenta, mergedColor;
-    private static Tile redTile, greenTile, yellowTile, magentaTile, mergedColorTile, uncoloredTile;
+
 
     private void tileMatrixSizeOne() {
         initializeTileMatrix(1, 1);
     }
     private void tileMatrixSizeOne(Tile tileToSet) {
-        tileMatrixSizeOne();
-        tileMatrix.setTile(tileToSet, 0, 0);
+        initializeTileMatrix(new Tile[][]{{tileToSet}});
     }
 
     private void tileMatrixSizeTwoAcross() {
         initializeTileMatrix(1, 2);
     }
     private void tileMatrixSizeTwoAcross(Tile firstTile, Tile secondTile) {
-        tileMatrixSizeTwoAcross();
-        tileMatrix.setTile(firstTile, 0, 0);
-        tileMatrix.setTile(secondTile, 0, 1);
+        initializeTileMatrix(new Tile[][]{{firstTile, secondTile}});
     }
 
     private void initializeTileMatrix(int rows, int columns) {
@@ -73,110 +77,149 @@ public class TileMatrixTest {
 
     @Test
     public void test_constructor_nonPositiveValuesException_rows() {
-        boolean errorWasThrown = false;
-
         try { tileMatrix = new TileMatrix(-1, 2); }
         catch (IllegalArgumentException arraySizesCannotBeNonpositiveException) {
-            errorWasThrown = true;
+            exceptionWasThrown = true;
         }
 
-        Assertions.assertTrue(errorWasThrown);
+        Assertions.assertTrue(exceptionWasThrown);
     }
 
     @Test
     public void test_constructor_nonPositiveValuesException_columns() {
-        boolean errorWasThrown = false;
-
         try { tileMatrix = new TileMatrix(2, 0); }
         catch (IllegalArgumentException arraySizesCannotBeNonpositiveException) {
-            errorWasThrown = true;
+            exceptionWasThrown = true;
         }
 
-        Assertions.assertTrue(errorWasThrown);
+        Assertions.assertTrue(exceptionWasThrown);
     }
 
     @Test
     public void test_constructor_nonPositiveValuesException_both() {
-        boolean errorWasThrown = false;
-
         try { tileMatrix = new TileMatrix(0, -1); }
         catch (IllegalArgumentException arraySizesCannotBeNonpositiveException) {
-            errorWasThrown = true;
+            exceptionWasThrown = true;
         }
 
-        Assertions.assertTrue(errorWasThrown);
+        Assertions.assertTrue(exceptionWasThrown);
     }
 
     @Test
     public void test_constructor_nonPositiveValuesException_noException() {
-        boolean errorWasThrown = false;
-
         try { tileMatrixSizeOne(); }
         catch (IllegalArgumentException arraySizesCannotBeNonpositiveException) {
-            errorWasThrown = true;
+            exceptionWasThrown = true;
         }
 
-        Assertions.assertFalse(errorWasThrown);
+        Assertions.assertFalse(exceptionWasThrown);
     }
 
 
     @Test
-    public void test_setAndGetTile_oneTile() {
-        tileMatrixSizeOne(tileA);
-        Assertions.assertEquals(tileA, tileMatrix.getTile(0, 0));
-    }
-
-    @Test
-    public void test_setAndGetTile_twoTiles() {
+    public void test_swapContents() {
         tileMatrixSizeTwoAcross(tileA, tileB);
-
-        Assertions.assertEquals(tileA, tileMatrix.getTile(0, 0));
-        Assertions.assertEquals(tileB, tileMatrix.getTile(0, 1));
+        swapAndAssertAndReset(tileA, tileB);
     }
 
     @Test
-    public void test_getTile_empty() {
-        tileMatrixSizeOne();
-        Assertions.assertTrue(tileMatrix.getTile(0, 0).isEmpty());
+    public void test_swapContents_tileNotInMatrixException() {
+        try {
+            tileMatrixSizeTwoAcross();
+            swapAndAssertAndReset(tileA, tileB);
+
+            if (SHOULD_PRINT_MATRICES)
+                System.out.printf("Back to Normal:%n%s%n", tileMatrix);
+        }
+        catch (IllegalArgumentException tileNotInMatrixException) {
+            exceptionWasThrown = true;
+        }
+
+        Assertions.assertTrue(exceptionWasThrown);
+    }
+
+    private void swapAndAssertAndReset(Tile swapTile1, Tile swapTile2) {
+        if (SHOULD_PRINT_MATRICES)
+            System.out.printf("Before Swap:%n%s%n", tileMatrix);
+
+        swapAndAssert(swapTile1, swapTile2);
+
+        if (SHOULD_PRINT_MATRICES)
+            System.out.printf("After Swap:%n%s%n", tileMatrix);
+
+        swapAndAssert(swapTile1, swapTile2);
+
+        if (SHOULD_PRINT_MATRICES)
+            System.out.printf("After Reset:%n%s%n", tileMatrix);
+    }
+    private void swapAndAssert(Tile swapTile1, Tile swapTile2) {
+        String swapTile1Contents = swapTile1.toString();
+        String swapTile2Contents = swapTile2.toString();
+
+        tileMatrix.swapContents(swapTile1, swapTile2);
+
+        Assertions.assertEquals(swapTile1Contents, swapTile2.toString());
+        Assertions.assertEquals(swapTile2Contents, swapTile1.toString());
     }
 
 
     @Test
-    public void test_addTile_true() {
-        tileMatrixSizeOne();
-        Assertions.assertTrue(tileMatrix.addTile(tileA, 0, 0));
+    public void test_transferContents_true() {
+        Tile origin = new Tile("@", ColorMaker.make(SimpleColor.CYAN));
+        Tile destination = new Tile();
+
+        tileMatrixSizeTwoAcross(origin, destination);
+        transferAndAssert(origin, destination, true);
     }
 
     @Test
-    public void test_addTile_false() {
-        tileMatrixSizeOne();
-
-        tileMatrix.setTile(tileA, 0, 0);
-        Assertions.assertFalse(tileMatrix.addTile(tileB, 0, 0));
-    }
-
-
-    @Test
-    public void test_removeTile_returnNull() {
-        tileMatrixSizeOne();
-        Assertions.assertNull(tileMatrix.removeTile(0, 0));
+    public void test_transferContents_false() {
+        tileMatrixSizeTwoAcross(tileA, tileB);
+        transferAndAssert(tileA, tileB, false);
     }
 
     @Test
-    public void test_removeTile_returnTileA() {
-        tileMatrixSizeOne(tileA);
+    public void test_transferContents_falseWithEmptyOrigin() {
+        Tile emptyTile = new Tile();
 
-        Tile actualTileRemoved = tileMatrix.removeTile(0, 0);
-        Assertions.assertEquals(tileA, actualTileRemoved);
+        tileMatrixSizeTwoAcross(emptyTile, tileB);
+        transferAndAssert(emptyTile, tileB, false);
     }
 
     @Test
-    public void test_removeTile_ensureIndexIsNowEmptyTile() {
-        tileMatrixSizeOne(tileA);
-        Assertions.assertEquals(tileA, tileMatrix.getTile(0, 0));
+    public void test_transferContents_tileNotInMatrixException() {
+        try {
+            tileMatrixSizeTwoAcross();
+            transferAndAssert(tileA, tileB, false);
+        }
+        catch (IllegalArgumentException tileNotInMatrixException) {
+            exceptionWasThrown = true;
+        }
 
-        tileMatrix.removeTile(0, 0);
-        Assertions.assertEquals(tileMatrix.getTile(0, 0), emptyTile);
+        Assertions.assertTrue(exceptionWasThrown);
+    }
+
+    private void transferAndAssert(Tile origin, Tile destination, boolean expectedResult) {
+        if (SHOULD_PRINT_MATRICES)
+            System.out.printf("Before Transfer:%n%s%n", tileMatrix);
+
+        boolean transferIsSuccessful;
+        transferIsSuccessful = tileMatrix.transferContents(origin, destination);
+
+        Assertions.assertEquals(expectedResult, transferIsSuccessful);
+
+        if (transferIsSuccessful) {
+            if (SHOULD_PRINT_MATRICES)
+                System.out.printf("After Transfer:%n%s%n", tileMatrix);
+
+            tileMatrix.transferContents(destination, origin);
+
+            if (SHOULD_PRINT_MATRICES)
+                System.out.printf("After Reset:%n%s%n", tileMatrix);
+        }
+        else
+            if (SHOULD_PRINT_MATRICES)
+                System.out.printf("Transfer Failed!%n%s%n", tileMatrix);
     }
 
 
@@ -330,7 +373,7 @@ public class TileMatrixTest {
         Tile[][] tilesForMatrix = {
                 {tileA, tileB, tileC, tileD},
                 {redTile, greenTile, yellowTile, magentaTile},
-                {emptyTile, nullContentsTile, uncoloredTile, mergedColorTile}
+                {new Tile(), new Tile((String) null), new Tile((Color) null), mergedColorTile}
         };
         initializeTileMatrix(tilesForMatrix);
 

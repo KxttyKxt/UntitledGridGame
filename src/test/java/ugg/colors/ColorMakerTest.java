@@ -1,9 +1,16 @@
 package ugg.colors;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ColorMakerTest {
+    @BeforeEach
+    public void resetExceptionThrownStatus() {
+        exceptionWasThrown = false;
+    }
+    private boolean exceptionWasThrown;
+
     @Test
     public void test_make_simple() {
         Color color = ColorMaker.make(SimpleColor.RED);
@@ -60,81 +67,69 @@ public class ColorMakerTest {
 
 
     @Test
-    public void test_make_id_invalid_tooHigh() {
-        boolean errorThrown = false;
-
+    public void test_make_id_colorIDWasOutOfRangeException_above() {
         try {
             ColorMaker.make(300, true);
         }
         catch (IllegalArgumentException colorIDWasOutOfRangeException) {
-            errorThrown = true;
+            exceptionWasThrown = true;
         }
-        finally {
-            Assertions.assertTrue(errorThrown);
-        }
+
+        Assertions.assertTrue(exceptionWasThrown);
     }
 
     @Test
-    public void test_make_id_invalid_tooLow() {
-        boolean errorThrown = false;
-
+    public void test_make_id_colorIDWasOutOfRangeException_below() {
         try {
             ColorMaker.make(-3, true);
         }
         catch (IllegalArgumentException colorIDWasOutOfRangeException) {
-            errorThrown = true;
+            exceptionWasThrown = true;
         }
-        finally {
-            Assertions.assertTrue(errorThrown);
-        }
+
+        Assertions.assertTrue(exceptionWasThrown);
     }
 
     @Test
-    public void test_make_rgb_invalid_outOfRange() {
+    public void test_make_rgb_rgbValueOutOfRangeException() {
         int[] rgb = {300, -3, 50};
-        boolean errorThrown = false;
 
         try {
             ColorMaker.make(rgb, true);
         }
         catch (IllegalArgumentException rgbValueOutOfRangeException) {
-            errorThrown = true;
+            exceptionWasThrown = true;
         }
-        finally {
-            Assertions.assertTrue(errorThrown);
-        }
+
+        Assertions.assertTrue(exceptionWasThrown);
     }
 
     @Test
-    public void test_make_rgbInvalid_arrayTooLong() {
+    public void test_make_rgb_arrayTooLongException() {
         int[] rgb = {200, 100, 50, 2};
-        boolean errorThrown = false;
 
         try {
             ColorMaker.make(rgb, true);
         }
         catch (IllegalArgumentException arrayTooLongException) {
-            errorThrown = true;
+            exceptionWasThrown = true;
         }
-        finally {
-            Assertions.assertTrue(errorThrown);
-        }
+
+        Assertions.assertTrue(exceptionWasThrown);
     }
 
     @Test
-    public void test_make_rgbInvalid_arrayTooShort() {
+    public void test_make_rgb_arrayTooShortException() {
         int[] rgb = {200, 100};
-        boolean errorThrown = false;
 
         try {
             ColorMaker.make(rgb, true);
         }
         catch (IllegalArgumentException arrayTooShortException) {
-            errorThrown = true;
+            exceptionWasThrown = true;
         }
-        finally {
-            Assertions.assertTrue(errorThrown);
-        }
+
+        Assertions.assertTrue(exceptionWasThrown);
     }
 
 }

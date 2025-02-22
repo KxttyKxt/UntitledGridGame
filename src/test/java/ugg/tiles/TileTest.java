@@ -56,6 +56,11 @@ public class TileTest {
         swapWithTileAAndTest(nullContentsTile);
     }
 
+    @Test
+    public void test_swapContents_withColoredTile() {
+        swapWithTileAAndTest(new Tile(red));
+    }
+
     private void swapWithTileAAndTest(Tile toSwapWith) {
         String tileAContents = tileA.toString();
         String tileToSwapWithContents = toSwapWith.toString();
@@ -83,6 +88,7 @@ public class TileTest {
         resetTransferTiles();
         transferWithTransferTileAAndTest(toTransferTo, expectedResult);
     }
+
     private void transferWithTransferTileAAndTest(Tile targetTile, boolean expectedResult) {
         String transferTileAContentsBefore = transferTileA.toString();
         String targetTileContentsBefore = targetTile.toString();
@@ -206,8 +212,7 @@ public class TileTest {
     @Test
     public void test_equals_same() {
         // Applies coverage to Tile#equals()
-        //noinspection EqualsWithItself
-        Assertions.assertSame(tileA, tileA);
+        Assertions.assertEquals(tileA, tileA);
     }
 
     @Test
