@@ -22,20 +22,32 @@ public class TileMatrix {
         matrix = tilesForMatrix;
     }
 
-
-    public void swapContents(Tile tile1, Tile tile2) {
+    public void swapContents(int[] tile1RowCol, int[] tile2RowCol) {
+        swapContents(
+                matrix[tile1RowCol[0]][tile1RowCol[1]],
+                matrix[tile2RowCol[0]][tile2RowCol[1]]
+        );
+    }
+    void swapContents(Tile tile1, Tile tile2) {
         confirmInMatrix(tile1);
         confirmInMatrix(tile2);
 
         tile1.swapContentsWith(tile2);
     }
 
-    public boolean transferContents(Tile origin, Tile destination) {
+    public boolean transferContents(int[] tile1RowCol, int[] tile2RowCol) {
+        return transferContents(
+                matrix[tile1RowCol[0]][tile1RowCol[1]],
+                matrix[tile2RowCol[0]][tile2RowCol[1]]
+        );
+    }
+    boolean transferContents(Tile origin, Tile destination) {
         confirmInMatrix(origin);
         confirmInMatrix(destination);
 
         return origin.transferContentsTo(destination);
     }
+
 
     private void confirmInMatrix(Tile tile) {
         if (!matrixContains(tile))

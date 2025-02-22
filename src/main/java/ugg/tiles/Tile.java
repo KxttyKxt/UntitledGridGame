@@ -9,6 +9,8 @@ import java.util.Objects;
 
 public class Tile {
     static final String COLORED_CONTENTS = "#";
+    static final String EMPTY_CONTENTS_DISPLAY =
+            ColorMaker.make(SimpleColor.BRIGHT_BLACK).colorize(".");
 
     private String contents;
     private Color color;
@@ -32,7 +34,12 @@ public class Tile {
     }
 
 
-    public void swapContentsWith(Tile that) {
+    boolean isEmpty() {
+        return this.contents.isEmpty();
+    }
+
+
+    void swapContentsWith(Tile that) {
         String temp = this.contents;
         this.contents = that.contents;
         that.contents = temp;
@@ -42,21 +49,16 @@ public class Tile {
         that.color = tempColor;
     }
 
-    public boolean transferContentsTo(Tile that) {
+    boolean transferContentsTo(Tile that) {
         if (that.isEmpty()) {
             this.swapContentsWith(that);
             return true;
         }
         else return false;
     }
-    public boolean isEmpty() {
-        return this.contents.isEmpty();
-    }
 
 
-    static final String EMPTY_CONTENTS_DISPLAY = ColorMaker.make(SimpleColor.BRIGHT_BLACK).colorize(".");
-
-    public String display() {
+    String display() {
         return gatherDisplayFromContents();
     }
 
