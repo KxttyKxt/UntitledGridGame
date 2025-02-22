@@ -6,13 +6,8 @@ import ugg.colors.SimpleColor;
 
 
 public class Tile {
-
-    // =============== Tile =================
-
-    // Tile contents can never be null, but their colors can.
-    // A null space in a matrix is a Tile that is itself null.
-
     private String contents;
+    private Color color;
 
     public Tile() {
         contents = "";
@@ -27,6 +22,7 @@ public class Tile {
         this.contents = contents;
         this.color = color;
     }
+
 
     public void swapContentsWith(Tile that) {
         String temp = this.contents;
@@ -45,12 +41,7 @@ public class Tile {
         return this.contents.isEmpty();
     }
 
-    // ======================================
 
-
-    // ============== Display ===============
-
-    private Color color;
     static final String EMPTY_CONTENTS_DISPLAY = ColorMaker.make(SimpleColor.BRIGHT_BLACK).colorize(".");
 
     public String display() {
@@ -70,7 +61,6 @@ public class Tile {
         }
     }
 
-    // ======================================
 
     @Override
     public String toString() {

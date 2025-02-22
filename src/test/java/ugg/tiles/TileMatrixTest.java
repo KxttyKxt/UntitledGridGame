@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import ugg.colors.ColorMaker;
 import ugg.colors.SimpleColor;
 
-import static ugg.tiles.PresetTestingTiles.*;
+import static ugg.tiles.PresetTestingResources.*;
 import static ugg.tiles.TileMatrix.cellForEmptyTileDisplay;
 
 public class TileMatrixTest {

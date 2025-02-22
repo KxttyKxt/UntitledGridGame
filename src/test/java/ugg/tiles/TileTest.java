@@ -3,10 +3,8 @@ package ugg.tiles;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ugg.colors.Color;
-import ugg.colors.ColorMaker;
-import ugg.colors.SimpleColor;
 
-import static ugg.tiles.PresetTestingTiles.*;
+import static ugg.tiles.PresetTestingResources.*;
 
 public class TileTest {
     @Test
@@ -24,72 +22,94 @@ public class TileTest {
         swapWithTileAAndTest(nullTile);
     }
 
-    private void swapWithTileAAndTest(Tile tile2) {
-        String tile1Contents = tileA.toString();
-        String tile2Contents = tile2.toString();
+    private void swapWithTileAAndTest(Tile toSwapWith) {
+        String tileAContents = tileA.toString();
+        String tileToSwapWithContents = toSwapWith.toString();
 
-        tileA.swapContentsWith(tile2);
+        tileA.swapContentsWith(toSwapWith);
 
-        Assertions.assertEquals(tile1Contents, tile2.toString());
-        Assertions.assertEquals(tile2Contents, PresetTestingTiles.tileA.toString());
+        Assertions.assertEquals(tileAContents, toSwapWith.toString());
+        Assertions.assertEquals(tileToSwapWithContents, PresetTestingResources.tileA.toString());
 
-        tileA.swapContentsWith(tile2);
+        tileA.swapContentsWith(toSwapWith);
     }
 
 
     @Test
     public void test_transferContents_to_true() {
-        resetTileTransfers();
-
-        Assertions.assertTrue(transferTileA.transferContentsTo(emptyTransferTile));
-
-        Assertions.assertEquals("", transferTileA.toString());
-        Assertions.assertEquals("A", emptyTransferTile.toString());
+        resetTransferTilesAndRunTransferTest(emptyTransferTile, true);
     }
 
     @Test
     public void test_transferContents_to_false() {
+        resetTransferTilesAndRunTransferTest(transferTileB, false);
+    }
+
+    private void resetTransferTilesAndRunTransferTest(Tile toTransferTo, boolean expectedResult) {
         resetTileTransfers();
-
-        Assertions.assertFalse(transferTileA.transferContentsTo(transferTileB));
-
-        Assertions.assertEquals("A", transferTileA.toString());
-        Assertions.assertEquals("B", transferTileB.toString());
+        transferWithTransferTileAAndTest(toTransferTo, expectedResult);
     }
+    private void transferWithTransferTileAAndTest(Tile targetTile, boolean expectedResult) {
+        String transferTileAContentsBefore = transferTileA.toString();
+        String targetTileContentsBefore = targetTile.toString();
 
+        boolean transferredSuccessfully = transferTileA.transferContentsTo(targetTile);
+        Assertions.assertEquals(expectedResult, transferredSuccessfully);
+
+        String transferTileAContentsAfter = transferTileA.toString();
+        String targetTileContentsAfter = targetTile.toString();
+
+        if (transferredSuccessfully) {
+            Assertions.assertEquals(transferTileAContentsBefore, targetTileContentsAfter);
+            Assertions.assertEquals(targetTileContentsBefore, transferTileAContentsAfter);
+        }
+        else {
+            Assertions.assertEquals(transferTileAContentsBefore, transferTileAContentsAfter);
+            Assertions.assertEquals(targetTileContentsBefore, targetTileContentsAfter);
+        }
+    }
     private void resetTileTransfers() {
-        transferTileA = new Tile("A");
-        transferTileB = new Tile("B");
-        emptyTransferTile = new Tile("");
+        boolean transferTileAIsCorrect;
+        boolean transferTileBIsCorrect;
+        boolean emptyTransferTileIsCorrect;
+        boolean resetComplete;
+
+        while (true) {
+            transferTileAIsCorrect = transferTileA.toString().equals("A");
+            transferTileBIsCorrect = transferTileB.toString().equals("B");
+            emptyTransferTileIsCorrect = emptyTransferTile.toString().isEmpty();
+
+            resetComplete = transferTileAIsCorrect
+                            && transferTileBIsCorrect
+                            && emptyTransferTileIsCorrect;
+
+            if (resetComplete) {
+                break;
+            }
+
+
+            if (!transferTileAIsCorrect) {
+                transferTileA.swapContentsWith(
+                        (transferTileB.toString().equals("A"))
+                        ? transferTileB
+                        : emptyTransferTile
+                );
+            }
+
+            if (!transferTileBIsCorrect) {
+                transferTileB.swapContentsWith(
+                        (transferTileA.toString().equals("B"))
+                        ? transferTileA
+                        : emptyTransferTile
+                );
+            }
+        }
     }
-    private Tile transferTileA, transferTileB, emptyTransferTile;
 
-    @Test
-    public void test_displayContents_singleColorFG() {
-        Color tileColor = ColorMaker.make(SimpleColor.RED);
-        Tile coloredTile = new Tile("#", tileColor);
+    private final Tile transferTileA = new Tile("A");
+    private final Tile transferTileB = new Tile("B");
+    private final Tile emptyTransferTile = new Tile();
 
-        String expectedDisplay = String.format(tileColor.colorize("#"));
-        String actualDisplay = coloredTile.display();
-
-        Assertions.assertEquals(expectedDisplay, actualDisplay);
-    }
-
-    @Test
-    public void test_displayContents_singleColorBG() {
-        String expectedDisplay = String.format(BG_RED.colorize("#"));
-        String actualDisplay = bgRedTile.display();
-
-        Assertions.assertEquals(expectedDisplay, actualDisplay);
-    }
-
-    @Test
-    public void test_displayContents_mergedColor() {
-        String expectedDisplay = String.format(MERGED_COLOR.colorize(COLORED_CONTENTS));
-        String actualDisplay = mergedColorTile.display();
-
-        Assertions.assertEquals(expectedDisplay, actualDisplay);
-    }
 
     @Test
     public void test_displayContents_emptyContents() {
@@ -108,9 +128,30 @@ public class TileTest {
     }
 
     @Test
+    public void test_displayContents_singleColorFG() {
+        testColoredSymbolEqualsColoredTileDisplay(RED, redTile);
+    }
+
+    @Test
+    public void test_displayContents_singleColorBG() {
+        testColoredSymbolEqualsColoredTileDisplay(BG_RED, bgRedTile);
+    }
+
+    @Test
+    public void test_displayContents_mergedColor() {
+        testColoredSymbolEqualsColoredTileDisplay(MERGED_COLOR, mergedColorTile);
+    }
+
+    @Test
     public void test_displayContents_nullColor() {
-        String expectedDisplay = "#";
-        String actualDisplay = uncoloredTile.display();
+        testColoredSymbolEqualsColoredTileDisplay(null, uncoloredTile);
+    }
+
+    private void testColoredSymbolEqualsColoredTileDisplay(Color color, Tile tile) {
+        String expectedDisplay = (color != null)
+                ? color.colorize(COLORED_CONTENTS)
+                : COLORED_CONTENTS;
+        String actualDisplay = tile.display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
     }
@@ -118,19 +159,16 @@ public class TileTest {
 
     @Test
     public void test_toString_contents() {
-        Tile notNullTile = new Tile("test");
-        Assertions.assertEquals("test", notNullTile.toString());
+        Assertions.assertEquals("A", tileA.toString());
     }
 
     @Test
     public void test_toString_empty() {
-        Tile emptyTile = new Tile("");
         Assertions.assertEquals("", emptyTile.toString());
     }
 
     @Test
     public void test_toString_nullWhichMeansEmpty() {
-        Tile nullTile = new Tile(null);
         Assertions.assertEquals("", nullTile.toString());
     }
 
@@ -138,38 +176,37 @@ public class TileTest {
     @Test
     public void test_isIdenticalTo_true_noColor() {
         Tile newTileA = new Tile("A");
-        Assertions.assertTrue(tileA.isIdenticalTo(newTileA));
-        Assertions.assertTrue(newTileA.isIdenticalTo(tileA));
+        testIsIdenticalToBiconditionally(tileA, newTileA, true);
     }
 
     @Test
     public void test_isIdenticalTo_true_yesColor() {
         Tile newRedTile = new Tile(COLORED_CONTENTS, RED);
-        Assertions.assertTrue(redTile.isIdenticalTo(newRedTile));
-        Assertions.assertTrue(newRedTile.isIdenticalTo(redTile));
+        testIsIdenticalToBiconditionally(redTile, newRedTile, true);
     }
 
     @Test
     public void test_isIdenticalTo_false_oneColorIsNull() {
-        Assertions.assertFalse(tileA.isIdenticalTo(redTile));
-        Assertions.assertFalse(redTile.isIdenticalTo(tileA));
+        testIsIdenticalToBiconditionally(redTile, tileA, false);
     }
 
     @Test
     public void test_isIdenticalTo_false_contentsDoNotMatch() {
-        Assertions.assertFalse(tileA.isIdenticalTo(tileB));
-        Assertions.assertFalse(tileB.isIdenticalTo(tileA));
+        testIsIdenticalToBiconditionally(tileA, tileB, false);
     }
 
     @Test
     public void test_isIdenticalTo_false_colorsDoNotMatch() {
-        Assertions.assertFalse(redTile.isIdenticalTo(greenTile));
-        Assertions.assertFalse(greenTile.isIdenticalTo(redTile));
+        testIsIdenticalToBiconditionally(redTile, greenTile, false);
     }
 
     @Test
     public void test_isIdenticalTo_false_allDoNotMatch() {
-        Assertions.assertFalse(tileA.isIdenticalTo(redTile));
-        Assertions.assertFalse(redTile.isIdenticalTo(tileA));
+        testIsIdenticalToBiconditionally(tileA, redTile, false);
+    }
+
+    private void testIsIdenticalToBiconditionally(Tile tile1, Tile tile2, boolean expectedResult) {
+        Assertions.assertEquals(expectedResult, tile1.isIdenticalTo(tile2));
+        Assertions.assertEquals(expectedResult, tile2.isIdenticalTo(tile1));
     }
 }

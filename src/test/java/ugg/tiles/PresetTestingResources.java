@@ -5,7 +5,7 @@ import ugg.colors.ColorMaker;
 import ugg.colors.ColorMerger;
 import ugg.colors.SimpleColor;
 
-public class PresetTestingTiles {
+public class PresetTestingResources {
 
     static final String COLORED_CONTENTS = "#";
 

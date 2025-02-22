@@ -3,7 +3,9 @@ package ugg.tiles;
 public class TileMatrix {
 
     private final Tile[][] matrix;
-    static final String cellForEmptyTileDisplay = String.format("[ %s ]", Tile.EMPTY_CONTENTS_DISPLAY);
+
+    static final String cellForEmptyTileDisplay =
+            String.format("[ %s ]", Tile.EMPTY_CONTENTS_DISPLAY);
 
     public TileMatrix(int rows, int columns) {
         if (rows <= 0 || columns <= 0)
