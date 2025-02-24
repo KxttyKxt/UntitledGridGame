@@ -1,6 +1,6 @@
 package ugg.tiles;
 
-public class TileMatrix {
+public class TileGrid {
 
     static final String FORMAT_FOR_CELL = "[ %s ]";
     static final String NULL_CELL = " ".repeat(5);
@@ -8,9 +8,9 @@ public class TileMatrix {
 
     private final Tile[][] matrix;
 
-    public TileMatrix(int rows, int columns) {
+    public TileGrid(int rows, int columns) {
         if (rows <= 0 || columns <= 0)
-            throw new IllegalArgumentException("TileMatrix must have at least 1 row and column.");
+            throw new IllegalArgumentException("TileGrid must have at least 1 row and column.");
 
         matrix = new Tile[rows][columns];
 
@@ -18,7 +18,7 @@ public class TileMatrix {
             for (int col = 0; col < columns; col++)
                 matrix[row][col] = new Tile();
     }
-    public TileMatrix(Tile[][] tilesForMatrix) {
+    public TileGrid(Tile[][] tilesForMatrix) {
         matrix = tilesForMatrix;
     }
 
