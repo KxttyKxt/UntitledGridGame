@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 public class ColorTest {
     @Test
-    public void test_colorize_simpleColor() {
+    void test_colorize_simpleColor() {
         Color color = ColorMaker.make(SimpleColor.GREEN);
         String input = "I am green!";
 
@@ -16,7 +16,7 @@ public class ColorTest {
     }
 
     @Test
-    public void test_colorize_colorID() {
+    void test_colorize_colorID() {
         Color color = ColorMaker.make(17, false);
         String input = "I am 8-bit!";
 
@@ -27,7 +27,7 @@ public class ColorTest {
     }
 
     @Test
-    public void test_colorize_rgb() {
+    void test_colorize_rgb() {
         int[] rgb = {200, 100, 50};
         Color color = ColorMaker.make(rgb, false);
         String input = "I am 8-bit!";
@@ -40,19 +40,19 @@ public class ColorTest {
 
 
     @Test
-    public void test_equals_sameExactObject() {
+    void test_equals_sameExactObject() {
         Color color = ColorMaker.make(SimpleColor.RED);
         Assertions.assertEquals(color, color);
     }
 
     @Test
-    public void test_equals_nullComparison() {
+    void test_equals_nullComparison() {
         Color color = ColorMaker.make(SimpleColor.RED);
         Assertions.assertNotEquals(color, null);
     }
 
     @Test
-    public void test_equals_otherClass() {
+    void test_equals_otherClass() {
         // Applies coverage to Color#equals()
         Color color = ColorMaker.make(SimpleColor.RED);
         //noinspection AssertBetweenInconvertibleTypes

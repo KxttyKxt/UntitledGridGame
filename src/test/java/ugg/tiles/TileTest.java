@@ -12,7 +12,7 @@ public class TileTest {
     private static final String baseSymbol = Tile.defaultBaseText.substring(0, 1);
 
     @Test
-    public void test_addContents_true() {
+    void test_addContents_true() {
         Displayable contentsToAdd = new SimpleDisplay("contents", Tile.defaultBaseColor);
 
         Tile tile = new Tile("Tile");
@@ -23,7 +23,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_addContents_false() {
+    void test_addContents_false() {
         Displayable tileBase = Tile.defaultBaseDisplay;
         Displayable tileContents = new SimpleDisplay("Old", Tile.defaultBaseColor);
 
@@ -38,7 +38,7 @@ public class TileTest {
 
 
     @Test
-    public void test_swapContentsWith_firstHasContents() {
+    void test_swapContentsWith_firstHasContents() {
         Tile tileA = new Tile("A");
         Tile tileB = new Tile("B");
 
@@ -54,7 +54,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_swapContentsWith_secondHasContents() {
+    void test_swapContentsWith_secondHasContents() {
         Tile tileA = new Tile("A");
         Tile tileB = new Tile("B");
 
@@ -70,7 +70,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_swapContentsWith_bothHaveContents() {
+    void test_swapContentsWith_bothHaveContents() {
         Tile tileA = new Tile("A");
         Tile tileB = new Tile("B");
 
@@ -87,7 +87,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_swapContentsWith_neitherHaveContents() {
+    void test_swapContentsWith_neitherHaveContents() {
         Tile tileA = new Tile("A");
         Tile tileB = new Tile("B");
 
@@ -102,7 +102,7 @@ public class TileTest {
 
 
     @Test
-    public void test_transferContentsTo_true() {
+    void test_transferContentsTo_true() {
         Tile tileA = new Tile("A");
         Tile tileB = new Tile("B");
 
@@ -112,7 +112,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_transferContentsTo_false_bothHaveContents() {
+    void test_transferContentsTo_false_bothHaveContents() {
         Tile tileA = new Tile("A");
         Tile tileB = new Tile("B");
 
@@ -123,7 +123,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_transferContentsTo_false_neitherHaveContents() {
+    void test_transferContentsTo_false_neitherHaveContents() {
         Tile tileA = new Tile("A");
         Tile tileB = new Tile("B");
 
@@ -131,7 +131,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_transferContentsTo_false_firstHasNoContents() {
+    void test_transferContentsTo_false_firstHasNoContents() {
         Tile tileA = new Tile("A");
         Tile tileB = new Tile("B");
 
@@ -142,7 +142,7 @@ public class TileTest {
 
 
     @Test
-    public void test_display_default() {
+    void test_display_default() {
         String expectedDisplay = Tile.defaultBaseDisplay.display();
         String actualDisplay = new Tile().display();
 
@@ -150,7 +150,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_display_color() {
+    void test_display_color() {
         Color red = ColorMaker.make(SimpleColor.RED);
 
         String expectedDisplay = red.colorize(baseSymbol);
@@ -160,7 +160,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_display_text() {
+    void test_display_text() {
         String expectedDisplay = Tile.defaultBaseColor.colorize("s");
         String actualDisplay = new Tile("string").display();
 
@@ -168,7 +168,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_display_both() {
+    void test_display_both() {
         String tileBaseString = "bwa!";
         Color tileBaseColor = ColorMaker.make(SimpleColor.YELLOW);
 
@@ -179,7 +179,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_display_contents() {
+    void test_display_contents() {
         Tile tile = new Tile();
         String contentsString = "Hiya!";
         Color contentsColor = ColorMaker.make(SimpleColor.GREEN);
@@ -193,19 +193,19 @@ public class TileTest {
 
 
     @Test
-    public void test_equals_true_same() {
+    void test_equals_true_same() {
         Tile tile = new Tile();
         Assertions.assertEquals(tile, tile);
     }
 
     @Test
-    public void test_notEquals_null() {
+    void test_notEquals_null() {
         Tile tile = new Tile();
         Assertions.assertNotEquals(tile, null);
     }
 
     @Test
-    public void test_notEquals_differentClass() {
+    void test_notEquals_differentClass() {
         // For test coverage
         Tile tile = new Tile();
         //noinspection AssertBetweenInconvertibleTypes
@@ -213,21 +213,21 @@ public class TileTest {
     }
 
     @Test
-    public void test_equals_default() {
+    void test_equals_default() {
         Tile tile1 = new Tile();
         Tile tile2 = new Tile();
         Assertions.assertEquals(tile1, tile2);
     }
 
     @Test
-    public void test_equals_onlyText() {
+    void test_equals_onlyText() {
         Tile tile1 = new Tile("text");
         Tile tile2 = new Tile("text");
         Assertions.assertEquals(tile1, tile2);
     }
 
     @Test
-    public void test_equals_onlyColors() {
+    void test_equals_onlyColors() {
         Color red = ColorMaker.make(SimpleColor.RED);
         Tile tile1 = new Tile(red);
         Tile tile2 = new Tile(red);
@@ -235,7 +235,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_equals_both() {
+    void test_equals_both() {
         Color red = ColorMaker.make(SimpleColor.RED);
         Tile tile1 = new Tile("text", red);
         Tile tile2 = new Tile("text", red);
@@ -243,7 +243,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_equals_nullText() {
+    void test_equals_nullText() {
         Color red = ColorMaker.make(SimpleColor.RED);
         Tile tile1 = new Tile(null, red);
         Tile tile2 = new Tile(null, red);
@@ -251,14 +251,14 @@ public class TileTest {
     }
 
     @Test
-    public void test_equals_nullColor() {
+    void test_equals_nullColor() {
         Tile tile1 = new Tile("text", null);
         Tile tile2 = new Tile("text", null);
         Assertions.assertEquals(tile1, tile2);
     }
 
     @Test
-    public void test_equals_bothNull() {
+    void test_equals_bothNull() {
         Tile tile1 = new Tile((String) null, null);
         Tile tile2 = new Tile((String) null, null);
         Assertions.assertEquals(tile1, tile2);
@@ -267,28 +267,28 @@ public class TileTest {
 
 
     @Test
-    public void test_notEquals_onlyText() {
+    void test_notEquals_onlyText() {
         Tile tile1 = new Tile("this");
         Tile tile2 = new Tile("that");
         Assertions.assertNotEquals(tile1, tile2);
     }
 
     @Test
-    public void test_notEquals_onlyColors() {
+    void test_notEquals_onlyColors() {
         Tile tile1 = new Tile(ColorMaker.make(SimpleColor.RED));
         Tile tile2 = new Tile(ColorMaker.make(SimpleColor.YELLOW));
         Assertions.assertNotEquals(tile1, tile2);
     }
 
     @Test
-    public void test_notEquals_both() {
+    void test_notEquals_both() {
         Tile tile1 = new Tile("this", ColorMaker.make(SimpleColor.RED));
         Tile tile2 = new Tile("that", ColorMaker.make(SimpleColor.YELLOW));
         Assertions.assertNotEquals(tile1, tile2);
     }
 
     @Test
-    public void test_notEquals_nullText() {
+    void test_notEquals_nullText() {
         Color red = ColorMaker.make(SimpleColor.RED);
         Tile tile1 = new Tile(null, red);
         Tile tile2 = new Tile("not null!", red);
@@ -296,14 +296,14 @@ public class TileTest {
     }
 
     @Test
-    public void test_notEquals_nullColor() {
+    void test_notEquals_nullColor() {
         Tile tile1 = new Tile("text", null);
         Tile tile2 = new Tile("text", ColorMaker.make(SimpleColor.YELLOW));
         Assertions.assertNotEquals(tile1, tile2);
     }
 
     @Test
-    public void test_notEquals_bothNull() {
+    void test_notEquals_bothNull() {
         Tile tile1 = new Tile((String) null, null);
         Tile tile2 = new Tile("not null!", ColorMaker.make(SimpleColor.YELLOW));
         Assertions.assertNotEquals(tile1, tile2);
@@ -311,7 +311,7 @@ public class TileTest {
 
 
     @Test
-    public void test_equals_contents_both() {
+    void test_equals_contents_both() {
         Tile tile1 = new Tile();
         Tile tile2 = new Tile();
 
@@ -322,7 +322,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_equals_contents_null() {
+    void test_equals_contents_null() {
         Tile tile1 = new Tile();
         Tile tile2 = new Tile();
 
@@ -330,7 +330,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_notEquals_contents_bothButDiff() {
+    void test_notEquals_contents_bothButDiff() {
         Tile tile1 = new Tile();
         Tile tile2 = new Tile();
 
@@ -341,7 +341,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_notEquals_contents_firstNull() {
+    void test_notEquals_contents_firstNull() {
         Tile tile1 = new Tile();
         Tile tile2 = new Tile();
 
@@ -351,7 +351,7 @@ public class TileTest {
     }
 
     @Test
-    public void test_notEquals_contents_secondNull() {
+    void test_notEquals_contents_secondNull() {
         Tile tile1 = new Tile();
         Tile tile2 = new Tile();
 

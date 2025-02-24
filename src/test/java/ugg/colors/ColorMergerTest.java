@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 public class ColorMergerTest {
     @Test
-    public void test_merge_singleColorSoSameExactObject() {
+    void test_merge_singleColorSoSameExactObject() {
         Color expectedColor = ColorMaker.make(SimpleColor.GREEN);
         Color[] arrayOfOneColor = new Color[]{expectedColor};
         Color actualColor = ColorMerger.merge(arrayOfOneColor);
@@ -15,7 +15,7 @@ public class ColorMergerTest {
 
 
     @Test
-    public void test_mergeColors_multiple() {
+    void test_mergeColors_multiple() {
         Color fgColor = ColorMaker.make(SimpleColor.MAGENTA);
         Color bgColor = ColorMaker.make(SimpleColor.BG_BLUE);
 
@@ -30,7 +30,7 @@ public class ColorMergerTest {
 
 
     @Test
-    public void test_deduplicateColors_onePairWithNonDuplicate() {
+    void test_deduplicateColors_onePairWithNonDuplicate() {
         Color[] colors = {
                 ColorMaker.make(SimpleColor.RED),
                 ColorMaker.make(SimpleColor.RED),
@@ -45,7 +45,7 @@ public class ColorMergerTest {
     }
 
     @Test
-    public void test_deduplicateColors_onlyOneDuplicatePair() {
+    void test_deduplicateColors_onlyOneDuplicatePair() {
         Color[] colors = {
                 ColorMaker.make(SimpleColor.RED),
                 ColorMaker.make(SimpleColor.RED)
@@ -59,7 +59,7 @@ public class ColorMergerTest {
     }
 
     @Test
-    public void test_deduplicateColors_twoDuplicatePairs() {
+    void test_deduplicateColors_twoDuplicatePairs() {
         Color[] colors = {
                 ColorMaker.make(SimpleColor.RED),
                 ColorMaker.make(SimpleColor.RED),
@@ -76,7 +76,7 @@ public class ColorMergerTest {
     }
 
     @Test
-    public void test_deduplicateColors_noPairButHasNull() {
+    void test_deduplicateColors_noPairButHasNull() {
         Color[] colors = {
                 ColorMaker.make(SimpleColor.RED),
                 null
@@ -90,7 +90,7 @@ public class ColorMergerTest {
     }
 
     @Test
-    public void test_deduplicateColors_onePairButHasNull() {
+    void test_deduplicateColors_onePairButHasNull() {
         Color[] colors = {
                 ColorMaker.make(SimpleColor.RED),
                 ColorMaker.make(SimpleColor.RED),

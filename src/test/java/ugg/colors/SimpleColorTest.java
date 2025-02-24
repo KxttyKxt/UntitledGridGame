@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 public class SimpleColorTest {
     @Test
-    public void test_toColorID_batchTest() {
+    void test_toColorID_batchTest() {
         int[] correctIDs = {
                 30,  31,  32,  33,  34,  35,  36,  37,
                 90,  91,  92,  93,  94,  95,  96,  97,
