@@ -1,7 +1,6 @@
 package ugg.tiles;
 
 public class TileGrid {
-
     static final String FORMAT_FOR_CELL = "[ %s ]";
     static final String NULL_CELL = " ".repeat(5);
     static final String EMPTY_CELL = String.format(FORMAT_FOR_CELL, new Tile().display());
@@ -28,7 +27,7 @@ public class TileGrid {
                 matrix[tile2RowCol[0]][tile2RowCol[1]]
         );
     }
-    void swapContents(Tile tile1, Tile tile2) {
+    private void swapContents(Tile tile1, Tile tile2) {
         confirmInMatrix(tile1);
         confirmInMatrix(tile2);
 
@@ -41,7 +40,7 @@ public class TileGrid {
                 matrix[tile2RowCol[0]][tile2RowCol[1]]
         );
     }
-    boolean transferContents(Tile origin, Tile destination) {
+    private boolean transferContents(Tile origin, Tile destination) {
         confirmInMatrix(origin);
         confirmInMatrix(destination);
 
@@ -53,7 +52,6 @@ public class TileGrid {
         if (!matrixContains(tile))
             throw new IllegalArgumentException(String.format("Tile %s is not in matrix.", tile));
     }
-
     private boolean matrixContains(Tile tile) {
         for (Tile[] row : matrix)
             for (Tile cell : row)

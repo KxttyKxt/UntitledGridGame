@@ -107,12 +107,12 @@ public class TileGridTest {
     }
 
     @Test
-    void test_swapContents_tileNotInMatrixException() {
+    void test_swapContents_coordsOutOfBoundsException() {
         try {
             tileMatrixSizeTwoAcross();
-            tileGrid.swapContents(new Tile(), new Tile());
+            tileGrid.swapContents(new int[]{0, 0}, new int[]{0, 2});
         }
-        catch (IllegalArgumentException tileNotInMatrixException) {
+        catch (IndexOutOfBoundsException coordsOutOfBoundsException) {
             exceptionWasThrown = true;
         }
 
@@ -154,12 +154,12 @@ public class TileGridTest {
     }
 
     @Test
-    void test_transferContents_tileNotInMatrixException() {
+    void test_transferContents_coordsOutOfBoundsException() {
         try {
             tileMatrixSizeTwoAcross();
-            tileGrid.transferContents(new Tile(), new Tile());
+            tileGrid.transferContents(new int[]{0, 0}, new int[]{0, 2});
         }
-        catch (IllegalArgumentException tileNotInMatrixException) {
+        catch (IndexOutOfBoundsException coordsOutOfBoundsException) {
             exceptionWasThrown = true;
         }
 
