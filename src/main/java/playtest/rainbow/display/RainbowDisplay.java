@@ -1,4 +1,4 @@
-package playtest.display;
+package playtest.rainbow.display;
 
 import ugg.colors.Color;
 import ugg.colors.ColorMaker;

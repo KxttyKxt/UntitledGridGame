@@ -7,7 +7,7 @@ public class ColorMaker {
     // Intentionally package-private
     static final String ansiReset = "\u001B[0m";
 
-    // Simple Colors, 8-16
+    // Simple Colors, 1-bit/2-bit
     public static Color make(SimpleColor simpleColor) {
         return new Color(parse(simpleColor));
     }

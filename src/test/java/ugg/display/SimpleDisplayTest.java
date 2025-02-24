@@ -1,10 +1,9 @@
-package ugg.interfaces;
+package ugg.display;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ugg.colors.ColorMaker;
 import ugg.colors.SimpleColor;
-import ugg.display.SimpleDisplay;
 
 public class SimpleDisplayTest {
     @Test

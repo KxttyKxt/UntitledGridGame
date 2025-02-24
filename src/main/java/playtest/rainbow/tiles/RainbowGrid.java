@@ -1,4 +1,4 @@
-package playtest.tiles;
+package playtest.rainbow.tiles;
 
 import ugg.tiles.Tile;
 import ugg.tiles.TileGrid;

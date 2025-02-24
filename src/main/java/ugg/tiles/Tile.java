@@ -8,10 +8,10 @@ import ugg.display.SimpleDisplay;
 
 public class Tile implements Displayable {
 
+    // Intentionally package-private
     static final String defaultBaseText = ".empty";
     static final Color defaultBaseColor = ColorMaker.make(SimpleColor.BRIGHT_BLACK);
-    static final Displayable defaultBaseDisplay = new SimpleDisplay(defaultBaseText, defaultBaseColor);
-
+    protected static final Displayable defaultBaseDisplay = new SimpleDisplay(defaultBaseText, defaultBaseColor);
 
     private final Displayable base;
     private Displayable contents;
@@ -64,7 +64,6 @@ public class Tile implements Displayable {
             this.contents = null;
         }
     }
-
     boolean transferContentsTo(Tile that) {
         if (!this.contentsAreEmpty() && that.contentsAreEmpty()) {
             this.swapContentsWith(that);
@@ -72,7 +71,6 @@ public class Tile implements Displayable {
         }
         else return false;
     }
-
 
     boolean contentsAreEmpty() {
         return contents == null;

@@ -1,11 +1,11 @@
-package playtest;
+package playtest.rainbow;
 
-import playtest.tiles.RainbowGrid;
+import playtest.rainbow.tiles.RainbowGrid;
 import ugg.tiles.TileGrid;
 
 import java.util.Scanner;
 
-public class MainRainbow {
+public class Main {
     public static void main(String[] args) {
         Scanner consoleScanner = new Scanner(System.in);
         TileGrid rainbowMatrix = new RainbowGrid();

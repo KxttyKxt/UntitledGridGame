@@ -1,6 +1,6 @@
-package playtest.tiles;
+package playtest.rainbow.tiles;
 
-import playtest.display.RainbowDisplay;
+import playtest.rainbow.display.RainbowDisplay;
 import ugg.tiles.Tile;
 
 public class RainbowTile extends Tile {
