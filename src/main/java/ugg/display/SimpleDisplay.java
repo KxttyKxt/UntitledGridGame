@@ -1,4 +1,4 @@
-package ugg.interfaces;
+package ugg.display;
 
 import ugg.colors.Color;
 

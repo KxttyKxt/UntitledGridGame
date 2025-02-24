@@ -3,8 +3,8 @@ package ugg.tiles;
 import ugg.colors.Color;
 import ugg.colors.ColorMaker;
 import ugg.colors.SimpleColor;
-import ugg.interfaces.Displayable;
-import ugg.interfaces.SimpleDisplay;
+import ugg.display.Displayable;
+import ugg.display.SimpleDisplay;
 
 public class Tile implements Displayable {
 

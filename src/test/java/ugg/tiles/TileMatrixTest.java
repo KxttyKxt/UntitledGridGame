@@ -7,7 +7,7 @@ import ugg.colors.Color;
 import ugg.colors.ColorMaker;
 import ugg.colors.ColorMerger;
 import ugg.colors.SimpleColor;
-import ugg.interfaces.SimpleDisplay;
+import ugg.display.SimpleDisplay;
 
 import static ugg.tiles.TileMatrix.EMPTY_CELL;
 import static ugg.tiles.TileMatrix.NULL_CELL;

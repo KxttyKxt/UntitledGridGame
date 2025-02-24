@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import ugg.colors.Color;
 import ugg.colors.ColorMaker;
 import ugg.colors.SimpleColor;
-import ugg.interfaces.Displayable;
-import ugg.interfaces.SimpleDisplay;
+import ugg.display.Displayable;
+import ugg.display.SimpleDisplay;
 
 public class TileTest {
     private static final String baseSymbol = Tile.defaultBaseText.substring(0, 1);
