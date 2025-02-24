@@ -4,7 +4,7 @@ public class TileMatrix {
 
     static final String FORMAT_FOR_CELL = "[ %s ]";
     static final String NULL_CELL = " ".repeat(5);
-    static final String EMPTY_CELL = String.format(FORMAT_FOR_CELL, Tile.EMPTY_CONTENTS_DISPLAY);
+    static final String EMPTY_CELL = String.format(FORMAT_FOR_CELL, new Tile().display());
 
     private final Tile[][] matrix;
 

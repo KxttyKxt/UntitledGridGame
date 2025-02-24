@@ -3,54 +3,70 @@ package ugg.tiles;
 import ugg.colors.Color;
 import ugg.colors.ColorMaker;
 import ugg.colors.SimpleColor;
+import ugg.interfaces.Displayable;
+import ugg.interfaces.SimpleDisplay;
 
-import java.util.Objects;
+public class Tile implements Displayable {
+
+    static final String defaultBaseText = ".empty";
+    static final Color defaultBaseColor = ColorMaker.make(SimpleColor.BRIGHT_BLACK);
+    static final Displayable defaultBaseDisplay = new SimpleDisplay(defaultBaseText, defaultBaseColor);
 
 
-public class Tile {
-    static final String COLORED_CONTENTS = "#";
-    static final String EMPTY_CONTENTS_DISPLAY =
-            ColorMaker.make(SimpleColor.BRIGHT_BLACK).colorize(".");
+    private final Displayable base;
+    private Displayable contents;
 
-    private String contents;
-    private Color color;
-
-    public Tile() {
-        contents = "";
-        color = null;
-    }
-    public Tile(String contents) {
-        this.contents = (contents != null)
-                ? contents
-                : "";
-    }
-    public Tile(String contents, Color color) {
+    public Tile(Displayable base, Displayable contents) {
+        this.base = base;
         this.contents = contents;
-        this.color = color;
+    }
+    public Tile(Displayable base) {
+        this.base = base;
+        this.contents = null;
+    }
+    public Tile(String baseString, Color baseColor) {
+        this(new SimpleDisplay(baseString, baseColor));
+    }
+    public Tile(String baseString) {
+        this(baseString, defaultBaseColor);
     }
     public Tile(Color color) {
-        this.contents = COLORED_CONTENTS;
-        this.color = color;
+        this(defaultBaseText, color);
+    }
+    public Tile() {
+        this(defaultBaseDisplay);
     }
 
-
-    boolean isEmpty() {
-        return this.contents.isEmpty();
+    boolean addContents(Displayable contents) {
+        if (this.contentsAreEmpty()) {
+            this.setContents(contents);
+            return true;
+        }
+        else
+            return false;
     }
-
+    private void setContents(Displayable contents) {
+        this.contents = contents;
+    }
 
     void swapContentsWith(Tile that) {
-        String temp = this.contents;
-        this.contents = that.contents;
-        that.contents = temp;
-
-        Color tempColor = this.color;
-        this.color = that.color;
-        that.color = tempColor;
+        if (!this.contentsAreEmpty() && !that.contentsAreEmpty()) {
+            Displayable temp = this.contents;
+            this.contents = that.contents;
+            that.contents = temp;
+        }
+        else if (this.contentsAreEmpty()) {
+            this.contents = that.contents;
+            that.contents = null;
+        }
+        else { // that.contentsAreEmpty(), or both are empty
+            that.contents = this.contents;
+            this.contents = null;
+        }
     }
 
     boolean transferContentsTo(Tile that) {
-        if (that.isEmpty()) {
+        if (!this.contentsAreEmpty() && that.contentsAreEmpty()) {
             this.swapContentsWith(that);
             return true;
         }
@@ -58,34 +74,43 @@ public class Tile {
     }
 
 
-    String display() {
-        return gatherDisplayFromContents();
-    }
-
-    private String gatherDisplayFromContents() {
-        if (contents.isEmpty())
-            return EMPTY_CONTENTS_DISPLAY;
-        else {
-            String toReturn = this.contents.substring(0,1);
-
-            if (this.color != null)
-                toReturn = this.color.colorize(toReturn);
-
-            return toReturn;
-        }
+    boolean contentsAreEmpty() {
+        return contents == null;
     }
 
 
     @Override
+    public String display() {
+        if (contentsAreEmpty())
+            return base.display();
+        else
+            return contents.display();
+    }
+
+    @Override
     public String toString() {
-        return contents;
+        if (contents == null)
+            return base.toString();
+        else
+            return contents.toString();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Tile that = (Tile) o;
-        return Objects.equals(this.contents, that.contents) && Objects.equals(this.color, that.color);
+        boolean matchingBase = this.base.equals(that.base);
+        boolean matchingContents;
+
+        if (this.contents == null && that.contents == null)
+            matchingContents = true;
+        else if (this.contents != null && that.contents != null)
+            matchingContents = this.contents.equals(that.contents);
+        else // One is null and the other is not
+            matchingContents = false;
+
+        return matchingBase && matchingContents;
     }
 }
