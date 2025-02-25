@@ -102,8 +102,18 @@ public class TileTest {
 
 
     @Test
-    void test_transferContentsTo_true() {
+    void test_transferContentsTo_true_emptyContents() {
         Tile tileA = new Tile("A");
+        Tile tileB = new Tile("B");
+
+        tileA.addContents(new SimpleDisplay("Junk", ColorMaker.make(SimpleColor.BLUE)));
+
+        Assertions.assertTrue(tileA.transferContentsTo(tileB));
+    }
+
+    @Test
+    void test_transferContentsTo_true_traversableFirstNoSecondYes() {
+        Tile tileA = new Tile("A", false);
         Tile tileB = new Tile("B");
 
         tileA.addContents(new SimpleDisplay("Junk", ColorMaker.make(SimpleColor.BLUE)));
@@ -136,6 +146,16 @@ public class TileTest {
         Tile tileB = new Tile("B");
 
         tileB.addContents(new SimpleDisplay("Junk", ColorMaker.make(SimpleColor.BLUE)));
+
+        Assertions.assertFalse(tileA.transferContentsTo(tileB));
+    }
+
+    @Test
+    void test_transferContentsTo_false_secondNotTraversable() {
+        Tile tileA = new Tile("A");
+        Tile tileB = new Tile("B", false);
+
+        tileA.addContents(new SimpleDisplay("Junk", ColorMaker.make(SimpleColor.BLUE)));
 
         Assertions.assertFalse(tileA.transferContentsTo(tileB));
     }

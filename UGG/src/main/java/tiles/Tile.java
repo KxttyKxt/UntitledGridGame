@@ -15,17 +15,34 @@ public class Tile implements Displayable {
 
     private final Displayable base;
     private Displayable contents;
+    private boolean traversable = true;
 
+    public Tile(Displayable base, Displayable contents, boolean traversable) {
+        this.base = base;
+        this.contents = contents;
+        this.traversable = traversable;
+    }
     public Tile(Displayable base, Displayable contents) {
         this.base = base;
         this.contents = contents;
+    }
+    public Tile(Displayable base, boolean traversable) {
+        this.base = base;
+        this.contents = null;
+        this.traversable = traversable;
     }
     public Tile(Displayable base) {
         this.base = base;
         this.contents = null;
     }
+    public Tile(String baseString, Color baseColor, boolean traversable) {
+        this(new SimpleDisplay(baseString, baseColor), traversable);
+    }
     public Tile(String baseString, Color baseColor) {
         this(new SimpleDisplay(baseString, baseColor));
+    }
+    public Tile(String baseString, boolean traversable) {
+        this(baseString, defaultBaseColor, traversable);
     }
     public Tile(String baseString) {
         this(baseString, defaultBaseColor);
@@ -65,7 +82,7 @@ public class Tile implements Displayable {
         }
     }
     boolean transferContentsTo(Tile that) {
-        if (!this.contentsAreEmpty() && that.contentsAreEmpty()) {
+        if (!this.contentsAreEmpty() && that.contentsAreEmpty() && that.traversable) {
             this.swapContentsWith(that);
             return true;
         }
