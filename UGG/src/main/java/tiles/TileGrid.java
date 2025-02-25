@@ -28,9 +28,6 @@ public class TileGrid {
         );
     }
     private void swapContents(Tile tile1, Tile tile2) {
-        confirmInMatrix(tile1);
-        confirmInMatrix(tile2);
-
         tile1.swapContentsWith(tile2);
     }
 
@@ -41,24 +38,7 @@ public class TileGrid {
         );
     }
     private boolean transferContents(Tile origin, Tile destination) {
-        confirmInMatrix(origin);
-        confirmInMatrix(destination);
-
         return origin.transferContentsTo(destination);
-    }
-
-
-    private void confirmInMatrix(Tile tile) {
-        if (!matrixContains(tile))
-            throw new IllegalArgumentException(String.format("Tile %s is not in matrix.", tile));
-    }
-    private boolean matrixContains(Tile tile) {
-        for (Tile[] row : matrix)
-            for (Tile cell : row)
-                if (tile == cell)
-                    return true;
-
-        return false;
     }
 
 
