@@ -2,8 +2,8 @@ plugins {
     id("java")
 }
 
-group = "com.katutils.ugg"
-version = "0.1.0a"
+group = "com.kxttykxt.ugg"
+version = "infdev"
 
 repositories {
     mavenCentral()
@@ -12,6 +12,7 @@ repositories {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation(project(":UGG"))
 }
 
 tasks.test {

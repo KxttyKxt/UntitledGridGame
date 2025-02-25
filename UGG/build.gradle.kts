@@ -2,8 +2,8 @@ plugins {
     id("java")
 }
 
-group = "com.katutils.ugg"
-version = "0.1.0a"
+group = "com.kxttykxt.ugg"
+version = "infdev"
 
 repositories {
     mavenCentral()
