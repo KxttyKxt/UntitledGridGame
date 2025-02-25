@@ -1,10 +1,7 @@
 package app.input;
 
 public interface InputHandler {
-    boolean handle();
-
-    String receiveInput();
-    boolean executeInput(String input);
+    boolean handleInput();
 
     void close();
 }

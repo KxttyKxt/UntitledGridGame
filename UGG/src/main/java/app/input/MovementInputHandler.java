@@ -6,22 +6,24 @@ public class MovementInputHandler implements InputHandler {
     private final Scanner consoleScanner = new Scanner(System.in);
 
     @Override
-    public boolean handle() {
+    public boolean handleInput() {
         String input = receiveInput();
         return executeInput(input);
     }
+    public boolean handleInput(String prompt) {
+        String input = receiveInput(prompt);
+        return executeInput(input);
+    }
 
-    @Override
-    public String receiveInput() {
+    private String receiveInput() {
         return consoleScanner.nextLine().toLowerCase().trim();
     }
-    public String receiveInput(String prompt) {
+    private String receiveInput(String prompt) {
         System.out.printf("%s%n", prompt);
         return receiveInput();
     }
 
-    @Override
-    public boolean executeInput(String input) {
+    private boolean executeInput(String input) {
         switch (input) {
             case "1", "2", "3", "4", "5", "6", "7", "8", "9" ->
                     System.out.printf("move: %s%n", input); // send to movement method
