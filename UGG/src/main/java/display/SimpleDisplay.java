@@ -3,12 +3,14 @@ package display;
 import colors.Color;
 
 public class SimpleDisplay implements Displayable {
+    static final String emptyTextFormat = "-";
+
     private final String text;
     private final Color color;
 
     public SimpleDisplay(String text, Color color) {
         if (text == null || text.isEmpty()) {
-            this.text = "-";
+            this.text = emptyTextFormat;
         }
         else {
             this.text = text;

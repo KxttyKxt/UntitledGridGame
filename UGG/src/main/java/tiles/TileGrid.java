@@ -1,7 +1,7 @@
 package tiles;
 
 public class TileGrid {
-    static final String FORMAT_FOR_CELL = "%s  ";
+    static final String FORMAT_FOR_CELL = "[ %s ]";
     static final String NULL_CELL = " ".repeat(5);
     static final String EMPTY_CELL = String.format(FORMAT_FOR_CELL, new Tile().display());
 
