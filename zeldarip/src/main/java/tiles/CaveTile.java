@@ -4,6 +4,6 @@ import colors.ColorMaker;
 
 public class CaveTile extends Tile {
     public CaveTile() {
-        super("^", ColorMaker.make(255, false));
+        super("0", ColorMaker.make(246, false));
     }
 }

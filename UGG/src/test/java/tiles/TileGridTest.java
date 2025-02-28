@@ -235,7 +235,11 @@ public class TileGridTest {
         };
         initializeTileMatrix(tilesForMatrix);
 
-        Assertions.assertEquals(String.format("[ A ][ B ]%n[ C ][ D ]"), tileGrid.toString());
+        Assertions.assertEquals(String.format(
+                "%s%n%s",
+                String.format(TileGrid.FORMAT_FOR_CELL.repeat(2), "A", "B"),
+                String.format(TileGrid.FORMAT_FOR_CELL.repeat(2), "C", "D")
+        ), tileGrid.toString());
     }
 
     @Test
@@ -251,15 +255,12 @@ public class TileGridTest {
         };
         initializeTileMatrix(tilesForMatrix);
 
-        String expectedToString = String.format(
-                        "[ %s ][ %s ]%n[ %s ][ %s ]",
-                        redTile.display(),
-                        greenTile.display(),
-                        yellowTile.display(),
-                        magentaTile.display()
-        );
+        Assertions.assertEquals(String.format(
+                "%s%n%s",
+                String.format(TileGrid.FORMAT_FOR_CELL.repeat(2), redTile.display(), greenTile.display()),
+                String.format(TileGrid.FORMAT_FOR_CELL.repeat(2), yellowTile.display(), magentaTile.display())
+        ), tileGrid.toString());
 
-        Assertions.assertEquals(expectedToString, tileGrid.toString());
     }
 
     @Test
@@ -316,7 +317,7 @@ public class TileGridTest {
         initializeTileMatrix(tilesForMatrix);
 
         // It's a lot, but at least it's comprehensive.
-        final String ROW_TEMPLATE = "[ %s ][ %s ][ %s ][ %s ]";
+        final String ROW_TEMPLATE = TileGrid.FORMAT_FOR_CELL.repeat(4);
         String expectedToString = String.format("%s%n%s%n%s",
                 String.format(
                         ROW_TEMPLATE,

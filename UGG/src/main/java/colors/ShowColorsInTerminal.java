@@ -25,11 +25,11 @@ public class ShowColorsInTerminal {
 
             System.out.printf(
                     "%s %s ",
-                    eightBitColorFG.colorize("test"),
-                    eightBitColorBG.colorize("test")
+                    eightBitColorFG.colorize(String.format("%-3d test", i)),
+                    eightBitColorBG.colorize(String.format("%-3d test", i))
             );
 
-            if ((i + 1) % 16 == 0)
+            if ((i + 1) % 8 == 0)
                 System.out.printf("%n");
         }
     }
