@@ -1,8 +1,8 @@
+import app.gridinputmanagers.PlayerMovementManager;
 import tiles.StartGrid;
 
 public class Main {
     public static void main(String[] args) {
-        StartGrid startGrid = new StartGrid();
-        System.out.printf("%s%n", startGrid);
+        new PlayerMovementManager(new StartGrid(), 6, 5).enable();
     }
 }

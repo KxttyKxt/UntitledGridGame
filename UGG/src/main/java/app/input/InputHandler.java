@@ -1,6 +1,6 @@
 package app.input;
 
-public interface InputHandler {
-    boolean handleInput();
+public interface InputHandler<T> {
+    T handleInput();
     void close();
 }

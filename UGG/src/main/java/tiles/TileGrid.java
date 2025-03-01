@@ -1,5 +1,7 @@
 package tiles;
 
+import display.Displayable;
+
 public class TileGrid {
     static final String FORMAT_FOR_CELL = "[ %s ]";
     static final String NULL_CELL = " ".repeat(5);
@@ -19,6 +21,11 @@ public class TileGrid {
     }
     public TileGrid(Tile[][] tilesForMatrix) {
         matrix = tilesForMatrix;
+    }
+
+    public void addContents(Displayable contents, int row, int col) {
+        Tile tileToAddContentsTo = matrix[row][col];
+        tileToAddContentsTo.addContents(contents);
     }
 
     public void swapContents(int[] tile1RowCol, int[] tile2RowCol) {

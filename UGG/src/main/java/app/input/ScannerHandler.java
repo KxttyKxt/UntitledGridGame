@@ -2,17 +2,15 @@ package app.input;
 
 import java.util.Scanner;
 
-public abstract class ScannerHandler implements InputHandler {
+public class ScannerHandler implements InputHandler<String> {
     private final Scanner consoleScanner = new Scanner(System.in);
 
     @Override
-    public boolean handleInput() {
-        String input = scanConsoleInput();
-        return executeInput(input);
+    public String handleInput() {
+        return scanConsoleInput();
     }
-    public boolean handleInput(String prompt) {
-        String input = scanConsoleInput(prompt);
-        return executeInput(input);
+    public String handleInput(String prompt) {
+        return scanConsoleInput(prompt);
     }
 
     private String scanConsoleInput() {
@@ -22,8 +20,6 @@ public abstract class ScannerHandler implements InputHandler {
         System.out.printf("%s", prompt);
         return scanConsoleInput();
     }
-
-    protected abstract boolean executeInput(String input);
 
     @Override
     public void close() {
