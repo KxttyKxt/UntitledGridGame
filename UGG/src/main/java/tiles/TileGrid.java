@@ -19,7 +19,7 @@ public class TileGrid {
             for (int col = 0; col < columns; col++)
                 matrix[row][col] = new Tile();
     }
-    public TileGrid(Tile[][] tilesForMatrix) {
+    TileGrid(Tile[][] tilesForMatrix) {
         matrix = tilesForMatrix;
     }
 
