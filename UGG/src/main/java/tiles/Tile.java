@@ -53,7 +53,7 @@ public class Tile implements Displayable {
         else return false;
     }
 
-    void swapContentsWith(Tile that) {
+    private void swapContentsWith(Tile that) {
         if (!this.contentsAreEmpty() && !that.contentsAreEmpty()) {
             Displayable temp = this.contentsDisplay;
             this.contentsDisplay = that.contentsDisplay;
@@ -69,7 +69,7 @@ public class Tile implements Displayable {
         }
     }
 
-    boolean contentsAreEmpty() {
+    private boolean contentsAreEmpty() {
         return contentsDisplay == null;
     }
 

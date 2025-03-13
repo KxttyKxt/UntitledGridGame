@@ -25,7 +25,6 @@ public class TileGridJsonFactory {
     }
 
 
-
     private static Object convertToDocument(URL jsonFileURL) throws IOException {
         String json = readFileToString(jsonFileURL);
         return convertJsonStringToDocument(json);
@@ -41,17 +40,20 @@ public class TileGridJsonFactory {
 
 
     private static TileGrid generateGrid() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        Tile[][] matrixForGrid = new Tile[pattern.size()][pattern.getFirst().length()];
+        int rowsInPattern = pattern.size();
+        int rowLength = pattern.getFirst().length();
+
+        Tile[][] matrixForGrid = new Tile[rowsInPattern][rowLength];
 
         for (int row = 0; row < matrixForGrid.length; row++)
             for (int col = 0; col < matrixForGrid[row].length; col++)
-                matrixForGrid[row][col] = getTileFromPatternMap(String.valueOf(pattern.get(row).charAt(col)));
+                matrixForGrid[row][col] = getTileFromPatternMap(pattern.get(row).charAt(col));
 
         return new TileGrid(matrixForGrid);
     }
 
-    private static Tile getTileFromPatternMap(String patternLetter) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        String tileSubclassName = patternMap.get(patternLetter);
+    private static Tile getTileFromPatternMap(char patternLetter) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        String tileSubclassName = patternMap.get(String.valueOf(patternLetter));
         Class<?> tileSubclass = Class.forName(String.format("tiles.%s", tileSubclassName));
 
         return (Tile) tileSubclass.getDeclaredConstructor().newInstance();
