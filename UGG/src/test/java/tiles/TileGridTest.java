@@ -11,7 +11,6 @@ public class TileGridTest {
     @BeforeEach
     void resetTestingFields() {
         tileGrid = null;
-        exceptionWasThrown = false;
     }
 
     private Tile defaultTile() {
@@ -19,7 +18,6 @@ public class TileGridTest {
     }
 
     private static TileGrid tileGrid;
-    private boolean exceptionWasThrown;
 
     private static final int[] originPos = {0, 0};
     private static final int[] acrossPos = {0, 1};
@@ -69,16 +67,9 @@ public class TileGridTest {
     }
 
     @Test
-    void test_transferContents_coordsOutOfBoundsException() {
-        try {
-            tileMatrixSizeTwoAcross(defaultTile(), defaultTile());
-            tileGrid.transferContents(new int[]{0, 0}, new int[]{0, 2});
-        }
-        catch (IndexOutOfBoundsException coordsOutOfBoundsException) {
-            exceptionWasThrown = true;
-        }
-
-        Assertions.assertTrue(exceptionWasThrown);
+    void test_transferContents_falseWithCoordsOutOfBounds() {
+        tileMatrixSizeTwoAcross(defaultTile(), defaultTile());
+        Assertions.assertFalse(tileGrid.transferContents(new int[]{0, 0}, new int[]{0, 2}));
     }
 
 

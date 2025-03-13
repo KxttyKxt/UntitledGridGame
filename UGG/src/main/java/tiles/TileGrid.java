@@ -2,11 +2,9 @@ package tiles;
 
 import display.Displayable;
 
-import java.net.URL;
-
 public class TileGrid {
-    static final String FORMAT_FOR_CELL = "[ %s ]";
-    static final String NULL_CELL = " ".repeat(5);
+    static final String FORMAT_FOR_CELL = " %s ";
+    static final String NULL_CELL = " ".repeat(FORMAT_FOR_CELL.length() - 1);
 
     private final Tile[][] matrix;
 
@@ -20,13 +18,22 @@ public class TileGrid {
     }
 
     public boolean transferContents(int[] tile1RowCol, int[] tile2RowCol) {
-        return transferContents(
+        if (coordsAreOutOfBounds(tile1RowCol, tile2RowCol)) return false;
+
+        else return transferContents(
                 matrix[tile1RowCol[0]][tile1RowCol[1]],
                 matrix[tile2RowCol[0]][tile2RowCol[1]]
         );
     }
     private boolean transferContents(Tile origin, Tile destination) {
         return origin.transferContentsTo(destination);
+    }
+
+    private boolean coordsAreOutOfBounds(int[] tile1RowCol, int[] tile2RowCol) {
+        return tile1RowCol[0] < 0 || tile1RowCol[0] >= matrix.length
+            || tile1RowCol[1] < 0 || tile1RowCol[1] >= matrix[0].length
+            || tile2RowCol[0] < 0 || tile2RowCol[0] >= matrix.length
+            || tile2RowCol[1] < 0 || tile2RowCol[1] >= matrix[0].length;
     }
 
 

@@ -7,6 +7,6 @@ import colors.ColorMaker;
 @SuppressWarnings("unused")
 public class CaveTile extends Tile {
     public CaveTile() {
-        super("0", ColorMaker.make(new int[]{100, 100, 100}, false));
+        super("0", ColorMaker.make(new int[]{175, 175, 175}, false));
     }
 }
