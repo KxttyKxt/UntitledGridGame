@@ -8,52 +8,43 @@ import display.SimpleDisplay;
 
 
 public class Tile implements Displayable {
-    private final Displayable base;
-    private Displayable contents;
-    private boolean traversable = true;
+    private final Displayable tileDisplay;
+    private Displayable contentsDisplay;
+    private final boolean traversable;
 
-    static final Displayable defaultTileDisplay = new SimpleDisplay(".", ColorMaker.make(SimpleColor.BRIGHT_BLACK));
+    static final String defaultTileDisplayText = ".";
+    static final Color defaultTileDisplayColor = ColorMaker.make(SimpleColor.BRIGHT_BLACK);
+    static final Displayable defaultTileDisplay = new SimpleDisplay(defaultTileDisplayText, defaultTileDisplayColor);
 
-    public Tile(Displayable base, boolean traversable) {
-        this.base = base;
-        this.contents = null;
+    private Tile(Displayable tileDisplay, Displayable contentsDisplay, boolean traversable) {
+        this.tileDisplay = tileDisplay;
+        this.contentsDisplay = contentsDisplay;
         this.traversable = traversable;
     }
-    public Tile(Displayable base) {
-        this.base = base;
-        this.contents = null;
+
+    public Tile(Displayable tileDisplay, boolean traversable) {
+        this(tileDisplay, null, traversable);
     }
-    public Tile(String baseString, Color baseColor, boolean traversable) {
-        this(new SimpleDisplay(baseString, baseColor), traversable);
+
+    public Tile(Displayable tileDisplay) {
+        this(tileDisplay, null, true);
     }
+
     public Tile(String baseString, Color baseColor) {
         this(new SimpleDisplay(baseString, baseColor));
     }
 
+
     void addContents(Displayable contents) {
         if (this.contentsAreEmpty()) {
-            this.setContents(contents);
+            this.setContentsDisplay(contents);
         }
-    }
-    private void setContents(Displayable contents) {
-        this.contents = contents;
     }
 
-    void swapContentsWith(Tile that) {
-        if (!this.contentsAreEmpty() && !that.contentsAreEmpty()) {
-            Displayable temp = this.contents;
-            this.contents = that.contents;
-            that.contents = temp;
-        }
-        else if (this.contentsAreEmpty()) {
-            this.contents = that.contents;
-            that.contents = null;
-        }
-        else { // that.contentsAreEmpty(), or both are empty
-            that.contents = this.contents;
-            this.contents = null;
-        }
+    private void setContentsDisplay(Displayable contentsDisplay) {
+        this.contentsDisplay = contentsDisplay;
     }
+
     boolean transferContentsTo(Tile that) {
         if (!this.contentsAreEmpty() && that.contentsAreEmpty() && that.traversable) {
             this.swapContentsWith(that);
@@ -62,25 +53,41 @@ public class Tile implements Displayable {
         else return false;
     }
 
+    void swapContentsWith(Tile that) {
+        if (!this.contentsAreEmpty() && !that.contentsAreEmpty()) {
+            Displayable temp = this.contentsDisplay;
+            this.contentsDisplay = that.contentsDisplay;
+            that.contentsDisplay = temp;
+        }
+        else if (this.contentsAreEmpty()) {
+            this.contentsDisplay = that.contentsDisplay;
+            that.contentsDisplay = null;
+        }
+        else { // that.contentsAreEmpty(), or both are empty
+            that.contentsDisplay = this.contentsDisplay;
+            this.contentsDisplay = null;
+        }
+    }
+
     boolean contentsAreEmpty() {
-        return contents == null;
+        return contentsDisplay == null;
     }
 
 
     @Override
     public String display() {
         if (contentsAreEmpty())
-            return base.display();
+            return tileDisplay.display();
         else
-            return contents.display();
+            return contentsDisplay.display();
     }
 
     @Override
     public String toString() {
-        if (contents == null)
-            return base.toString();
+        if (contentsDisplay == null)
+            return tileDisplay.toString();
         else
-            return contents.toString();
+            return contentsDisplay.toString();
     }
 
     @Override
@@ -89,16 +96,16 @@ public class Tile implements Displayable {
         if (o == null || getClass() != o.getClass()) return false;
 
         Tile that = (Tile) o;
-        boolean matchingBase = this.base.equals(that.base);
+        boolean matchingTileDisplay = this.tileDisplay.equals(that.tileDisplay);
         boolean matchingContents;
 
-        if (this.contents == null && that.contents == null)
+        if (this.contentsDisplay == null && that.contentsDisplay == null)
             matchingContents = true;
-        else if (this.contents != null && that.contents != null)
-            matchingContents = this.contents.equals(that.contents);
+        else if (this.contentsDisplay != null && that.contentsDisplay != null)
+            matchingContents = this.contentsDisplay.equals(that.contentsDisplay);
         else // One is null and the other is not
             matchingContents = false;
 
-        return matchingBase && matchingContents;
+        return matchingTileDisplay && matchingContents;
     }
 }

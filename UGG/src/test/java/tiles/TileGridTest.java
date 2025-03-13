@@ -4,15 +4,9 @@ import colors.ColorMaker;
 import colors.SimpleColor;
 import display.SimpleDisplay;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TileGridTest {
-    @BeforeEach
-    void resetTestingFields() {
-        tileGrid = null;
-    }
-
     private Tile defaultTile() {
         return new Tile(Tile.defaultTileDisplay);
     }

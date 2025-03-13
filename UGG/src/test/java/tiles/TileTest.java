@@ -168,8 +168,8 @@ public class TileTest {
     void test_display_color() {
         Color red = ColorMaker.make(SimpleColor.RED);
 
-        String expectedDisplay = red.colorize(".");
-        String actualDisplay = new Tile(new SimpleDisplay(".", red)).display();
+        String expectedDisplay = red.colorize(Tile.defaultTileDisplayText);
+        String actualDisplay = new Tile(new SimpleDisplay(Tile.defaultTileDisplayText, red)).display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
     }
@@ -290,8 +290,8 @@ public class TileTest {
 
     @Test
     void test_notEquals_onlyColors() {
-        Tile tile1 = new Tile(".", ColorMaker.make(SimpleColor.RED));
-        Tile tile2 = new Tile(".", ColorMaker.make(SimpleColor.YELLOW));
+        Tile tile1 = new Tile(Tile.defaultTileDisplayText, ColorMaker.make(SimpleColor.RED));
+        Tile tile2 = new Tile(Tile.defaultTileDisplayText, ColorMaker.make(SimpleColor.YELLOW));
         Assertions.assertNotEquals(tile1, tile2);
     }
 
