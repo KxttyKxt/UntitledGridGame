@@ -2,23 +2,14 @@ package tiles;
 
 import display.Displayable;
 
+import java.net.URL;
+
 public class TileGrid {
     static final String FORMAT_FOR_CELL = "[ %s ]";
     static final String NULL_CELL = " ".repeat(5);
-    static final String EMPTY_CELL = String.format(FORMAT_FOR_CELL, new Tile().display());
 
     private final Tile[][] matrix;
 
-    public TileGrid(int rows, int columns) {
-        if (rows <= 0 || columns <= 0)
-            throw new IllegalArgumentException("TileGrid must have at least 1 row and column.");
-
-        matrix = new Tile[rows][columns];
-
-        for (int row = 0; row < rows; row++)
-            for (int col = 0; col < columns; col++)
-                matrix[row][col] = new Tile();
-    }
     TileGrid(Tile[][] tilesForMatrix) {
         matrix = tilesForMatrix;
     }
@@ -26,16 +17,6 @@ public class TileGrid {
     public void addContents(Displayable contents, int row, int col) {
         Tile tileToAddContentsTo = matrix[row][col];
         tileToAddContentsTo.addContents(contents);
-    }
-
-    public void swapContents(int[] tile1RowCol, int[] tile2RowCol) {
-        swapContents(
-                matrix[tile1RowCol[0]][tile1RowCol[1]],
-                matrix[tile2RowCol[0]][tile2RowCol[1]]
-        );
-    }
-    private void swapContents(Tile tile1, Tile tile2) {
-        tile1.swapContentsWith(tile2);
     }
 
     public boolean transferContents(int[] tile1RowCol, int[] tile2RowCol) {

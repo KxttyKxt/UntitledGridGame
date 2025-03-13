@@ -6,26 +6,14 @@ import colors.SimpleColor;
 import display.Displayable;
 import display.SimpleDisplay;
 
+
 public class Tile implements Displayable {
-
-    // Intentionally package-private
-    static final String defaultBaseText = ".empty";
-    static final Color defaultBaseColor = ColorMaker.make(SimpleColor.BRIGHT_BLACK);
-    protected static final Displayable defaultBaseDisplay = new SimpleDisplay(defaultBaseText, defaultBaseColor);
-
     private final Displayable base;
     private Displayable contents;
     private boolean traversable = true;
 
-    public Tile(Displayable base, Displayable contents, boolean traversable) {
-        this.base = base;
-        this.contents = contents;
-        this.traversable = traversable;
-    }
-    public Tile(Displayable base, Displayable contents) {
-        this.base = base;
-        this.contents = contents;
-    }
+    static final Displayable defaultTileDisplay = new SimpleDisplay(".", ColorMaker.make(SimpleColor.BRIGHT_BLACK));
+
     public Tile(Displayable base, boolean traversable) {
         this.base = base;
         this.contents = null;
@@ -41,26 +29,11 @@ public class Tile implements Displayable {
     public Tile(String baseString, Color baseColor) {
         this(new SimpleDisplay(baseString, baseColor));
     }
-    public Tile(String baseString, boolean traversable) {
-        this(baseString, defaultBaseColor, traversable);
-    }
-    public Tile(String baseString) {
-        this(baseString, defaultBaseColor);
-    }
-    public Tile(Color color) {
-        this(defaultBaseText, color);
-    }
-    public Tile() {
-        this(defaultBaseDisplay);
-    }
 
-    boolean addContents(Displayable contents) {
+    void addContents(Displayable contents) {
         if (this.contentsAreEmpty()) {
             this.setContents(contents);
-            return true;
         }
-        else
-            return false;
     }
     private void setContents(Displayable contents) {
         this.contents = contents;

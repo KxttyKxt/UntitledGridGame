@@ -9,38 +9,41 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TileTest {
-    private static final String baseSymbol = Tile.defaultBaseText.substring(0, 1);
+    private Tile defaultTile() {
+        return new Tile(Tile.defaultTileDisplay);
+    }
+    private Tile quickTextTile(String text) {
+        return new Tile(text, null);
+    }
 
     @Test
     void test_addContents_true() {
-        Displayable contentsToAdd = new SimpleDisplay("contents", Tile.defaultBaseColor);
+        Displayable contentsToAdd = new SimpleDisplay("contents", null);
 
-        Tile tile = new Tile("Tile");
+        Tile tile = quickTextTile("Tile");
         Assertions.assertEquals("Tile", tile.toString());
 
-        Assertions.assertTrue(tile.addContents(contentsToAdd));
+        tile.addContents(contentsToAdd);
         Assertions.assertEquals("contents", tile.toString());
     }
 
     @Test
     void test_addContents_false() {
-        Displayable tileBase = Tile.defaultBaseDisplay;
-        Displayable tileContents = new SimpleDisplay("Old", Tile.defaultBaseColor);
+        Displayable contentsToAdd = new SimpleDisplay("New", null);
 
-        Displayable contentsToAdd = new SimpleDisplay("New", Tile.defaultBaseColor);
-
-        Tile tile = new Tile(tileBase, tileContents);
+        Tile tile = new Tile(Tile.defaultTileDisplay);
+        tile.addContents(new SimpleDisplay("Old", null));
         Assertions.assertEquals("Old", tile.toString());
 
-        Assertions.assertFalse(tile.addContents(contentsToAdd));
+        tile.addContents(contentsToAdd);
         Assertions.assertEquals("Old", tile.toString());
     }
 
 
     @Test
     void test_swapContentsWith_firstHasContents() {
-        Tile tileA = new Tile("A");
-        Tile tileB = new Tile("B");
+        Tile tileA = quickTextTile("A");
+        Tile tileB = quickTextTile("B");
 
         tileA.addContents(new SimpleDisplay("Junk", ColorMaker.make(SimpleColor.BLUE)));
 
@@ -55,8 +58,8 @@ public class TileTest {
 
     @Test
     void test_swapContentsWith_secondHasContents() {
-        Tile tileA = new Tile("A");
-        Tile tileB = new Tile("B");
+        Tile tileA = quickTextTile("A");
+        Tile tileB = quickTextTile("B");
 
         tileB.addContents(new SimpleDisplay("Junk", ColorMaker.make(SimpleColor.BLUE)));
 
@@ -71,8 +74,8 @@ public class TileTest {
 
     @Test
     void test_swapContentsWith_bothHaveContents() {
-        Tile tileA = new Tile("A");
-        Tile tileB = new Tile("B");
+        Tile tileA = quickTextTile("A");
+        Tile tileB = quickTextTile("B");
 
         tileA.addContents(new SimpleDisplay("Junk", ColorMaker.make(SimpleColor.BLUE)));
         tileB.addContents(new SimpleDisplay("Trash", ColorMaker.make(SimpleColor.CYAN)));
@@ -88,8 +91,8 @@ public class TileTest {
 
     @Test
     void test_swapContentsWith_neitherHaveContents() {
-        Tile tileA = new Tile("A");
-        Tile tileB = new Tile("B");
+        Tile tileA = quickTextTile("A");
+        Tile tileB = quickTextTile("B");
 
         Assertions.assertEquals("A", tileA.toString());
         Assertions.assertEquals("B", tileB.toString());
@@ -103,8 +106,8 @@ public class TileTest {
 
     @Test
     void test_transferContentsTo_true_emptyContents() {
-        Tile tileA = new Tile("A");
-        Tile tileB = new Tile("B");
+        Tile tileA = quickTextTile("A");
+        Tile tileB = quickTextTile("B");
 
         tileA.addContents(new SimpleDisplay("Junk", ColorMaker.make(SimpleColor.BLUE)));
 
@@ -113,8 +116,8 @@ public class TileTest {
 
     @Test
     void test_transferContentsTo_true_traversableFirstNoSecondYes() {
-        Tile tileA = new Tile("A", false);
-        Tile tileB = new Tile("B");
+        Tile tileA = new Tile(Tile.defaultTileDisplay, false);
+        Tile tileB = quickTextTile("B");
 
         tileA.addContents(new SimpleDisplay("Junk", ColorMaker.make(SimpleColor.BLUE)));
 
@@ -123,8 +126,8 @@ public class TileTest {
 
     @Test
     void test_transferContentsTo_false_bothHaveContents() {
-        Tile tileA = new Tile("A");
-        Tile tileB = new Tile("B");
+        Tile tileA = quickTextTile("A");
+        Tile tileB = quickTextTile("B");
 
         tileA.addContents(new SimpleDisplay("Junk", ColorMaker.make(SimpleColor.BLUE)));
         tileB.addContents(new SimpleDisplay("Trash", ColorMaker.make(SimpleColor.CYAN)));
@@ -134,16 +137,16 @@ public class TileTest {
 
     @Test
     void test_transferContentsTo_false_neitherHaveContents() {
-        Tile tileA = new Tile("A");
-        Tile tileB = new Tile("B");
+        Tile tileA = quickTextTile("A");
+        Tile tileB = quickTextTile("B");
 
         Assertions.assertFalse(tileA.transferContentsTo(tileB));
     }
 
     @Test
     void test_transferContentsTo_false_firstHasNoContents() {
-        Tile tileA = new Tile("A");
-        Tile tileB = new Tile("B");
+        Tile tileA = quickTextTile("A");
+        Tile tileB = quickTextTile("B");
 
         tileB.addContents(new SimpleDisplay("Junk", ColorMaker.make(SimpleColor.BLUE)));
 
@@ -152,8 +155,8 @@ public class TileTest {
 
     @Test
     void test_transferContentsTo_false_secondNotTraversable() {
-        Tile tileA = new Tile("A");
-        Tile tileB = new Tile("B", false);
+        Tile tileA = quickTextTile("A");
+        Tile tileB = new Tile(Tile.defaultTileDisplay, false);
 
         tileA.addContents(new SimpleDisplay("Junk", ColorMaker.make(SimpleColor.BLUE)));
 
@@ -162,27 +165,19 @@ public class TileTest {
 
 
     @Test
-    void test_display_default() {
-        String expectedDisplay = Tile.defaultBaseDisplay.display();
-        String actualDisplay = new Tile().display();
-
-        Assertions.assertEquals(expectedDisplay, actualDisplay);
-    }
-
-    @Test
     void test_display_color() {
         Color red = ColorMaker.make(SimpleColor.RED);
 
-        String expectedDisplay = red.colorize(baseSymbol);
-        String actualDisplay = new Tile(red).display();
+        String expectedDisplay = red.colorize(".");
+        String actualDisplay = new Tile(new SimpleDisplay(".", red)).display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
     }
 
     @Test
     void test_display_text() {
-        String expectedDisplay = Tile.defaultBaseColor.colorize("s");
-        String actualDisplay = new Tile("string").display();
+        String expectedDisplay = "s";
+        String actualDisplay = quickTextTile("string").display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
     }
@@ -200,7 +195,7 @@ public class TileTest {
 
     @Test
     void test_display_contents() {
-        Tile tile = new Tile();
+        Tile tile = defaultTile();
         String contentsString = "Hiya!";
         Color contentsColor = ColorMaker.make(SimpleColor.GREEN);
         tile.addContents(new SimpleDisplay(contentsString, ColorMaker.make(SimpleColor.GREEN)));
@@ -214,43 +209,43 @@ public class TileTest {
 
     @Test
     void test_equals_true_same() {
-        Tile tile = new Tile();
+        Tile tile = defaultTile();
         Assertions.assertEquals(tile, tile);
     }
 
     @Test
     void test_notEquals_null() {
-        Tile tile = new Tile();
+        Tile tile = defaultTile();
         Assertions.assertNotEquals(tile, null);
     }
 
     @Test
     void test_notEquals_differentClass() {
         // For test coverage
-        Tile tile = new Tile();
+        Tile tile = defaultTile();
         //noinspection AssertBetweenInconvertibleTypes
         Assertions.assertNotEquals(tile, "String!");
     }
 
     @Test
     void test_equals_default() {
-        Tile tile1 = new Tile();
-        Tile tile2 = new Tile();
+        Tile tile1 = defaultTile();
+        Tile tile2 = defaultTile();
         Assertions.assertEquals(tile1, tile2);
     }
 
     @Test
     void test_equals_onlyText() {
-        Tile tile1 = new Tile("text");
-        Tile tile2 = new Tile("text");
+        Tile tile1 = quickTextTile("text");
+        Tile tile2 = quickTextTile("text");
         Assertions.assertEquals(tile1, tile2);
     }
 
     @Test
     void test_equals_onlyColors() {
         Color red = ColorMaker.make(SimpleColor.RED);
-        Tile tile1 = new Tile(red);
-        Tile tile2 = new Tile(red);
+        Tile tile1 = new Tile(new SimpleDisplay(null, red));
+        Tile tile2 = new Tile(new SimpleDisplay(null, red));
         Assertions.assertEquals(tile1, tile2);
     }
 
@@ -279,8 +274,8 @@ public class TileTest {
 
     @Test
     void test_equals_bothNull() {
-        Tile tile1 = new Tile((String) null, null);
-        Tile tile2 = new Tile((String) null, null);
+        Tile tile1 = new Tile(null, null);
+        Tile tile2 = new Tile(null, null);
         Assertions.assertEquals(tile1, tile2);
     }
 
@@ -288,15 +283,15 @@ public class TileTest {
 
     @Test
     void test_notEquals_onlyText() {
-        Tile tile1 = new Tile("this");
-        Tile tile2 = new Tile("that");
+        Tile tile1 = quickTextTile("this");
+        Tile tile2 = quickTextTile("that");
         Assertions.assertNotEquals(tile1, tile2);
     }
 
     @Test
     void test_notEquals_onlyColors() {
-        Tile tile1 = new Tile(ColorMaker.make(SimpleColor.RED));
-        Tile tile2 = new Tile(ColorMaker.make(SimpleColor.YELLOW));
+        Tile tile1 = new Tile(".", ColorMaker.make(SimpleColor.RED));
+        Tile tile2 = new Tile(".", ColorMaker.make(SimpleColor.YELLOW));
         Assertions.assertNotEquals(tile1, tile2);
     }
 
@@ -324,7 +319,7 @@ public class TileTest {
 
     @Test
     void test_notEquals_bothNull() {
-        Tile tile1 = new Tile((String) null, null);
+        Tile tile1 = new Tile(null, null);
         Tile tile2 = new Tile("not null!", ColorMaker.make(SimpleColor.YELLOW));
         Assertions.assertNotEquals(tile1, tile2);
     }
@@ -332,8 +327,8 @@ public class TileTest {
 
     @Test
     void test_equals_contents_both() {
-        Tile tile1 = new Tile();
-        Tile tile2 = new Tile();
+        Tile tile1 = defaultTile();
+        Tile tile2 = defaultTile();
 
         tile1.addContents(new SimpleDisplay("contents", ColorMaker.make(SimpleColor.RED)));
         tile2.addContents(new SimpleDisplay("contents", ColorMaker.make(SimpleColor.RED)));
@@ -343,16 +338,16 @@ public class TileTest {
 
     @Test
     void test_equals_contents_null() {
-        Tile tile1 = new Tile();
-        Tile tile2 = new Tile();
+        Tile tile1 = defaultTile();
+        Tile tile2 = defaultTile();
 
         Assertions.assertEquals(tile1, tile2);
     }
 
     @Test
     void test_notEquals_contents_bothButDiff() {
-        Tile tile1 = new Tile();
-        Tile tile2 = new Tile();
+        Tile tile1 = defaultTile();
+        Tile tile2 = defaultTile();
 
         tile1.addContents(new SimpleDisplay("contents", ColorMaker.make(SimpleColor.RED)));
         tile2.addContents(new SimpleDisplay("uuh....contents..?", ColorMaker.make(SimpleColor.RED)));
@@ -362,8 +357,8 @@ public class TileTest {
 
     @Test
     void test_notEquals_contents_firstNull() {
-        Tile tile1 = new Tile();
-        Tile tile2 = new Tile();
+        Tile tile1 = defaultTile();
+        Tile tile2 = defaultTile();
 
         tile2.addContents(new SimpleDisplay("contents", ColorMaker.make(SimpleColor.RED)));
 
@@ -372,8 +367,8 @@ public class TileTest {
 
     @Test
     void test_notEquals_contents_secondNull() {
-        Tile tile1 = new Tile();
-        Tile tile2 = new Tile();
+        Tile tile1 = defaultTile();
+        Tile tile2 = defaultTile();
 
         tile1.addContents(new SimpleDisplay("contents", ColorMaker.make(SimpleColor.RED)));
 

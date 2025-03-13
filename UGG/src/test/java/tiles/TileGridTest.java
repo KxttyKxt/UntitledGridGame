@@ -1,8 +1,6 @@
 package tiles;
 
-import colors.Color;
 import colors.ColorMaker;
-import colors.ColorMerger;
 import colors.SimpleColor;
 import display.SimpleDisplay;
 import org.junit.jupiter.api.Assertions;
@@ -16,113 +14,34 @@ public class TileGridTest {
         exceptionWasThrown = false;
     }
 
+    private Tile defaultTile() {
+        return new Tile(Tile.defaultTileDisplay);
+    }
+
     private static TileGrid tileGrid;
     private boolean exceptionWasThrown;
 
     private static final int[] originPos = {0, 0};
     private static final int[] acrossPos = {0, 1};
 
-    private void tileMatrixSizeOne() {
-        initializeTileMatrix(1, 1);
-    }
     private void tileMatrixSizeOne(Tile tileToSet) {
         initializeTileMatrix(new Tile[][]{{tileToSet}});
     }
 
-    private void tileMatrixSizeTwoAcross() {
-        initializeTileMatrix(1, 2);
-    }
     private void tileMatrixSizeTwoAcross(Tile firstTile, Tile secondTile) {
         initializeTileMatrix(new Tile[][]{{firstTile, secondTile}});
     }
 
-    private void initializeTileMatrix(int rows, int columns) {
-        tileGrid = new TileGrid(rows, columns);
-    }
     private void initializeTileMatrix(Tile[][] tilesForMatrix) {
         tileGrid = new TileGrid(tilesForMatrix);
     }
 
 
     @Test
-    void test_constructor_nonPositiveValuesException_rows() {
-        try { tileGrid = new TileGrid(-1, 2); }
-        catch (IllegalArgumentException arraySizesCannotBeNonpositiveException) {
-            exceptionWasThrown = true;
-        }
-
-        Assertions.assertTrue(exceptionWasThrown);
-    }
-
-    @Test
-    void test_constructor_nonPositiveValuesException_columns() {
-        try { tileGrid = new TileGrid(2, 0); }
-        catch (IllegalArgumentException arraySizesCannotBeNonpositiveException) {
-            exceptionWasThrown = true;
-        }
-
-        Assertions.assertTrue(exceptionWasThrown);
-    }
-
-    @Test
-    void test_constructor_nonPositiveValuesException_both() {
-        try { tileGrid = new TileGrid(0, -1); }
-        catch (IllegalArgumentException arraySizesCannotBeNonpositiveException) {
-            exceptionWasThrown = true;
-        }
-
-        Assertions.assertTrue(exceptionWasThrown);
-    }
-
-    @Test
-    void test_constructor_nonPositiveValuesException_noException() {
-        try { tileMatrixSizeOne(); }
-        catch (IllegalArgumentException arraySizesCannotBeNonpositiveException) {
-            exceptionWasThrown = true;
-        }
-
-        Assertions.assertFalse(exceptionWasThrown);
-    }
-
-
-    @Test
-    void test_swapContents() {
-        Tile tileA =
-                new Tile(Tile.defaultBaseDisplay, new SimpleDisplay("contents", null));
-        Tile tileB =
-                new Tile(Tile.defaultBaseDisplay, new SimpleDisplay("contents too", null));
-
-        tileMatrixSizeTwoAcross(tileA, tileB);
-
-        Assertions.assertEquals(tileA.toString(), "contents");
-        Assertions.assertEquals(tileB.toString(), "contents too");
-
-        tileGrid.swapContents(originPos, acrossPos);
-
-        Assertions.assertEquals(tileA.toString(), "contents too");
-        Assertions.assertEquals(tileB.toString(), "contents");
-    }
-
-    @Test
-    void test_swapContents_coordsOutOfBoundsException() {
-        try {
-            tileMatrixSizeTwoAcross();
-            tileGrid.swapContents(new int[]{0, 0}, new int[]{0, 2});
-        }
-        catch (IndexOutOfBoundsException coordsOutOfBoundsException) {
-            exceptionWasThrown = true;
-        }
-
-        Assertions.assertTrue(exceptionWasThrown);
-    }
-
-
-    @Test
     void test_transferContents_true() {
-        Tile contentsTile =
-                new Tile(Tile.defaultBaseDisplay, new SimpleDisplay("contents", null));
-        Tile emptyTile =
-                new Tile();
+        Tile contentsTile = defaultTile();
+        contentsTile.addContents(new SimpleDisplay("contents", null));
+        Tile emptyTile = defaultTile();
 
         tileMatrixSizeTwoAcross(contentsTile, emptyTile);
         Assertions.assertTrue(tileGrid.transferContents(originPos, acrossPos));
@@ -130,10 +49,10 @@ public class TileGridTest {
 
     @Test
     void test_transferContents_false() {
-        Tile contentsTile =
-                new Tile(Tile.defaultBaseDisplay, new SimpleDisplay("contents", null));
-        Tile alsoContentsTile =
-                new Tile(Tile.defaultBaseDisplay, new SimpleDisplay("contents too", null));
+        Tile contentsTile = defaultTile();
+        contentsTile.addContents(new SimpleDisplay("contents", null));
+        Tile alsoContentsTile = defaultTile();
+        alsoContentsTile.addContents(new SimpleDisplay("contents too", null));
 
         tileMatrixSizeTwoAcross(contentsTile, alsoContentsTile);
         Assertions.assertFalse(tileGrid.transferContents(originPos, acrossPos));
@@ -141,10 +60,9 @@ public class TileGridTest {
 
     @Test
     void test_transferContents_falseWithEmptyOrigin() {
-        Tile emptyTile =
-                new Tile();
-        Tile contentsTile =
-                new Tile(Tile.defaultBaseDisplay, new SimpleDisplay("contents", null));
+        Tile emptyTile = defaultTile();
+        Tile contentsTile = defaultTile();
+        contentsTile.addContents(new SimpleDisplay("contents", null));
 
         tileMatrixSizeTwoAcross(emptyTile, contentsTile);
         Assertions.assertFalse(tileGrid.transferContents(originPos, acrossPos));
@@ -153,7 +71,7 @@ public class TileGridTest {
     @Test
     void test_transferContents_coordsOutOfBoundsException() {
         try {
-            tileMatrixSizeTwoAcross();
+            tileMatrixSizeTwoAcross(defaultTile(), defaultTile());
             tileGrid.transferContents(new int[]{0, 0}, new int[]{0, 2});
         }
         catch (IndexOutOfBoundsException coordsOutOfBoundsException) {
@@ -182,12 +100,6 @@ public class TileGridTest {
     }
 
     @Test
-    void test_toString_sizeOne_empty() {
-        tileMatrixSizeOne();
-        Assertions.assertEquals(tileGrid.toString(), TileGrid.EMPTY_CELL);
-    }
-
-    @Test
     void test_toString_sizeOne_null() {
         initializeTileMatrix(new Tile[][]{{null}});
         Assertions.assertEquals(tileGrid.toString(), TileGrid.NULL_CELL);
@@ -212,12 +124,6 @@ public class TileGridTest {
                         TileGrid.FORMAT_FOR_CELL.repeat(2),
                         redTile.display(), greenTile.display()
         ));
-    }
-
-    @Test
-    void test_toString_sizeTwo_empty() {
-        tileMatrixSizeTwoAcross();
-        Assertions.assertEquals(TileGrid.EMPTY_CELL.repeat(2), tileGrid.toString());
     }
 
     @Test
@@ -262,19 +168,7 @@ public class TileGridTest {
         ), tileGrid.toString());
 
     }
-
-    @Test
-    void test_toString_sizeTwoByTwo_empty() {
-        initializeTileMatrix(2, 2);
-
-        String expectedToString = String.format(
-                "%s%n%s",
-                TileGrid.EMPTY_CELL.repeat(2),
-                TileGrid.EMPTY_CELL.repeat(2)
-        );
-
-        Assertions.assertEquals(expectedToString, tileGrid.toString());
-    }
+    
 
     @Test
     void test_toString_sizeTwoByTwo_null() {
@@ -290,54 +184,6 @@ public class TileGridTest {
                 TileGrid.NULL_CELL.repeat(2)
         );
 
-        Assertions.assertEquals(expectedToString, tileGrid.toString());
-    }
-
-
-    @Test
-    void test_toString_sizeThreeByFour_freestyle() {
-        Tile tileA = new Tile("A", null);
-        Tile tileB = new Tile("B", null);
-        Tile tileC = new Tile("C", null);
-        Tile tileD = new Tile("D", null);
-        Tile redTile = new Tile("Red", ColorMaker.make(SimpleColor.RED));
-        Tile greenTile = new Tile("Green", ColorMaker.make(SimpleColor.GREEN));
-        Tile yellowTile = new Tile("Yellow", ColorMaker.make(SimpleColor.YELLOW));
-        Tile magentaTile = new Tile("Green", ColorMaker.make(SimpleColor.MAGENTA));
-        Tile mergedColorTile = new Tile("Merged", ColorMerger.merge( new Color[]{
-                ColorMaker.make(SimpleColor.CYAN),
-                ColorMaker.make(SimpleColor.BG_RED)
-        }));
-
-        Tile[][] tilesForMatrix = {
-                {tileA, tileB, tileC, tileD},
-                {redTile, greenTile, yellowTile, magentaTile},
-                {new Tile(), new Tile((String) null), new Tile((Color) null), mergedColorTile}
-        };
-        initializeTileMatrix(tilesForMatrix);
-
-        // It's a lot, but at least it's comprehensive.
-        final String ROW_TEMPLATE = TileGrid.FORMAT_FOR_CELL.repeat(4);
-        String expectedToString = String.format("%s%n%s%n%s",
-                String.format(
-                        ROW_TEMPLATE,
-                        "A", "B", "C", "D"
-                ),
-                String.format(
-                        ROW_TEMPLATE,
-                        redTile.display(),
-                        greenTile.display(),
-                        yellowTile.display(),
-                        magentaTile.display()
-                ),
-                String.format(
-                        ROW_TEMPLATE,
-                        Tile.defaultBaseDisplay.display(),
-                        Tile.defaultBaseColor.colorize("-"),
-                        Tile.defaultBaseText.charAt(0),
-                        mergedColorTile.display()
-                )
-        );
         Assertions.assertEquals(expectedToString, tileGrid.toString());
     }
 

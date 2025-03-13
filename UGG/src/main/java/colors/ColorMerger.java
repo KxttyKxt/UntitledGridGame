@@ -1,5 +1,10 @@
 package colors;
 
+// This class has not been used yet, but I know it will be.
+// The main usage is for merging BG and FG colors into a single color.
+// I have yet to create a Tile or Displayable that does this.
+// For now.
+@SuppressWarnings("unused")
 public class ColorMerger {
     public static Color merge(Color[] colors) {
         if (colors.length == 1)
