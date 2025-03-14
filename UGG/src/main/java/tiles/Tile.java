@@ -6,8 +6,6 @@ import colors.SimpleColor;
 import display.Displayable;
 import display.SimpleDisplay;
 
-import java.util.Objects;
-
 
 public class Tile implements Displayable {
 
@@ -112,23 +110,22 @@ public class Tile implements Displayable {
         if (o == null || getClass() != o.getClass()) return false;
 
         Tile that = (Tile) o;
+        boolean tileDisplaysMatch = this.tileDisplay.equals(that.tileDisplay);
         boolean contentsDisplaysMatch;
+        boolean traversableMatch = this.traversable == that.traversable;
 
         if (this.contentsDisplay == null && that.contentsDisplay == null)
             contentsDisplaysMatch = true;
-        else if (this.contentsDisplay == null || that.contentsDisplay == null)
+        else if (this.contentsDisplay == null)
+            contentsDisplaysMatch = false;
+        else if (that.contentsDisplay == null)
             contentsDisplaysMatch = false;
         else
             contentsDisplaysMatch = this.contentsDisplay.equals(that.contentsDisplay);
 
 
-        return this.tileDisplay.equals(that.tileDisplay)
+        return tileDisplaysMatch
                 && contentsDisplaysMatch
-                && this.traversable == that.traversable;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(tileDisplay, contentsDisplay, traversable);
+                && traversableMatch;
     }
 }

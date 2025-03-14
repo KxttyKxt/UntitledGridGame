@@ -16,7 +16,7 @@ class TileTest {
         return Tile.withOnlyText("B");
     }
 
-    private Tile blueJunkTileWithContents() {
+    private Tile tileWithBlueJunkContents() {
         return Tile.withTileDisplay(Tile.defaultTileDisplay)
                 .andContentsDisplay(blueJunkDisplay())
                 .build();
@@ -98,7 +98,7 @@ class TileTest {
 
     @Test
     void test_transferContentsTo_false_secondNotTraversable() {
-        Tile tileA = blueJunkTileWithContents();
+        Tile tileA = tileWithBlueJunkContents();
         Tile tileB = Tile.withTileDisplay(Tile.defaultTileDisplay).andTraversable(false).build();
 
         Assertions.assertFalse(tileA.transferContentsTo(tileB));
@@ -117,11 +117,85 @@ class TileTest {
 
     @Test
     void test_display_contents() {
-        Tile tileToDisplay = blueJunkTileWithContents();
+        Tile tileToDisplay = tileWithBlueJunkContents();
 
         String expectedDisplay = blueJunkDisplay().display();
         String actualDisplay = tileToDisplay.display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
     }
+
+
+    @Test
+    void test_equals_true_same() {
+        Tile tile = Tile.defaultTile();
+        Assertions.assertEquals(tile, tile);
+    }
+
+    @Test
+    void test_equals_true_nullContents() {
+        Tile tile1 = Tile.defaultTile();
+        Tile tile2 = Tile.defaultTile();
+
+        Assertions.assertEquals(tile1, tile2);
+    }
+
+    @Test
+    void test_equals_true_equalContents() {
+        Tile tile1 = tileWithBlueJunkContents();
+        Tile tile2 = tileWithBlueJunkContents();
+
+        Assertions.assertEquals(tile1, tile2);
+    }
+
+
+    @Test
+    void test_notEquals_differentClass() {
+        // assertEquals is necessary to fulfill the usage of Tile#equals()
+        //noinspection AssertBetweenInconvertibleTypes
+        Assertions.assertNotEquals(Tile.defaultTile(), "literally a string");
+    }
+
+    @Test
+    void test_notEquals_null() {
+        Assertions.assertNotEquals(Tile.defaultTile(), null);
+    }
+
+    @Test
+    void test_notEquals_differentTiles() {
+        Tile tile1 = Tile.defaultTile();
+        Tile tile2 = Tile.withOnlyText("A");
+
+        Assertions.assertNotEquals(tile1, tile2);
+    }
+
+    @Test
+    void test_notEquals_oneHasNullContents() {
+        Tile noContents = Tile.defaultTile();
+        Tile yesContents = tileWithBlueJunkContents();
+
+        Assertions.assertNotEquals(noContents, yesContents);
+        Assertions.assertNotEquals(yesContents, noContents);
+    }
+
+    @Test
+    void test_notEquals_differentContents() {
+        Tile blueJunkTile = tileWithBlueJunkContents();
+
+        Tile diffTile = Tile.withTileDisplay(Tile.defaultTileDisplay)
+                .andContentsDisplay(SimpleDisplay.withOnlyText("bwa")).build();
+
+        Assertions.assertNotEquals(blueJunkTile, diffTile);
+    }
+
+    @Test
+    void test_notEquals_differentTraversability() {
+        Tile traversableTile = Tile.defaultTile();
+        Tile notTraversableTile = Tile.withTileDisplay(Tile.defaultTileDisplay)
+                .andTraversable(false)
+                .build();
+
+        Assertions.assertNotEquals(traversableTile, notTraversableTile);
+    }
+
 }
