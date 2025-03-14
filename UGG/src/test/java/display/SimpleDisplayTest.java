@@ -8,28 +8,28 @@ import org.junit.jupiter.api.Test;
 
 public class SimpleDisplayTest {
     @Test
-    void test_constructor_nullText() {
-        SimpleDisplay nullTextDisplay = new SimpleDisplay(null, null);
+    void test_builder_bothNull() {
+        SimpleDisplay nullTextDisplay = SimpleDisplay.withText(null).andColor(null);
         Assertions.assertEquals(SimpleDisplay.emptyTextFormat, nullTextDisplay.toString());
     }
 
     @Test
-    void test_constructor_emptyText() {
-        SimpleDisplay nullTextDisplay = new SimpleDisplay("", null);
+    void test_builder_emptyText() {
+        SimpleDisplay nullTextDisplay = SimpleDisplay.withText("").andColor(null);
         Assertions.assertEquals(SimpleDisplay.emptyTextFormat, nullTextDisplay.toString());
     }
 
     @Test
-    void test_constructor_text() {
-        SimpleDisplay nullTextDisplay = new SimpleDisplay("text!", null);
-        Assertions.assertEquals("text!", nullTextDisplay.toString());
+    void test_builder_onlyText() {
+        SimpleDisplay onlyTextDisplay = SimpleDisplay.withText("text!").andColor(null);
+        Assertions.assertEquals("text!", onlyTextDisplay.toString());
     }
 
 
     @Test
     void test_display_color() {
         Color red = ColorMaker.make(SimpleColor.RED);
-        SimpleDisplay redDisplay = new SimpleDisplay("Super Duper", red);
+        SimpleDisplay redDisplay = SimpleDisplay.withText("Super Duper").andColor(red);
 
         String expectedDisplay = red.colorize("S");
         String actualDisplay = redDisplay.display();
@@ -39,59 +39,59 @@ public class SimpleDisplayTest {
 
     @Test
     void test_display_noColor() {
-        SimpleDisplay noColorDisplay = new SimpleDisplay("Super Duper", null);
+        SimpleDisplay noColorDisplay = SimpleDisplay.withText("Super Duper").andColor(null);
         Assertions.assertEquals("S", noColorDisplay.display());
     }
 
 
     @Test
     void test_equals_same() {
-        SimpleDisplay simpleDisplay = new SimpleDisplay("", null);
+        SimpleDisplay simpleDisplay = SimpleDisplay.emptyDisplay();
         Assertions.assertEquals(simpleDisplay, simpleDisplay);
     }
 
     @Test
     void test_notEquals_null() {
-        SimpleDisplay display = new SimpleDisplay("", null);
+        SimpleDisplay display = SimpleDisplay.emptyDisplay();
         Assertions.assertNotEquals(display, null);
     }
 
     @Test
     void test_NotEquals_differentClass() {
         // For test coverage
-        SimpleDisplay display = new SimpleDisplay("", null);
+        SimpleDisplay display = SimpleDisplay.emptyDisplay();
         //noinspection AssertBetweenInconvertibleTypes
         Assertions.assertNotEquals(display, "literally a string");
     }
 
     @Test
     void test_NotEquals_text() {
-        SimpleDisplay display = new SimpleDisplay("text", null);
-        SimpleDisplay otherDisplay = new SimpleDisplay("text!", null);
+        SimpleDisplay display = SimpleDisplay.withText("text").andColor(null);
+        SimpleDisplay otherDisplay = SimpleDisplay.withText("text!").andColor(null);
 
         Assertions.assertNotEquals(display, otherDisplay);
     }
 
     @Test
     void test_NotEquals_firstColorNull() {
-        SimpleDisplay display = new SimpleDisplay("text", null);
-        SimpleDisplay otherDisplay = new SimpleDisplay("text", ColorMaker.make(SimpleColor.RED));
+        SimpleDisplay display = SimpleDisplay.withText("text").andColor(null);
+        SimpleDisplay otherDisplay = SimpleDisplay.withText("text").andColor(ColorMaker.make(SimpleColor.RED));
 
         Assertions.assertNotEquals(display, otherDisplay);
     }
 
     @Test
     void test_NotEquals_secondColorNull() {
-        SimpleDisplay display = new SimpleDisplay("text", ColorMaker.make(SimpleColor.RED));
-        SimpleDisplay otherDisplay = new SimpleDisplay("text", null);
+        SimpleDisplay display = SimpleDisplay.withText("text").andColor(ColorMaker.make(SimpleColor.RED));
+        SimpleDisplay otherDisplay = SimpleDisplay.withText("text").andColor(null);
 
         Assertions.assertNotEquals(display, otherDisplay);
     }
 
     @Test
     void test_equals_color() {
-        SimpleDisplay display = new SimpleDisplay("text", ColorMaker.make(SimpleColor.RED));
-        SimpleDisplay otherDisplay = new SimpleDisplay("text", ColorMaker.make(SimpleColor.RED));
+        SimpleDisplay display = SimpleDisplay.withText("text").andColor(ColorMaker.make(SimpleColor.RED));
+        SimpleDisplay otherDisplay = SimpleDisplay.withText("text").andColor(ColorMaker.make(SimpleColor.RED));
 
         Assertions.assertEquals(display, otherDisplay);
     }

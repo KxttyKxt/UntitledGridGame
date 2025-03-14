@@ -8,7 +8,9 @@ import display.SimpleDisplay;
 import tiles.TileGrid;
 
 public class PlayerMovementManager extends GridInputManager<String> {
-    private final Displayable player = new SimpleDisplay("@player", ColorMaker.make(SimpleColor.CYAN));
+    private final Displayable player = SimpleDisplay.withText("@player")
+            .andColor(ColorMaker.make(SimpleColor.CYAN));
+
     private int playerRow;
     private int playerCol;
 
@@ -47,14 +49,20 @@ public class PlayerMovementManager extends GridInputManager<String> {
         int[] playerPos = {playerRow, playerCol};
         int[] targetPos = {targetRow, targetCol};
 
-        boolean movedSuccessfully = tileGrid.transferContents(playerPos, targetPos);
+        boolean movedSuccessfully = false;
 
-        if (movedSuccessfully) {
-            playerRow = targetRow;
-            playerCol = targetCol;
+        try {
+            movedSuccessfully = tileGrid.transferContents(playerPos, targetPos);
         }
-        else {
-            System.err.printf("Player could not be moved to [%d, %d].%n", targetRow, targetCol);
+        catch (IndexOutOfBoundsException ignoredTargetPosOutOfRangeException) {
+
+        }
+        finally {
+            if (movedSuccessfully) {
+                playerRow = targetRow;
+                playerCol = targetCol;
+            } else
+                System.err.printf("Player could not be moved to [%d, %d].%n", targetRow, targetCol);
         }
     }
 

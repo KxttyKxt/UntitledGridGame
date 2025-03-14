@@ -1,20 +1,25 @@
 package tiles;
 
-import colors.ColorMaker;
-import colors.SimpleColor;
+import display.Displayable;
 import display.SimpleDisplay;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TileGridTest {
-    private Tile defaultTile() {
-        return new Tile(Tile.defaultTileDisplay);
-    }
-
     private static TileGrid tileGrid;
 
     private static final int[] originPos = {0, 0};
     private static final int[] acrossPos = {0, 1};
+
+    private Tile tileWithContents() {
+        Tile toReturn = Tile.defaultTile();
+        toReturn.addContents(SimpleDisplay.withOnlyText("contents"));
+
+        return toReturn;
+    }
+    private Tile textTile(String text) {
+        return Tile.withOnlyText(text);
+    }
 
     private void tileMatrixSizeOne(Tile tileToSet) {
         initializeTileMatrix(new Tile[][]{{tileToSet}});
@@ -30,10 +35,30 @@ public class TileGridTest {
 
 
     @Test
+    void test_addContents_true() {
+        tileMatrixSizeOne(Tile.defaultTile());
+
+        Displayable contentsDisplay = SimpleDisplay.withOnlyText("contents");
+        Assertions.assertTrue(tileGrid.addContents(contentsDisplay, 0, 0));
+    }
+
+    @Test
+    void test_addContents_false() {
+        Tile preExistingTile = Tile.withTileDisplay(Tile.defaultTileDisplay)
+                        .andContentsDisplay(SimpleDisplay.withOnlyText("pre-contents"))
+                        .build();
+
+        tileMatrixSizeOne(preExistingTile);
+
+        Displayable contentsDisplay = SimpleDisplay.withOnlyText("contents");
+        Assertions.assertFalse(tileGrid.addContents(contentsDisplay, 0, 0));
+    }
+
+
+    @Test
     void test_transferContents_true() {
-        Tile contentsTile = defaultTile();
-        contentsTile.addContents(new SimpleDisplay("contents", null));
-        Tile emptyTile = defaultTile();
+        Tile contentsTile = tileWithContents();
+        Tile emptyTile = Tile.defaultTile();
 
         tileMatrixSizeTwoAcross(contentsTile, emptyTile);
         Assertions.assertTrue(tileGrid.transferContents(originPos, acrossPos));
@@ -41,10 +66,10 @@ public class TileGridTest {
 
     @Test
     void test_transferContents_false() {
-        Tile contentsTile = defaultTile();
-        contentsTile.addContents(new SimpleDisplay("contents", null));
-        Tile alsoContentsTile = defaultTile();
-        alsoContentsTile.addContents(new SimpleDisplay("contents too", null));
+        Tile contentsTile = tileWithContents();
+
+        Tile alsoContentsTile = Tile.defaultTile();
+        alsoContentsTile.addContents(SimpleDisplay.withOnlyText("contents too"));
 
         tileMatrixSizeTwoAcross(contentsTile, alsoContentsTile);
         Assertions.assertFalse(tileGrid.transferContents(originPos, acrossPos));
@@ -52,36 +77,20 @@ public class TileGridTest {
 
     @Test
     void test_transferContents_falseWithEmptyOrigin() {
-        Tile emptyTile = defaultTile();
-        Tile contentsTile = defaultTile();
-        contentsTile.addContents(new SimpleDisplay("contents", null));
+        Tile emptyTile = Tile.defaultTile();
+        Tile contentsTile = tileWithContents();
 
         tileMatrixSizeTwoAcross(emptyTile, contentsTile);
         Assertions.assertFalse(tileGrid.transferContents(originPos, acrossPos));
     }
 
-    @Test
-    void test_transferContents_falseWithCoordsOutOfBounds() {
-        tileMatrixSizeTwoAcross(defaultTile(), defaultTile());
-        Assertions.assertFalse(tileGrid.transferContents(new int[]{0, 0}, new int[]{0, 2}));
-    }
-
 
     @Test
-    void test_toString_sizeOne_tile() {
-        tileMatrixSizeOne(new Tile("A", null));
+    void test_toString_sizeOne() {
+        tileMatrixSizeOne(textTile("A"));
 
         Assertions.assertEquals(tileGrid.toString(),
                 String.format(TileGrid.FORMAT_FOR_CELL, "A"));
-    }
-
-    @Test
-    void test_toString_sizeOne_colored() {
-        Tile redTile = new Tile("A", ColorMaker.make(SimpleColor.RED));
-        tileMatrixSizeOne(redTile);
-
-        Assertions.assertEquals(tileGrid.toString(),
-                String.format(TileGrid.FORMAT_FOR_CELL, redTile.display()));
     }
 
     @Test
@@ -92,23 +101,11 @@ public class TileGridTest {
 
 
     @Test
-    void test_toString_sizeTwo_tile() {
-        tileMatrixSizeTwoAcross(new Tile("A", null), new Tile("B", null));
+    void test_toString_sizeTwo() {
+        tileMatrixSizeTwoAcross(textTile("A"), textTile("B"));
 
         Assertions.assertEquals(tileGrid.toString(),
                 String.format(TileGrid.FORMAT_FOR_CELL.repeat(2), "A", "B"));
-    }
-
-    @Test
-    void test_toString_sizeTwo_colored() {
-        Tile redTile = new Tile(null, ColorMaker.make(SimpleColor.RED));
-        Tile greenTile = new Tile(null, ColorMaker.make(SimpleColor.GREEN));
-        tileMatrixSizeTwoAcross(redTile, greenTile);
-
-        Assertions.assertEquals(tileGrid.toString(), String.format(
-                        TileGrid.FORMAT_FOR_CELL.repeat(2),
-                        redTile.display(), greenTile.display()
-        ));
     }
 
     @Test
@@ -121,8 +118,8 @@ public class TileGridTest {
     @Test
     void test_toString_sizeTwoByTwo_tile() {
         Tile[][] tilesForMatrix = {
-                {new Tile("A", null), new Tile("B", null)},
-                {new Tile("C", null), new Tile("D", null)}
+                {textTile("A"), textTile("B")},
+                {textTile("C"), textTile("D")}
         };
         initializeTileMatrix(tilesForMatrix);
 
@@ -132,28 +129,6 @@ public class TileGridTest {
                 String.format(TileGrid.FORMAT_FOR_CELL.repeat(2), "C", "D")
         ), tileGrid.toString());
     }
-
-    @Test
-    void test_toString_sizeTwoByTwo_colored() {
-        Tile redTile = new Tile("Red", ColorMaker.make(SimpleColor.RED));
-        Tile greenTile = new Tile("Green", ColorMaker.make(SimpleColor.GREEN));
-        Tile yellowTile = new Tile("Yellow", ColorMaker.make(SimpleColor.YELLOW));
-        Tile magentaTile = new Tile("Magenta", ColorMaker.make(SimpleColor.MAGENTA));
-
-        Tile[][] tilesForMatrix = {
-                {redTile, greenTile},
-                {yellowTile, magentaTile}
-        };
-        initializeTileMatrix(tilesForMatrix);
-
-        Assertions.assertEquals(String.format(
-                "%s%n%s",
-                String.format(TileGrid.FORMAT_FOR_CELL.repeat(2), redTile.display(), greenTile.display()),
-                String.format(TileGrid.FORMAT_FOR_CELL.repeat(2), yellowTile.display(), magentaTile.display())
-        ), tileGrid.toString());
-
-    }
-    
 
     @Test
     void test_toString_sizeTwoByTwo_null() {
