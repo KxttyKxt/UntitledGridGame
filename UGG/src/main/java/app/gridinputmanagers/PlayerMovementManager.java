@@ -8,7 +8,7 @@ import display.SimpleDisplay;
 import tiles.TileGrid;
 
 public class PlayerMovementManager extends GridInputManager<String> {
-    private final Displayable player = SimpleDisplay.withText("@player")
+    private final Displayable playerDisplay = SimpleDisplay.withText("@player")
             .andColor(ColorMaker.make(SimpleColor.CYAN));
 
     private int playerRow;
@@ -19,7 +19,7 @@ public class PlayerMovementManager extends GridInputManager<String> {
         this.playerRow = startingRow;
         this.playerCol = startingCol;
 
-        tileGrid.addContents(player, startingRow, startingCol);
+        tileGrid.addContents(playerDisplay, startingRow, startingCol);
     }
 
     @Override
@@ -68,6 +68,6 @@ public class PlayerMovementManager extends GridInputManager<String> {
 
     @Override
     void displayGrid() {
-        System.out.printf("%s%n%s%n", tileGrid, player);
+        System.out.printf("%s%n%s%n", tileGrid, playerDisplay);
     }
 }

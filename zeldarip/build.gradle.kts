@@ -13,6 +13,12 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation(project(":UGG"))
+
+    // https://mvnrepository.com/artifact/com.jayway.jsonpath/json-path
+    implementation("com.jayway.jsonpath:json-path:2.9.0")
+
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    implementation("commons-io:commons-io:2.18.0")
 }
 
 tasks.test {

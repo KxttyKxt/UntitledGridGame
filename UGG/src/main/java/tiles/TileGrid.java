@@ -8,7 +8,7 @@ public class TileGrid {
 
     private final Tile[][] matrix;
 
-    TileGrid(Tile[][] tilesForMatrix) {
+    public TileGrid(Tile[][] tilesForMatrix) {
         matrix = tilesForMatrix;
     }
 
