@@ -2,6 +2,8 @@ package tiles;
 
 import display.Displayable;
 
+import java.util.Objects;
+
 public class TileGrid {
     static final String FORMAT_FOR_CELL = " %s ";
     static final String NULL_CELL = " ".repeat(FORMAT_FOR_CELL.length() - 1);
@@ -45,5 +47,14 @@ public class TileGrid {
         }
 
         return toReturn.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TileGrid that = (TileGrid) o;
+        return Objects.deepEquals(this.matrix, that.matrix);
     }
 }

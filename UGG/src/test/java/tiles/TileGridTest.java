@@ -92,7 +92,6 @@ class TileGridTest {
         Assertions.assertEquals(tileGrid.toString(),
                 String.format(TileGrid.FORMAT_FOR_CELL, "A"));
     }
-
     @Test
     void test_toString_sizeOne_null() {
         initializeTileMatrix(new Tile[][]{{null}});
@@ -107,7 +106,6 @@ class TileGridTest {
         Assertions.assertEquals(tileGrid.toString(),
                 String.format(TileGrid.FORMAT_FOR_CELL.repeat(2), "A", "B"));
     }
-
     @Test
     void test_toString_sizeTwo_null() {
         initializeTileMatrix(new Tile[][]{{null, null}});
@@ -129,7 +127,6 @@ class TileGridTest {
                 String.format(TileGrid.FORMAT_FOR_CELL.repeat(2), "C", "D")
         ), tileGrid.toString());
     }
-
     @Test
     void test_toString_sizeTwoByTwo_null() {
         Tile[][] nullTileMatrix = {
@@ -147,4 +144,47 @@ class TileGridTest {
         Assertions.assertEquals(expectedToString, tileGrid.toString());
     }
 
+
+    @Test
+    void test_equals_same() {
+        Assertions.assertEquals(tileGrid, tileGrid);
+    }
+
+    @Test
+    void test_equals_matrices() {
+        tileMatrixSizeOne(Tile.defaultTile());
+        TileGrid newTileGrid = new TileGrid(new Tile[][]{{Tile.defaultTile()}});
+
+        Assertions.assertEquals(tileGrid, newTileGrid);
+    }
+
+    @Test
+    void test_notEquals_null() {
+        tileMatrixSizeOne(Tile.defaultTile());
+        Assertions.assertNotEquals(tileGrid, null);
+    }
+
+    @Test
+    void test_notEquals_differentClass() {
+        // For test coverage
+        tileMatrixSizeOne(Tile.defaultTile());
+        //noinspection AssertBetweenInconvertibleTypes
+        Assertions.assertNotEquals(tileGrid, "literally a string");
+    }
+
+    @Test
+    void test_notEquals_differentMatrices() {
+        tileMatrixSizeOne(Tile.defaultTile());
+        TileGrid newTileGrid = new TileGrid(new Tile[][]{{Tile.withOnlyText("different")}});
+
+        Assertions.assertNotEquals(tileGrid, newTileGrid);
+    }
+
+    @Test
+    void test_notEquals_differentMatrixSizes() {
+        tileMatrixSizeOne(Tile.defaultTile());
+        TileGrid newTileGrid = new TileGrid(new Tile[][]{{Tile.defaultTile(), Tile.defaultTile()}});
+
+        Assertions.assertNotEquals(tileGrid, newTileGrid);
+    }
 }

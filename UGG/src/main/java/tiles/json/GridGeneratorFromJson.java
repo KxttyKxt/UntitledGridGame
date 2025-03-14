@@ -60,6 +60,9 @@ public abstract class GridGeneratorFromJson {
     }
 
     private Tile getGeneratedTile(char patternLetter) {
+        if (patternLetter == ' ')
+            return null;
+
         String tileName = patternMap.get(String.valueOf(patternLetter));
         return tileGeneratorFromJson.generateTile(tileName);
     }
