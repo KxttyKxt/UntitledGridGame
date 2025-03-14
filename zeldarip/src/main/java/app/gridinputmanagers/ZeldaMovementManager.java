@@ -1,12 +1,12 @@
 package app.gridinputmanagers;
 
-import tiles.json.ZeldaGridGenerator;
+import tiles.json.ZeldaGridBuilder;
 
 import java.io.IOException;
 
 public class ZeldaMovementManager extends PlayerMovementManager {
 
     public ZeldaMovementManager() throws IOException {
-        super(new ZeldaGridGenerator().constructGridFromJson(), 6, 7);
+        super(new ZeldaGridBuilder().constructGridFromJson(), 6, 7);
     }
 }

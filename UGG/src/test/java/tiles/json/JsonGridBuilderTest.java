@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.net.URL;
 
 @SuppressWarnings("CanBeFinal")
-class GridGeneratorFromJsonTest {
+class JsonGridBuilderTest {
 
-    static GridGeneratorFromJson gridGenerator = new GridGeneratorFromJson(TileGeneratorFromJsonTest.tileGenerator) {
+    static JsonGridBuilder gridGenerator = new JsonGridBuilder(JsonTileRegistryTest.tileRegistry) {
         @Override
         protected TileGrid constructGridFromJson(URL jsonFileURL) throws IOException {
             return super.constructGridFromJson(jsonFileURL);
@@ -23,9 +23,9 @@ class GridGeneratorFromJsonTest {
         URL testJsonURL = this.getClass().getResource("test-grid.json");
 
         TileGrid expectedTileGrid = new TileGrid(new Tile[][]{
-                { Tile.defaultTile(),     Tile.defaultTile(), Tile.defaultTile() },
-                { Tile.withOnlyText("A"), null,               Tile.withOnlyText("A") },
-                { Tile.defaultTile(),     Tile.defaultTile(), Tile.defaultTile() }
+                { Tile.withOnlyText("A"), Tile.withOnlyText("A"), Tile.withOnlyText("A") },
+                { Tile.withOnlyText("B"), null,                   Tile.withOnlyText("B") },
+                { Tile.withOnlyText("A"), Tile.withOnlyText("A"), Tile.withOnlyText("A") }
         });
         TileGrid actualTileGrid = gridGenerator.constructGridFromJson(testJsonURL);
 

@@ -12,14 +12,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public abstract class GridGeneratorFromJson {
+public abstract class JsonGridBuilder {
     private ArrayList<String> pattern;
     private HashMap<String, String> patternMap;
 
-    private final TileGeneratorFromJson tileGeneratorFromJson;
+    private final JsonTileRegistry jsonTileRegistry;
 
-    public GridGeneratorFromJson(TileGeneratorFromJson tileGeneratorFromJson) {
-        this.tileGeneratorFromJson = tileGeneratorFromJson;
+    public JsonGridBuilder(JsonTileRegistry jsonTileRegistry) {
+        this.jsonTileRegistry = jsonTileRegistry;
     }
 
     protected TileGrid constructGridFromJson(URL jsonFileURL) throws IOException {
@@ -64,7 +64,7 @@ public abstract class GridGeneratorFromJson {
             return null;
 
         String tileName = patternMap.get(String.valueOf(patternLetter));
-        return tileGeneratorFromJson.generateTile(tileName);
+        return jsonTileRegistry.get(tileName);
     }
 
 }

@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import tiles.Tile;
 
-class ZeldaTileGeneratorTest {
-    ZeldaTileGenerator generator = new ZeldaTileGenerator();
+class ZeldaTileRegistryTest {
+    ZeldaTileRegistry registry = new ZeldaTileRegistry();
 
     Tile expectedBasicTile = Tile.withTileDisplay(SimpleDisplay.withText(".")
             .andColor(ColorMaker.make(187, false))).build();
@@ -19,36 +19,31 @@ class ZeldaTileGeneratorTest {
     Tile expectedWallTile = Tile.withTileDisplay(SimpleDisplay.withText("#")
             .andColor(ColorMaker.make(SimpleColor.GREEN))).andTraversable(false).build();
 
-    Tile actualBasicTile = generator.generateTile("BasicTile");
-    Tile actualCaveTile = generator.generateTile("CaveTile");
-    Tile actualWallTile = generator.generateTile("WallTile");
+    Tile actualBasicTile = registry.get("BasicTile");
+    Tile actualCaveTile = registry.get("CaveTile");
+    Tile actualWallTile = registry.get("WallTile");
 
     @Test
-    void test_generateTile_basicTile() {
+    void test_get_basicTile() {
         Assertions.assertEquals(expectedBasicTile, actualBasicTile);
     }
 
     @Test
-    void test_generateTile_caveTile() {
+    void test_get_caveTile() {
         Assertions.assertEquals(expectedCaveTile, actualCaveTile);
     }
 
     @Test
-    void test_generateTile_wallTile() {
+    void test_get_wallTile() {
         Assertions.assertEquals(expectedWallTile, actualWallTile);
     }
 
     @Test
-    void test_generateTile_null() {
-        Assertions.assertNull(generator.generateTile(" "));
-    }
-
-    @Test
-    void test_generateTile_exception() {
+    void test_get_exception() {
         boolean exceptionWasThrown = false;
 
         try {
-            Tile ignored = generator.generateTile("default");
+            Tile ignored = registry.get("default");
         }
         catch (IllegalArgumentException argumentDidNotMatchAnyKnownTileAliases) {
             exceptionWasThrown = true;

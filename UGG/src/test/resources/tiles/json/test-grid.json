@@ -1,11 +1,11 @@
 {
     "pattern": [
-        "DDD",
-        "A A",
-        "DDD"
+        "AAA",
+        "B B",
+        "AAA"
     ],
     "pattern-map": {
-        "D": "Default",
-        "A": "A"
+        "A": "A",
+        "B": "B"
     }
 }
