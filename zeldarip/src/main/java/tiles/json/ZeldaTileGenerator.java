@@ -9,7 +9,7 @@ import tiles.Tile;
 
 public class ZeldaTileGenerator extends TileGeneratorFromJson {
 
-    public Tile generateTile(String jsonTileName) {
+    Tile generateTile(String jsonTileName) {
         return switch (jsonTileName) {
             case "BasicTile" -> basicTile();
             case "CaveTile" -> caveTile();

@@ -6,7 +6,7 @@ import colors.SimpleColor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class SimpleDisplayTest {
+class SimpleDisplayTest {
     @Test
     void test_builder_bothNull() {
         SimpleDisplay nullTextDisplay = SimpleDisplay.withText(null).andColor(null);

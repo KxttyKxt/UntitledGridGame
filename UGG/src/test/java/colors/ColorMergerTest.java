@@ -3,7 +3,7 @@ package colors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ColorMergerTest {
+class ColorMergerTest {
     @Test
     void test_merge_singleColorSoSameExactObject() {
         Color expectedColor = ColorMaker.make(SimpleColor.GREEN);

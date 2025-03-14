@@ -3,7 +3,7 @@ package colors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ColorMakerTest {
+class ColorMakerTest {
     @Test
     void test_make_simple() {
         Color color = ColorMaker.make(SimpleColor.RED);

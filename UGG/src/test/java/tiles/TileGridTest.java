@@ -5,7 +5,7 @@ import display.SimpleDisplay;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class TileGridTest {
+class TileGridTest {
     private static TileGrid tileGrid;
 
     private static final int[] originPos = {0, 0};

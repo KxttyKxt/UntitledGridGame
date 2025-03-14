@@ -7,7 +7,7 @@ import display.SimpleDisplay;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class TileTest {
+class TileTest {
 
     private Tile tileA() {
         return Tile.withOnlyText("A");

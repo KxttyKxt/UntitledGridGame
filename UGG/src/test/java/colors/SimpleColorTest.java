@@ -3,7 +3,7 @@ package colors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class SimpleColorTest {
+class SimpleColorTest {
     @Test
     void test_toColorID_batchTest() {
         int[] correctIDs = {
