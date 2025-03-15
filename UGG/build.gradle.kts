@@ -21,6 +21,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.google.guava/guava
     implementation("com.google.guava:guava:33.4.0-jre")
+
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-nop
+    implementation("org.slf4j:slf4j-nop:2.0.17")
 }
 
 tasks.test {

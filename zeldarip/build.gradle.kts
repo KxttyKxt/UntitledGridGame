@@ -19,6 +19,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/commons-io/commons-io
     implementation("commons-io:commons-io:2.18.0")
+
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-nop
+    implementation("org.slf4j:slf4j-nop:2.0.17")
 }
 
 tasks.test {
