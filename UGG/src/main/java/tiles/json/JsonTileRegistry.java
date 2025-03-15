@@ -2,16 +2,12 @@ package tiles.json;
 
 import tiles.Tile;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public abstract class JsonTileRegistry {
-    HashMap<String, Tile.Builder> registry;
+    private final Map<String, Tile.Builder> registry = initializeRegistry();
 
-    protected abstract HashMap<String, Tile.Builder> initializeRegistry();
-
-    public JsonTileRegistry() {
-        registry = initializeRegistry();
-    }
+    protected abstract Map<String, Tile.Builder> initializeRegistry();
 
     public Tile get(String registryKey) {
         Tile.Builder registryValue = registry.get(registryKey);

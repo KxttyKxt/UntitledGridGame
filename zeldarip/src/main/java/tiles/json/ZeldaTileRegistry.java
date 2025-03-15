@@ -7,18 +7,17 @@ import display.Displayable;
 import display.SimpleDisplay;
 import tiles.Tile;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class ZeldaTileRegistry extends JsonTileRegistry {
 
     @Override
-    protected HashMap<String, Tile.Builder> initializeRegistry() {
-        HashMap<String, Tile.Builder> registry = new HashMap<>();
-        registry.put("BasicTile", basicTileBuilder());
-        registry.put("CaveTile", caveTileBuilder());
-        registry.put("WallTile", wallTileBuilder());
-
-        return registry;
+    protected Map<String, Tile.Builder> initializeRegistry() {
+        return Map.of(
+            "BasicTile", basicTileBuilder(),
+            "CaveTile", caveTileBuilder(),
+            "WallTile", wallTileBuilder()
+        );
     }
 
     private Tile.Builder basicTileBuilder() {

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import tiles.Tile;
 
-import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("CanBeFinal")
 class JsonTileRegistryTest {
@@ -13,12 +13,11 @@ class JsonTileRegistryTest {
     static JsonTileRegistry tileRegistry = new JsonTileRegistry() {
 
         @Override
-        protected HashMap<String, Tile.Builder> initializeRegistry() {
-            HashMap<String, Tile.Builder> registry = new HashMap<>();
-            registry.put("A", Tile.withTileDisplay(SimpleDisplay.withOnlyText("A")));
-            registry.put("B", Tile.withTileDisplay(SimpleDisplay.withOnlyText("B")));
-
-            return registry;
+        protected Map<String, Tile.Builder> initializeRegistry() {
+            return Map.of(
+                    "A", Tile.withTileDisplay(SimpleDisplay.withOnlyText("A")),
+                    "B", Tile.withTileDisplay(SimpleDisplay.withOnlyText("B"))
+            );
         }
     };
 

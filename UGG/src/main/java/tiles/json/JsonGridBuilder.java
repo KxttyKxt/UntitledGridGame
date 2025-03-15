@@ -9,12 +9,12 @@ import tiles.TileGrid;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class JsonGridBuilder {
-    private ArrayList<String> pattern;
-    private HashMap<String, String> patternMap;
+    private List<String> pattern;
+    private Map<String, String> patternMap;
 
     private final JsonTileRegistry jsonTileRegistry;
 
