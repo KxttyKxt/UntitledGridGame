@@ -3,24 +3,53 @@ package app.progessiveprinter;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+// Still a WIP
+@SuppressWarnings("unused")
 public class ProgressivePrinter {
+    private final Scanner consolePauser = new Scanner(System.in);
+    private boolean closed = false;
+
+    public static ProgressivePrinter defaultProgressivePrinter() {
+        return new ProgressivePrinter(System.out, 25, 100);
+    }
+
+    public static Builder withPrintStream(PrintStream printStream) {
+        return new Builder(printStream);
+    }
+
+    public static final class Builder {
+        private final PrintStream printStream;
+        private long millisBetweenCharacters = 25;
+        private int charLimitPerLine = 100;
+
+        public Builder(PrintStream printStream) {
+            this.printStream = printStream;
+        }
+
+        public Builder andMillisBetweenCharacters(long millisBetweenCharacters) {
+            this.millisBetweenCharacters = millisBetweenCharacters;
+            return this;
+        }
+
+        public Builder andCharLimitPerLine(int charLimitPerLine) {
+            this.charLimitPerLine = charLimitPerLine;
+            return this;
+        }
+
+        public ProgressivePrinter build() {
+            return new ProgressivePrinter(printStream, millisBetweenCharacters, charLimitPerLine);
+        }
+    }
+
+
     private final PrintStream printStream;
     private long millisBetweenCharacters;
     private int charLimitPerLine;
 
-    private final Scanner consolePauser = new Scanner(System.in);
-
-    private boolean closed = false;
-
-    public ProgressivePrinter() {
-        printStream = System.out;
-        millisBetweenCharacters = 25;
-        charLimitPerLine = 100;
-    }
-    public ProgressivePrinter(PrintStream printStream, int charLimitPerLine, long millisBetweenCharacters) {
+    private ProgressivePrinter(PrintStream printStream, long millisBetweenCharacters, int charLimitPerLine) {
         this.printStream = printStream;
-        this.charLimitPerLine = charLimitPerLine;
         this.millisBetweenCharacters = millisBetweenCharacters;
+        this.charLimitPerLine = charLimitPerLine;
     }
 
     public void setMillis(long millis) {
@@ -80,7 +109,7 @@ public class ProgressivePrinter {
 
     // Driver for testing
     public static void main(String[] args) {
-        ProgressivePrinter progPrinter = new ProgressivePrinter();
+        ProgressivePrinter progPrinter = ProgressivePrinter.defaultProgressivePrinter();
         progPrinter.print(String.format("I am a really long string so that I can actually have a chance to see that it prints progressively in case it decides to lag or something because gradle is building.......%n"));
 
         progPrinter.setMillis(150);
