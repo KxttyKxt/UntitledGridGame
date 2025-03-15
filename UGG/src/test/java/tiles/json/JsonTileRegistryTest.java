@@ -10,16 +10,10 @@ import java.util.Map;
 @SuppressWarnings("CanBeFinal")
 class JsonTileRegistryTest {
 
-    static JsonTileRegistry tileRegistry = new JsonTileRegistry() {
-
-        @Override
-        protected Map<String, Tile.Builder> initializeRegistry() {
-            return Map.of(
-                    "A", Tile.withTileDisplay(SimpleDisplay.withOnlyText("A")),
-                    "B", Tile.withTileDisplay(SimpleDisplay.withOnlyText("B"))
-            );
-        }
-    };
+    static JsonTileRegistry tileRegistry = JsonTileRegistry.createRegistryWithMap(Map.of(
+            "A", Tile.withTileDisplay(SimpleDisplay.withOnlyText("A")),
+            "B", Tile.withTileDisplay(SimpleDisplay.withOnlyText("B"))
+    ));
 
     @Test
     void get_a() {
@@ -44,7 +38,7 @@ class JsonTileRegistryTest {
         try {
             tileRegistry.get("not in registry");
         }
-        catch (IllegalArgumentException jsonNameNotInSwitchException) {
+        catch (NullPointerException registryReturnedNullForUnmappedKeyException) {
             exceptionWasThrown = true;
         }
         finally {

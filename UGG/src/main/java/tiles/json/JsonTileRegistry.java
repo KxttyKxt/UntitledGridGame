@@ -1,20 +1,27 @@
 package tiles.json;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import tiles.Tile;
 
 import java.util.Map;
 
-public abstract class JsonTileRegistry {
-    private final Map<String, Tile.Builder> registry = initializeRegistry();
+public class JsonTileRegistry {
 
-    protected abstract Map<String, Tile.Builder> initializeRegistry();
+    // Intentionally package-private
+    static JsonTileRegistry createRegistryWithMap(Map<String, Tile.Builder> registry) {
+        return new JsonTileRegistry(registry);
+    }
+
+
+    private final ImmutableMap<String, Tile.Builder> registry;
+
+    private JsonTileRegistry(Map<String, Tile.Builder> registry) {
+        this.registry = ImmutableMap.copyOf(registry);
+    }
+
 
     public Tile get(String registryKey) {
-        Tile.Builder registryValue = registry.get(registryKey);
-
-        if (registryValue == null)
-            throw new IllegalArgumentException(String.format("Key '%s' is not in the tile registry.", registryKey));
-
-        return registryValue.build();
+        return Preconditions.checkNotNull(registry.get(registryKey)).build();
     }
 }

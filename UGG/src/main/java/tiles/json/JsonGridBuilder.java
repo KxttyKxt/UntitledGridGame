@@ -16,11 +16,11 @@ public abstract class JsonGridBuilder {
     private List<String> pattern;
     private Map<String, String> patternMap;
 
-    private final JsonTileRegistry jsonTileRegistry;
+    private final JsonTileRegistry jsonTileRegistry =
+            JsonTileRegistry.createRegistryWithMap(createMapForRegistry());
 
-    public JsonGridBuilder(JsonTileRegistry jsonTileRegistry) {
-        this.jsonTileRegistry = jsonTileRegistry;
-    }
+    protected abstract Map<String, Tile.Builder> createMapForRegistry();
+
 
     protected TileGrid constructGridFromJson(URL jsonFileURL) throws IOException {
         Object jsonDocument = convertToDocument(jsonFileURL);
