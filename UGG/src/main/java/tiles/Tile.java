@@ -15,15 +15,15 @@ public class Tile implements Displayable {
 
     public static final class Builder {
         private final Displayable tileDisplay;
-        private Displayable contentsDisplay;
+        private Occupant occupant;
         private boolean traversable = true;
 
         public Builder(Displayable tileDisplay) {
             this.tileDisplay = tileDisplay;
         }
 
-        public Builder andContentsDisplay(Displayable contentsDisplay) {
-            this.contentsDisplay = contentsDisplay;
+        public Builder andOccupant(Occupant occupant) {
+            this.occupant = occupant;
             return this;
         }
 
@@ -33,7 +33,7 @@ public class Tile implements Displayable {
         }
 
         public Tile build() {
-            return new Tile(tileDisplay, contentsDisplay, traversable);
+            return new Tile(tileDisplay, occupant, traversable);
         }
     }
 
@@ -53,31 +53,31 @@ public class Tile implements Displayable {
         return Tile.withTileDisplay(SimpleDisplay.withOnlyText(text)).build();
     }
 
-    private final Displayable tileDisplay;
-    private Displayable contentsDisplay;
+    private final Displayable display;
+    private Occupant occupant;
     private final boolean traversable;
 
-    private Tile(Displayable tileDisplay, Displayable contentsDisplay, boolean traversable) {
-        this.tileDisplay = tileDisplay;
-        this.contentsDisplay = contentsDisplay;
+    private Tile(Displayable display, Occupant occupant, boolean traversable) {
+        this.display = display;
+        this.occupant = occupant;
         this.traversable = traversable;
     }
 
 
-    boolean addContents(Displayable contents) {
+    boolean addContents(Occupant occupant) {
         if (this.contentsAreEmpty()) {
-            this.setContentsDisplay(contents);
+            this.setOccupant(occupant);
             return true;
         }
 
         return false;
     }
 
-    private void setContentsDisplay(Displayable contentsDisplay) {
-        this.contentsDisplay = contentsDisplay;
+    private void setOccupant(Occupant occupant) {
+        this.occupant = occupant;
     }
 
-    boolean transferContentsTo(Tile that) {
+    boolean transferOccupantTo(Tile that) {
         if (!this.contentsAreEmpty() && that.contentsAreEmpty() && that.traversable) {
             this.swapContentsWith(that);
             return true;
@@ -86,22 +86,22 @@ public class Tile implements Displayable {
     }
 
     private void swapContentsWith(Tile that) {
-        Displayable temp = this.contentsDisplay;
-        this.contentsDisplay = that.contentsDisplay;
-        that.contentsDisplay = temp;
+        Occupant temp = this.occupant;
+        this.occupant = that.occupant;
+        that.occupant = temp;
     }
 
     private boolean contentsAreEmpty() {
-        return contentsDisplay == null;
+        return occupant == null;
     }
 
 
     @Override
     public String display() {
         if (contentsAreEmpty())
-            return tileDisplay.display();
+            return display.display();
         else
-            return contentsDisplay.display();
+            return occupant.display();
     }
 
     @Override
@@ -110,22 +110,22 @@ public class Tile implements Displayable {
         if (o == null || getClass() != o.getClass()) return false;
 
         Tile that = (Tile) o;
-        boolean tileDisplaysMatch = this.tileDisplay.equals(that.tileDisplay);
-        boolean contentsDisplaysMatch;
+        boolean tileDisplaysMatch = this.display.equals(that.display);
+        boolean occupantsMatch;
         boolean traversableMatch = this.traversable == that.traversable;
 
-        if (this.contentsDisplay == null && that.contentsDisplay == null)
-            contentsDisplaysMatch = true;
-        else if (this.contentsDisplay == null)
-            contentsDisplaysMatch = false;
-        else if (that.contentsDisplay == null)
-            contentsDisplaysMatch = false;
+        if (this.occupant == null && that.occupant == null)
+            occupantsMatch = true;
+        else if (this.occupant == null)
+            occupantsMatch = false;
+        else if (that.occupant == null)
+            occupantsMatch = false;
         else
-            contentsDisplaysMatch = this.contentsDisplay.equals(that.contentsDisplay);
+            occupantsMatch = this.occupant.equals(that.occupant);
 
 
         return tileDisplaysMatch
-                && contentsDisplaysMatch
+                && occupantsMatch
                 && traversableMatch;
     }
 }

@@ -3,13 +3,15 @@ package app.gridinputmanagers;
 import app.input.ScannerHandler;
 import colors.ColorMaker;
 import colors.SimpleColor;
-import display.Displayable;
 import display.SimpleDisplay;
+import tiles.Occupant;
 import tiles.TileGrid;
 
 public class PlayerMovementManager extends GridInputManager<String> {
-    private final Displayable playerDisplay = SimpleDisplay.withText("@player")
-            .andColor(ColorMaker.make(SimpleColor.CYAN));
+    private final Occupant player = Occupant.newOccupant(
+            SimpleDisplay.withText("@player")
+            .andColor(ColorMaker.make(SimpleColor.CYAN))
+    );
 
     private int playerRow;
     private int playerCol;
@@ -19,7 +21,7 @@ public class PlayerMovementManager extends GridInputManager<String> {
         this.playerRow = startingRow;
         this.playerCol = startingCol;
 
-        tileGrid.addContents(playerDisplay, startingRow, startingCol);
+        tileGrid.addOccupant(player, startingRow, startingCol);
     }
 
     @Override
@@ -52,7 +54,7 @@ public class PlayerMovementManager extends GridInputManager<String> {
         boolean movedSuccessfully = false;
 
         try {
-            movedSuccessfully = tileGrid.transferContents(playerPos, targetPos);
+            movedSuccessfully = tileGrid.transferOccupant(playerPos, targetPos);
         }
         catch (IndexOutOfBoundsException ignoredTargetPosOutOfRangeException) {
 
@@ -68,6 +70,6 @@ public class PlayerMovementManager extends GridInputManager<String> {
 
     @Override
     void displayGrid() {
-        System.out.printf("%s%n%s%n", tileGrid, playerDisplay);
+        System.out.printf("%s%n%s%n", tileGrid, player);
     }
 }

@@ -18,90 +18,101 @@ class TileTest {
 
     private Tile tileWithBlueJunkContents() {
         return Tile.withTileDisplay(Tile.defaultTileDisplay)
-                .andContentsDisplay(blueJunkDisplay())
+                .andOccupant(blueJunkOccupant())
                 .build();
     }
-    private SimpleDisplay blueJunkDisplay() {
+    private Occupant blueJunkOccupant() {
+        return Occupant.newOccupant(blueJunkDisplay());
+    }
+    private Displayable blueJunkDisplay() {
         return SimpleDisplay.withText("Junk").andColor(ColorMaker.make(SimpleColor.BLUE));
     }
+
+    private Occupant defaultOccupant() {
+        return Occupant.newOccupant(SimpleDisplay.withOnlyText("occupant"));
+    }
+
 
     @Test
     void test_addContents_true() {
         Tile tile = Tile.defaultTile();
-        Displayable contents = SimpleDisplay.withOnlyText("contents");
+        Occupant occupant = defaultOccupant();
 
-        Assertions.assertTrue(tile.addContents(contents));
+        Assertions.assertTrue(tile.addContents(occupant));
     }
 
     @Test
     void test_addContents_false() {
-        Displayable preExistingContents = SimpleDisplay.withOnlyText("Old");
-        Displayable contentsToAdd = SimpleDisplay.withOnlyText("New");
+        Occupant preExistingOccupant = Occupant.withOnlyText("Old");
+        Occupant occupantToAdd = Occupant.withOnlyText("New");
 
         Tile tile = Tile.defaultTile();
-        Assertions.assertTrue(tile.addContents(preExistingContents));
-        Assertions.assertFalse(tile.addContents(contentsToAdd));
+        Assertions.assertTrue(tile.addContents(preExistingOccupant));
+        Assertions.assertFalse(tile.addContents(occupantToAdd));
     }
 
 
     @Test
-    void test_transferContentsTo_true_emptyContents() {
+    void test_transferContentsTo_true_emptyOccupant() {
         Tile tileA = tileA();
         Tile tileB = tileB();
 
-        tileA.addContents(blueJunkDisplay());
+        tileA.addContents(blueJunkOccupant());
 
-        Assertions.assertTrue(tileA.transferContentsTo(tileB));
+        Assertions.assertTrue(tileA.transferOccupantTo(tileB));
     }
 
     @Test
-    void test_transferContentsTo_true_traversableFirstNoSecondYes() {
+    void test_transferOccupantTo_true_traversableFirstNoSecondYes() {
 
         Tile tileA = Tile.withTileDisplay(Tile.defaultTileDisplay).andTraversable(false).build();
         Tile tileB = tileB();
 
-        tileA.addContents(blueJunkDisplay());
+        tileA.addContents(blueJunkOccupant());
 
-        Assertions.assertTrue(tileA.transferContentsTo(tileB));
+        Assertions.assertTrue(tileA.transferOccupantTo(tileB));
     }
 
     @Test
-    void test_transferContentsTo_false_bothHaveContents() {
-        Displayable contentsA = SimpleDisplay.withText("Junk").andColor(ColorMaker.make(SimpleColor.BLUE));
-        Displayable contentsB = SimpleDisplay.withText("Trash").andColor(ColorMaker.make(SimpleColor.CYAN));
+    void test_transferContentsTo_false_bothHaveOccupant() {
+        Occupant occupantA = blueJunkOccupant();
+        Occupant occupantB = Occupant.newOccupant(
+                SimpleDisplay.withText("Trash")
+                        .andColor(ColorMaker.make(SimpleColor.CYAN))
+        );
 
         Tile tileA = tileA();
-        tileA.addContents(contentsA);
+        tileA.addContents(occupantA);
         Tile tileB = tileB();
-        tileB.addContents(contentsB);
+        tileB.addContents(occupantB);
 
-        Assertions.assertFalse(tileA.transferContentsTo(tileB));
+        Assertions.assertFalse(tileA.transferOccupantTo(tileB));
     }
 
     @Test
-    void test_transferContentsTo_false_neitherHaveContents() {
-        Tile tileA = tileA();
-        Tile tileB = tileB();
-
-        Assertions.assertFalse(tileA.transferContentsTo(tileB));
-    }
-
-    @Test
-    void test_transferContentsTo_false_firstHasNoContents() {
+    void test_transferContentsTo_false_neitherHaveOccupant() {
         Tile tileA = tileA();
         Tile tileB = tileB();
 
-        tileB.addContents(blueJunkDisplay());
-
-        Assertions.assertFalse(tileA.transferContentsTo(tileB));
+        Assertions.assertFalse(tileA.transferOccupantTo(tileB));
     }
 
     @Test
-    void test_transferContentsTo_false_secondNotTraversable() {
+    void test_transferContentsTo_false_firstHasNoOccupant() {
+        Tile tileA = tileA();
+        Tile tileB = tileB();
+
+        tileB.addContents(blueJunkOccupant());
+
+        Assertions.assertFalse(tileA.transferOccupantTo(tileB));
+    }
+
+    @Test
+    void test_transferOccupantTo_false_secondNotTraversable() {
         Tile tileA = tileWithBlueJunkContents();
         Tile tileB = Tile.withTileDisplay(Tile.defaultTileDisplay).andTraversable(false).build();
 
-        Assertions.assertFalse(tileA.transferContentsTo(tileB));
+        Assertions.assertFalse(tileA.transferOccupantTo(tileB));
     }
 
 
@@ -119,7 +130,7 @@ class TileTest {
     void test_display_contents() {
         Tile tileToDisplay = tileWithBlueJunkContents();
 
-        String expectedDisplay = blueJunkDisplay().display();
+        String expectedDisplay = blueJunkOccupant().display();
         String actualDisplay = tileToDisplay.display();
 
         Assertions.assertEquals(expectedDisplay, actualDisplay);
@@ -183,7 +194,7 @@ class TileTest {
         Tile blueJunkTile = tileWithBlueJunkContents();
 
         Tile diffTile = Tile.withTileDisplay(Tile.defaultTileDisplay)
-                .andContentsDisplay(SimpleDisplay.withOnlyText("bwa")).build();
+                .andOccupant(Occupant.withOnlyText("bwa")).build();
 
         Assertions.assertNotEquals(blueJunkTile, diffTile);
     }

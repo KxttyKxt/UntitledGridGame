@@ -1,6 +1,5 @@
 package tiles;
 
-import display.Displayable;
 import display.SimpleDisplay;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,12 +12,15 @@ class TileGridTest {
 
     private Tile tileWithContents() {
         Tile toReturn = Tile.defaultTile();
-        toReturn.addContents(SimpleDisplay.withOnlyText("contents"));
+        toReturn.addContents(defaultOccupant());
 
         return toReturn;
     }
     private Tile textTile(String text) {
         return Tile.withOnlyText(text);
+    }
+    private Occupant defaultOccupant() {
+        return Occupant.newOccupant(SimpleDisplay.withOnlyText("occupant"));
     }
 
     private void tileMatrixSizeOne(Tile tileToSet) {
@@ -35,53 +37,53 @@ class TileGridTest {
 
 
     @Test
-    void test_addContents_true() {
+    void test_addOccupant_true() {
         tileMatrixSizeOne(Tile.defaultTile());
 
-        Displayable contentsDisplay = SimpleDisplay.withOnlyText("contents");
-        Assertions.assertTrue(tileGrid.addContents(contentsDisplay, 0, 0));
+        Occupant occupant = defaultOccupant();
+        Assertions.assertTrue(tileGrid.addOccupant(occupant, 0, 0));
     }
 
     @Test
-    void test_addContents_false() {
+    void test_addOccupant_false() {
         Tile preExistingTile = Tile.withTileDisplay(Tile.defaultTileDisplay)
-                        .andContentsDisplay(SimpleDisplay.withOnlyText("pre-contents"))
+                        .andOccupant(defaultOccupant())
                         .build();
 
         tileMatrixSizeOne(preExistingTile);
 
-        Displayable contentsDisplay = SimpleDisplay.withOnlyText("contents");
-        Assertions.assertFalse(tileGrid.addContents(contentsDisplay, 0, 0));
+        Occupant occupant = defaultOccupant();
+        Assertions.assertFalse(tileGrid.addOccupant(occupant, 0, 0));
     }
 
 
     @Test
-    void test_transferContents_true() {
+    void test_transferOccupant_true() {
         Tile contentsTile = tileWithContents();
         Tile emptyTile = Tile.defaultTile();
 
         tileMatrixSizeTwoAcross(contentsTile, emptyTile);
-        Assertions.assertTrue(tileGrid.transferContents(originPos, acrossPos));
+        Assertions.assertTrue(tileGrid.transferOccupant(originPos, acrossPos));
     }
 
     @Test
-    void test_transferContents_false() {
+    void test_transferOccupant_false() {
         Tile contentsTile = tileWithContents();
 
         Tile alsoContentsTile = Tile.defaultTile();
-        alsoContentsTile.addContents(SimpleDisplay.withOnlyText("contents too"));
+        alsoContentsTile.addContents(Occupant.newOccupant(SimpleDisplay.withOnlyText("occupant too")));
 
         tileMatrixSizeTwoAcross(contentsTile, alsoContentsTile);
-        Assertions.assertFalse(tileGrid.transferContents(originPos, acrossPos));
+        Assertions.assertFalse(tileGrid.transferOccupant(originPos, acrossPos));
     }
 
     @Test
-    void test_transferContents_falseWithEmptyOrigin() {
+    void test_transferOccupant_falseWithEmptyOrigin() {
         Tile emptyTile = Tile.defaultTile();
         Tile contentsTile = tileWithContents();
 
         tileMatrixSizeTwoAcross(emptyTile, contentsTile);
-        Assertions.assertFalse(tileGrid.transferContents(originPos, acrossPos));
+        Assertions.assertFalse(tileGrid.transferOccupant(originPos, acrossPos));
     }
 
 

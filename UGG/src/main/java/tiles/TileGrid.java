@@ -1,7 +1,5 @@
 package tiles;
 
-import display.Displayable;
-
 import java.util.Objects;
 
 public class TileGrid {
@@ -14,19 +12,19 @@ public class TileGrid {
         matrix = tilesForMatrix;
     }
 
-    public boolean addContents(Displayable contents, int row, int col) {
+    public boolean addOccupant(Occupant occupant, int row, int col) {
         Tile tileToAddContentsTo = matrix[row][col];
-        return tileToAddContentsTo.addContents(contents);
+        return tileToAddContentsTo.addContents(occupant);
     }
 
-    public boolean transferContents(int[] tile1RowCol, int[] tile2RowCol) {
-        return transferContents(
+    public boolean transferOccupant(int[] tile1RowCol, int[] tile2RowCol) {
+        return transferOccupant(
                 matrix[tile1RowCol[0]][tile1RowCol[1]],
                 matrix[tile2RowCol[0]][tile2RowCol[1]]
         );
     }
-    private boolean transferContents(Tile origin, Tile destination) {
-        return origin.transferContentsTo(destination);
+    private boolean transferOccupant(Tile origin, Tile destination) {
+        return origin.transferOccupantTo(destination);
     }
 
 
