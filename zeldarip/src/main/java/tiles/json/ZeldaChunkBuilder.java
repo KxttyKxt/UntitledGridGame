@@ -5,14 +5,14 @@ import colors.ColorMaker;
 import colors.SimpleColor;
 import display.Displayable;
 import display.SimpleDisplay;
+import tiles.Chunk;
 import tiles.Tile;
-import tiles.TileGrid;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 
-public class ZeldaGridBuilder extends JsonGridBuilder {
+public class ZeldaChunkBuilder extends JsonChunkBuilder {
 
     @Override
     protected Map<String, Tile.Builder> createMapForRegistry() {
@@ -23,8 +23,8 @@ public class ZeldaGridBuilder extends JsonGridBuilder {
         );
     }
 
-    public TileGrid constructGridFromJson() throws IOException {
-        URL url = ZeldaGridBuilder.class.getResource("start-grid-json.json");
+    public Chunk constructGridFromJson() throws IOException {
+        URL url = ZeldaChunkBuilder.class.getResource("start-grid-json.json");
         return super.constructGridFromJson(url);
     }
 

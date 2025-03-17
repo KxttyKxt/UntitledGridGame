@@ -4,8 +4,8 @@ import display.SimpleDisplay;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class TileGridTest {
-    private static TileGrid tileGrid;
+class ChunkTest {
+    private static Chunk chunk;
 
     private static final int[] originPos = {0, 0};
     private static final int[] acrossPos = {0, 1};
@@ -32,7 +32,7 @@ class TileGridTest {
     }
 
     private void initializeTileMatrix(Tile[][] tilesForMatrix) {
-        tileGrid = new TileGrid(tilesForMatrix);
+        chunk = new Chunk(tilesForMatrix);
     }
 
 
@@ -41,7 +41,7 @@ class TileGridTest {
         tileMatrixSizeOne(Tile.defaultTile());
 
         Occupant occupant = defaultOccupant();
-        Assertions.assertTrue(tileGrid.addOccupant(occupant, 0, 0));
+        Assertions.assertTrue(chunk.addOccupant(occupant, 0, 0));
     }
 
     @Test
@@ -53,7 +53,7 @@ class TileGridTest {
         tileMatrixSizeOne(preExistingTile);
 
         Occupant occupant = defaultOccupant();
-        Assertions.assertFalse(tileGrid.addOccupant(occupant, 0, 0));
+        Assertions.assertFalse(chunk.addOccupant(occupant, 0, 0));
     }
 
 
@@ -63,7 +63,7 @@ class TileGridTest {
         Tile emptyTile = Tile.defaultTile();
 
         tileMatrixSizeTwoAcross(contentsTile, emptyTile);
-        Assertions.assertTrue(tileGrid.transferOccupant(originPos, acrossPos));
+        Assertions.assertTrue(chunk.transferOccupant(originPos, acrossPos));
     }
 
     @Test
@@ -74,7 +74,7 @@ class TileGridTest {
         alsoContentsTile.addContents(Occupant.newOccupant(SimpleDisplay.withOnlyText("occupant too")));
 
         tileMatrixSizeTwoAcross(contentsTile, alsoContentsTile);
-        Assertions.assertFalse(tileGrid.transferOccupant(originPos, acrossPos));
+        Assertions.assertFalse(chunk.transferOccupant(originPos, acrossPos));
     }
 
     @Test
@@ -83,7 +83,7 @@ class TileGridTest {
         Tile contentsTile = tileWithContents();
 
         tileMatrixSizeTwoAcross(emptyTile, contentsTile);
-        Assertions.assertFalse(tileGrid.transferOccupant(originPos, acrossPos));
+        Assertions.assertFalse(chunk.transferOccupant(originPos, acrossPos));
     }
 
 
@@ -91,13 +91,13 @@ class TileGridTest {
     void test_toString_sizeOne() {
         tileMatrixSizeOne(textTile("A"));
 
-        Assertions.assertEquals(tileGrid.toString(),
-                String.format(TileGrid.FORMAT_FOR_CELL, "A"));
+        Assertions.assertEquals(chunk.toString(),
+                String.format(Chunk.FORMAT_FOR_CELL, "A"));
     }
     @Test
     void test_toString_sizeOne_null() {
         initializeTileMatrix(new Tile[][]{{null}});
-        Assertions.assertEquals(tileGrid.toString(), TileGrid.NULL_CELL);
+        Assertions.assertEquals(chunk.toString(), Chunk.NULL_CELL);
     }
 
 
@@ -105,13 +105,13 @@ class TileGridTest {
     void test_toString_sizeTwo() {
         tileMatrixSizeTwoAcross(textTile("A"), textTile("B"));
 
-        Assertions.assertEquals(tileGrid.toString(),
-                String.format(TileGrid.FORMAT_FOR_CELL.repeat(2), "A", "B"));
+        Assertions.assertEquals(chunk.toString(),
+                String.format(Chunk.FORMAT_FOR_CELL.repeat(2), "A", "B"));
     }
     @Test
     void test_toString_sizeTwo_null() {
         initializeTileMatrix(new Tile[][]{{null, null}});
-        Assertions.assertEquals(TileGrid.NULL_CELL.repeat(2), tileGrid.toString());
+        Assertions.assertEquals(Chunk.NULL_CELL.repeat(2), chunk.toString());
     }
 
 
@@ -125,9 +125,9 @@ class TileGridTest {
 
         Assertions.assertEquals(String.format(
                 "%s%n%s",
-                String.format(TileGrid.FORMAT_FOR_CELL.repeat(2), "A", "B"),
-                String.format(TileGrid.FORMAT_FOR_CELL.repeat(2), "C", "D")
-        ), tileGrid.toString());
+                String.format(Chunk.FORMAT_FOR_CELL.repeat(2), "A", "B"),
+                String.format(Chunk.FORMAT_FOR_CELL.repeat(2), "C", "D")
+        ), chunk.toString());
     }
     @Test
     void test_toString_sizeTwoByTwo_null() {
@@ -139,31 +139,31 @@ class TileGridTest {
 
         String expectedToString = String.format(
                 "%s%n%s",
-                TileGrid.NULL_CELL.repeat(2),
-                TileGrid.NULL_CELL.repeat(2)
+                Chunk.NULL_CELL.repeat(2),
+                Chunk.NULL_CELL.repeat(2)
         );
 
-        Assertions.assertEquals(expectedToString, tileGrid.toString());
+        Assertions.assertEquals(expectedToString, chunk.toString());
     }
 
 
     @Test
     void test_equals_same() {
-        Assertions.assertEquals(tileGrid, tileGrid);
+        Assertions.assertEquals(chunk, chunk);
     }
 
     @Test
     void test_equals_matrices() {
         tileMatrixSizeOne(Tile.defaultTile());
-        TileGrid newTileGrid = new TileGrid(new Tile[][]{{Tile.defaultTile()}});
+        Chunk newChunk = new Chunk(new Tile[][]{{Tile.defaultTile()}});
 
-        Assertions.assertEquals(tileGrid, newTileGrid);
+        Assertions.assertEquals(chunk, newChunk);
     }
 
     @Test
     void test_notEquals_null() {
         tileMatrixSizeOne(Tile.defaultTile());
-        Assertions.assertNotEquals(tileGrid, null);
+        Assertions.assertNotEquals(chunk, null);
     }
 
     @Test
@@ -171,22 +171,22 @@ class TileGridTest {
         // For test coverage
         tileMatrixSizeOne(Tile.defaultTile());
         //noinspection AssertBetweenInconvertibleTypes
-        Assertions.assertNotEquals(tileGrid, "literally a string");
+        Assertions.assertNotEquals(chunk, "literally a string");
     }
 
     @Test
     void test_notEquals_differentMatrices() {
         tileMatrixSizeOne(Tile.defaultTile());
-        TileGrid newTileGrid = new TileGrid(new Tile[][]{{Tile.withOnlyText("different")}});
+        Chunk newChunk = new Chunk(new Tile[][]{{Tile.withOnlyText("different")}});
 
-        Assertions.assertNotEquals(tileGrid, newTileGrid);
+        Assertions.assertNotEquals(chunk, newChunk);
     }
 
     @Test
     void test_notEquals_differentMatrixSizes() {
         tileMatrixSizeOne(Tile.defaultTile());
-        TileGrid newTileGrid = new TileGrid(new Tile[][]{{Tile.defaultTile(), Tile.defaultTile()}});
+        Chunk newChunk = new Chunk(new Tile[][]{{Tile.defaultTile(), Tile.defaultTile()}});
 
-        Assertions.assertNotEquals(tileGrid, newTileGrid);
+        Assertions.assertNotEquals(chunk, newChunk);
     }
 }

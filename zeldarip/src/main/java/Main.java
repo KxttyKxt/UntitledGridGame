@@ -1,4 +1,4 @@
-import app.gridinputmanagers.ZeldaMovementManager;
+import app.chunkinputmanagers.ZeldaMovementManager;
 
 import java.io.IOException;
 

@@ -1,18 +1,18 @@
-package app.gridinputmanagers;
+package app.chunkinputmanagers;
 
 import app.input.InputHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tiles.Chunk;
 import tiles.Tile;
-import tiles.TileGrid;
 
-class GridInputManagerTest {
+class ChunkInputManagerTest {
     @BeforeEach
     public void resetMockManager() {
-        manager = new MockGridInputManager();
+        manager = new MockChunkInputManager();
     }
-    MockGridInputManager manager;
+    MockChunkInputManager manager;
 
     @Test
     void test_enable() {
@@ -68,7 +68,7 @@ class GridInputManagerTest {
 }
 
 
-class MockGridInputManager extends GridInputManager<String> {
+class MockChunkInputManager extends ChunkInputManager<String> {
     boolean disabledCorrectly = false;
     boolean handledEmptyInput = false;
     boolean pong = false;
@@ -76,10 +76,10 @@ class MockGridInputManager extends GridInputManager<String> {
 
     String shownGridDisplay = "";
 
-    public MockGridInputManager() {
+    public MockChunkInputManager() {
         super(
                 new MockInputHandler(),
-                new TileGrid(new Tile[][]{{Tile.defaultTile()}})
+                new Chunk(new Tile[][]{{Tile.defaultTile()}})
         );
     }
 

@@ -1,15 +1,15 @@
-package app.gridinputmanagers;
+package app.chunkinputmanagers;
 
 import app.input.InputHandler;
-import tiles.TileGrid;
+import tiles.Chunk;
 
-public abstract class GridInputManager<T> {
+public abstract class ChunkInputManager<T> {
     private final InputHandler<T> inputHandler;
-    TileGrid tileGrid;
+    Chunk chunk;
 
-    public GridInputManager(InputHandler<T> inputHandler, TileGrid tileGrid) {
+    public ChunkInputManager(InputHandler<T> inputHandler, Chunk chunk) {
         this.inputHandler = inputHandler;
-        this.tileGrid = tileGrid;
+        this.chunk = chunk;
     }
 
     public void enable() {

@@ -1,12 +1,12 @@
-package app.gridinputmanagers;
+package app.chunkinputmanagers;
 
-import tiles.json.ZeldaGridBuilder;
+import tiles.json.ZeldaChunkBuilder;
 
 import java.io.IOException;
 
 public class ZeldaMovementManager extends PlayerMovementManager {
 
     public ZeldaMovementManager() throws IOException {
-        super(new ZeldaGridBuilder().constructGridFromJson(), 6, 7);
+        super(new ZeldaChunkBuilder().constructGridFromJson(), 6, 7);
     }
 }

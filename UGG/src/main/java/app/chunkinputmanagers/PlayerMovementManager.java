@@ -1,13 +1,13 @@
-package app.gridinputmanagers;
+package app.chunkinputmanagers;
 
 import app.input.ScannerHandler;
 import colors.ColorMaker;
 import colors.SimpleColor;
 import display.SimpleDisplay;
+import tiles.Chunk;
 import tiles.Occupant;
-import tiles.TileGrid;
 
-public class PlayerMovementManager extends GridInputManager<String> {
+public class PlayerMovementManager extends ChunkInputManager<String> {
     private final Occupant player = Occupant.newOccupant(
             SimpleDisplay.withText("@player")
             .andColor(ColorMaker.make(SimpleColor.CYAN))
@@ -16,12 +16,12 @@ public class PlayerMovementManager extends GridInputManager<String> {
     private int playerRow;
     private int playerCol;
 
-    public PlayerMovementManager(TileGrid tileGrid, int startingRow, int startingCol) {
-        super(new ScannerHandler(), tileGrid);
+    public PlayerMovementManager(Chunk chunk, int startingRow, int startingCol) {
+        super(new ScannerHandler(), chunk);
         this.playerRow = startingRow;
         this.playerCol = startingCol;
 
-        tileGrid.addOccupant(player, startingRow, startingCol);
+        chunk.addOccupant(player, startingRow, startingCol);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PlayerMovementManager extends GridInputManager<String> {
         boolean movedSuccessfully = false;
 
         try {
-            movedSuccessfully = tileGrid.transferOccupant(playerPos, targetPos);
+            movedSuccessfully = chunk.transferOccupant(playerPos, targetPos);
         }
         catch (IndexOutOfBoundsException ignoredTargetPosOutOfRangeException) {
 
@@ -70,6 +70,6 @@ public class PlayerMovementManager extends GridInputManager<String> {
 
     @Override
     void displayGrid() {
-        System.out.printf("%s%n%s%n", tileGrid, player);
+        System.out.printf("%s%n%s%n", chunk, player);
     }
 }

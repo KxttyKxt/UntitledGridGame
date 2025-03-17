@@ -2,13 +2,13 @@ package tiles;
 
 import java.util.Objects;
 
-public class TileGrid {
+public class Chunk {
     static final String FORMAT_FOR_CELL = " %s ";
     static final String NULL_CELL = " ".repeat(FORMAT_FOR_CELL.length() - 1);
 
     private final Tile[][] matrix;
 
-    public TileGrid(Tile[][] tilesForMatrix) {
+    public Chunk(Tile[][] tilesForMatrix) {
         matrix = tilesForMatrix;
     }
 
@@ -52,7 +52,7 @@ public class TileGrid {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TileGrid that = (TileGrid) o;
+        Chunk that = (Chunk) o;
         return Objects.deepEquals(this.matrix, that.matrix);
     }
 }

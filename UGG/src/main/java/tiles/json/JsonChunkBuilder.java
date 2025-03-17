@@ -3,8 +3,8 @@ package tiles.json;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.io.IOUtils;
+import tiles.Chunk;
 import tiles.Tile;
-import tiles.TileGrid;
 
 import java.io.IOException;
 import java.net.URL;
@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
-public abstract class JsonGridBuilder {
+public abstract class JsonChunkBuilder {
     private List<String> pattern;
     private Map<String, String> patternMap;
 
@@ -22,7 +22,7 @@ public abstract class JsonGridBuilder {
     protected abstract Map<String, Tile.Builder> createMapForRegistry();
 
 
-    protected TileGrid constructGridFromJson(URL jsonFileURL) throws IOException {
+    protected Chunk constructGridFromJson(URL jsonFileURL) throws IOException {
         Object jsonDocument = convertToDocument(jsonFileURL);
 
         pattern = JsonPath.read(jsonDocument, "$.pattern");
@@ -46,7 +46,7 @@ public abstract class JsonGridBuilder {
     }
 
 
-    private TileGrid generateGrid() {
+    private Chunk generateGrid() {
         int rowsInPattern = pattern.size();
         int rowLength = pattern.getFirst().length();
 
@@ -56,7 +56,7 @@ public abstract class JsonGridBuilder {
             for (int col = 0; col < matrixForGrid[row].length; col++)
                 matrixForGrid[row][col] = getGeneratedTile(pattern.get(row).charAt(col));
 
-        return new TileGrid(matrixForGrid);
+        return new Chunk(matrixForGrid);
     }
 
     private Tile getGeneratedTile(char patternLetter) {
