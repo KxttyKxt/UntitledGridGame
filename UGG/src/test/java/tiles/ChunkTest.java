@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 class ChunkTest {
     private static Chunk chunk;
 
-    private static final int[] originPos = {0, 0};
-    private static final int[] acrossPos = {0, 1};
+    private static final Point2D originPoint = Point2D.of(0, 0);
+    private static final Point2D acrossPoint = Point2D.of(1, 0);
 
     private Tile tileWithContents() {
         Tile toReturn = Tile.defaultTile();
@@ -41,7 +41,7 @@ class ChunkTest {
         tileMatrixSizeOne(Tile.defaultTile());
 
         Occupant occupant = defaultOccupant();
-        Assertions.assertTrue(chunk.addOccupant(occupant, 0, 0));
+        Assertions.assertTrue(chunk.addOccupant(occupant, originPoint));
     }
 
     @Test
@@ -53,7 +53,7 @@ class ChunkTest {
         tileMatrixSizeOne(preExistingTile);
 
         Occupant occupant = defaultOccupant();
-        Assertions.assertFalse(chunk.addOccupant(occupant, 0, 0));
+        Assertions.assertFalse(chunk.addOccupant(occupant, originPoint));
     }
 
 
@@ -63,7 +63,7 @@ class ChunkTest {
         Tile emptyTile = Tile.defaultTile();
 
         tileMatrixSizeTwoAcross(contentsTile, emptyTile);
-        Assertions.assertTrue(chunk.transferOccupant(originPos, acrossPos));
+        Assertions.assertTrue(chunk.transferOccupant(originPoint, acrossPoint));
     }
 
     @Test
@@ -74,7 +74,7 @@ class ChunkTest {
         alsoContentsTile.addContents(Occupant.newOccupant(SimpleDisplay.withOnlyText("occupant too")));
 
         tileMatrixSizeTwoAcross(contentsTile, alsoContentsTile);
-        Assertions.assertFalse(chunk.transferOccupant(originPos, acrossPos));
+        Assertions.assertFalse(chunk.transferOccupant(originPoint, acrossPoint));
     }
 
     @Test
@@ -83,34 +83,7 @@ class ChunkTest {
         Tile contentsTile = tileWithContents();
 
         tileMatrixSizeTwoAcross(emptyTile, contentsTile);
-        Assertions.assertFalse(chunk.transferOccupant(originPos, acrossPos));
-    }
-
-
-    @Test
-    void test_getNumOfRows() {
-        initializeTileMatrix(new Tile[][]{
-                {Tile.defaultTile(), Tile.defaultTile(), Tile.defaultTile()},
-                {Tile.defaultTile(), Tile.defaultTile(), Tile.defaultTile()}
-        });
-
-        int expectedNumOfRows = 2;
-        int actualNumOfRows = chunk.getNumOfRows();
-
-        Assertions.assertEquals(expectedNumOfRows, actualNumOfRows);
-    }
-
-    @Test
-    void test_getNumOfCols() {
-        initializeTileMatrix(new Tile[][]{
-                {Tile.defaultTile(), Tile.defaultTile(), Tile.defaultTile()},
-                {Tile.defaultTile(), Tile.defaultTile(), Tile.defaultTile()}
-        });
-
-        int expectedNumOfCols = 3;
-        int actualNumOfCols = chunk.getNumOfColumns();
-
-        Assertions.assertEquals(expectedNumOfCols, actualNumOfCols);
+        Assertions.assertFalse(chunk.transferOccupant(originPoint, acrossPoint));
     }
 
 

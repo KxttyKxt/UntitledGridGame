@@ -1,26 +1,44 @@
 package tiles;
 
-import java.util.Objects;
+import com.google.common.collect.Maps;
+
+import java.util.Map;
 
 public class Chunk {
     static final String FORMAT_FOR_CELL = " %s ";
     static final String NULL_CELL = " ".repeat(FORMAT_FOR_CELL.length() - 1);
 
-    private final Tile[][] matrix;
+    private final Map<Point2D, Tile> tileMap;
+    private final int xMax;
+    private final int yMax;
 
-    public Chunk(Tile[][] tilesForMatrix) {
-        matrix = tilesForMatrix;
+    public Chunk(Tile[][] tileMatrix) {
+        xMax = tileMatrix[0].length - 1;
+        yMax = tileMatrix.length - 1;
+
+        tileMap = convertToMap(tileMatrix);
     }
 
-    public boolean addOccupant(Occupant occupant, int row, int col) {
-        Tile tileToAddContentsTo = matrix[row][col];
+    private Map<Point2D, Tile> convertToMap(Tile[][] tileMatrix) {
+        Map<Point2D, Tile> tileMap = Maps.newHashMap();
+
+        for (int x = 0; x <= xMax; x++)
+            for (int y = 0; y <= yMax; y++)
+                tileMap.put(Point2D.of(x, y), tileMatrix[y][x]);
+
+        return tileMap;
+    }
+
+
+    public boolean addOccupant(Occupant occupant, Point2D point) {
+        Tile tileToAddContentsTo = tileMap.get(point);
         return tileToAddContentsTo.addContents(occupant);
     }
 
-    public boolean transferOccupant(int[] tile1RowCol, int[] tile2RowCol) {
+    public boolean transferOccupant(Point2D from, Point2D to) {
         return transferOccupant(
-                matrix[tile1RowCol[0]][tile1RowCol[1]],
-                matrix[tile2RowCol[0]][tile2RowCol[1]]
+                tileMap.get(from),
+                tileMap.get(to)
         );
     }
     private boolean transferOccupant(Tile origin, Tile destination) {
@@ -28,27 +46,22 @@ public class Chunk {
     }
 
 
-    public int getNumOfRows() {
-        return matrix.length;
-    }
-    public int getNumOfColumns() {
-        return matrix[0].length;
-    }
-
-
     @Override
     public String toString() {
         StringBuilder toReturn = new StringBuilder();
 
-        for (int row = 0; row < matrix.length; row++) {
-            for (Tile tile : matrix[row]) {
-                if (tile == null)
-                    toReturn.append(NULL_CELL);
-                else
-                    toReturn.append(String.format(FORMAT_FOR_CELL, tile.display()));
+        for (int y = 0; y <= yMax; y++) {
+            for (int x = 0; x <= xMax; x++) {
+                Tile tile = tileMap.get(Point2D.of(x, y));
+
+                toReturn.append(
+                        (tile == null)
+                        ? NULL_CELL
+                        : String.format(FORMAT_FOR_CELL, tile.display())
+                );
             }
 
-            if (row != matrix.length - 1)
+            if (y != yMax)
                 toReturn.append(String.format("%n"));
         }
 
@@ -61,6 +74,6 @@ public class Chunk {
         if (o == null || getClass() != o.getClass()) return false;
 
         Chunk that = (Chunk) o;
-        return Objects.deepEquals(this.matrix, that.matrix);
+        return this.tileMap.equals(that.tileMap);
     }
 }
