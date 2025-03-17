@@ -8,9 +8,9 @@ import tiles.Tile;
 import java.util.Map;
 
 @SuppressWarnings("CanBeFinal")
-class JsonTileRegistryTest {
+class ChunkBuilderTileRegistryTest {
 
-    static JsonTileRegistry tileRegistry = JsonTileRegistry.createRegistryWithMap(Map.of(
+    static ChunkBuilderTileRegistry tileRegistry = ChunkBuilderTileRegistry.createRegistryWithMap(Map.of(
             "A", Tile.withTileDisplay(SimpleDisplay.withOnlyText("A")),
             "B", Tile.withTileDisplay(SimpleDisplay.withOnlyText("B"))
     ));

@@ -16,8 +16,8 @@ public abstract class JsonChunkBuilder {
     private List<String> pattern;
     private Map<String, String> patternMap;
 
-    private final JsonTileRegistry jsonTileRegistry =
-            JsonTileRegistry.createRegistryWithMap(createMapForRegistry());
+    private final ChunkBuilderTileRegistry chunkBuilderTileRegistry =
+            ChunkBuilderTileRegistry.createRegistryWithMap(createMapForRegistry());
 
     protected abstract Map<String, Tile.Builder> createMapForRegistry();
 
@@ -30,21 +30,6 @@ public abstract class JsonChunkBuilder {
 
         return generateGrid();
     }
-
-
-    private Object convertToDocument(URL jsonFileURL) throws IOException {
-        String json = readFileToString(jsonFileURL);
-        return convertJsonStringToDocument(json);
-    }
-
-    private String readFileToString(URL jsonFileURL) throws IOException {
-        return IOUtils.toString(jsonFileURL, StandardCharsets.UTF_8);
-    }
-
-    private Object convertJsonStringToDocument(String json) {
-        return Configuration.defaultConfiguration().jsonProvider().parse(json);
-    }
-
 
     private Chunk generateGrid() {
         int rowsInPattern = pattern.size();
@@ -64,7 +49,21 @@ public abstract class JsonChunkBuilder {
             return null;
 
         String tileName = patternMap.get(String.valueOf(patternLetter));
-        return jsonTileRegistry.get(tileName);
+        return chunkBuilderTileRegistry.get(tileName);
+    }
+
+
+    private Object convertToDocument(URL jsonFileURL) throws IOException {
+        String json = readFileToString(jsonFileURL);
+        return convertJsonStringToDocument(json);
+    }
+
+    private String readFileToString(URL jsonFileURL) throws IOException {
+        return IOUtils.toString(jsonFileURL, StandardCharsets.UTF_8);
+    }
+
+    private Object convertJsonStringToDocument(String json) {
+        return Configuration.defaultConfiguration().jsonProvider().parse(json);
     }
 
 }

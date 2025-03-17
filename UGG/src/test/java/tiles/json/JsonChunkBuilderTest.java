@@ -13,7 +13,7 @@ import java.util.Map;
 @SuppressWarnings("CanBeFinal")
 class JsonChunkBuilderTest {
 
-    static JsonChunkBuilder gridGenerator = new JsonChunkBuilder() {
+    static JsonChunkBuilder chunkBuilder = new JsonChunkBuilder() {
         @Override
         protected Map<String, Tile.Builder> createMapForRegistry() {
             return Map.of(
@@ -25,14 +25,14 @@ class JsonChunkBuilderTest {
 
     @Test
     void test_constructGridFromJson() throws IOException {
-        URL testJsonURL = this.getClass().getResource("test-grid.json");
+        URL testJsonURL = this.getClass().getResource("chunk/test-chunk.json");
 
         Chunk expectedChunk = new Chunk(new Tile[][]{
                 { Tile.withOnlyText("A"), Tile.withOnlyText("A"), Tile.withOnlyText("A") },
                 { Tile.withOnlyText("B"), null,                   Tile.withOnlyText("B") },
                 { Tile.withOnlyText("A"), Tile.withOnlyText("A"), Tile.withOnlyText("A") }
         });
-        Chunk actualChunk = gridGenerator.constructGridFromJson(testJsonURL);
+        Chunk actualChunk = chunkBuilder.constructGridFromJson(testJsonURL);
 
         Assertions.assertEquals(expectedChunk, actualChunk);
     }

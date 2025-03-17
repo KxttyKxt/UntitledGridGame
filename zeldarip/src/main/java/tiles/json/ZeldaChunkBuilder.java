@@ -6,6 +6,7 @@ import colors.SimpleColor;
 import display.Displayable;
 import display.SimpleDisplay;
 import tiles.Chunk;
+import tiles.Occupant;
 import tiles.Tile;
 
 import java.io.IOException;
@@ -19,12 +20,14 @@ public class ZeldaChunkBuilder extends JsonChunkBuilder {
         return Map.of(
                 "BasicTile", basicTileBuilder(),
                 "CaveTile", caveTileBuilder(),
+                "RockTile", rockTileBuilder(),
+                "SecretCaveTile", secretCaveTileBuilder(),
                 "WallTile", wallTileBuilder()
         );
     }
 
     public Chunk constructGridFromJson() throws IOException {
-        URL url = ZeldaChunkBuilder.class.getResource("start-grid-json.json");
+        URL url = ZeldaChunkBuilder.class.getResource("chunk/north-of-start.json");
         return super.constructGridFromJson(url);
     }
 
@@ -44,6 +47,20 @@ public class ZeldaChunkBuilder extends JsonChunkBuilder {
                 .andColor(caveTileColor);
 
         return Tile.withTileDisplay(caveTileDisplay);
+    }
+
+    static Tile.Builder rockTileBuilder() {
+        Displayable rockDisplay = SimpleDisplay.withText("@")
+                .andColor(ColorMaker.make(SimpleColor.GREEN));
+
+        Occupant rock = Occupant.newOccupant(rockDisplay);
+
+       return basicTileBuilder().andOccupant(rock);
+    }
+
+    static Tile.Builder secretCaveTileBuilder() {
+        // For now, non-functional
+        return wallTileBuilder();
     }
 
     static Tile.Builder wallTileBuilder() {

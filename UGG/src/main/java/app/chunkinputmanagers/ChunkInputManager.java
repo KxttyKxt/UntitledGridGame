@@ -16,7 +16,7 @@ public abstract class ChunkInputManager<T> {
         boolean enabled = true;
 
         while (enabled) {
-            displayGrid();
+            displayChunk();
             T input = receiveInput();
             enabled = manageInput(input);
         }
@@ -29,7 +29,7 @@ public abstract class ChunkInputManager<T> {
     }
 
     abstract boolean manageInput(T input);
-    abstract void displayGrid();
+    abstract void displayChunk();
 
     void closeInputHandler() {
         inputHandler.close();

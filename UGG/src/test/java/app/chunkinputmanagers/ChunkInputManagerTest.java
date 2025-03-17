@@ -33,8 +33,8 @@ class ChunkInputManagerTest {
     }
 
     @Test
-    void test_displayGrid() {
-        manager.displayGrid();
+    void test_displayChunk() {
+        manager.displayChunk();
 
         String expectedGridDisplay = String.format("Grid Display%n");
         String actualGridDisplay = manager.shownGridDisplay;
@@ -104,7 +104,7 @@ class MockChunkInputManager extends ChunkInputManager<String> {
     }
 
     @Override
-    void displayGrid() {
+    void displayChunk() {
         shownGridDisplay = String.format("Grid Display%n");
         System.out.printf(shownGridDisplay);
     }

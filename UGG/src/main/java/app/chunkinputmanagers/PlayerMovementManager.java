@@ -69,7 +69,7 @@ public class PlayerMovementManager extends ChunkInputManager<String> {
     }
 
     @Override
-    void displayGrid() {
+    void displayChunk() {
         System.out.printf("%s%n%s%n", chunk, player);
     }
 }

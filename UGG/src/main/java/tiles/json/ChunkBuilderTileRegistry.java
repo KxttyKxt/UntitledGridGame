@@ -6,17 +6,17 @@ import tiles.Tile;
 
 import java.util.Map;
 
-public class JsonTileRegistry {
+public class ChunkBuilderTileRegistry {
 
     // Intentionally package-private
-    static JsonTileRegistry createRegistryWithMap(Map<String, Tile.Builder> registry) {
-        return new JsonTileRegistry(registry);
+    static ChunkBuilderTileRegistry createRegistryWithMap(Map<String, Tile.Builder> registry) {
+        return new ChunkBuilderTileRegistry(registry);
     }
 
 
     private final ImmutableMap<String, Tile.Builder> registry;
 
-    private JsonTileRegistry(Map<String, Tile.Builder> registry) {
+    private ChunkBuilderTileRegistry(Map<String, Tile.Builder> registry) {
         this.registry = ImmutableMap.copyOf(registry);
     }
 
