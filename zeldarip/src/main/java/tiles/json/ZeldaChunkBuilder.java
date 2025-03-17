@@ -17,9 +17,9 @@ public class ZeldaChunkBuilder extends JsonChunkBuilder {
     @Override
     protected Map<String, Tile.Builder> createMapForRegistry() {
         return Map.of(
-                "BasicTile", registryBuilders.basicTile(),
-                "CaveTile", registryBuilders.caveTile(),
-                "WallTile", registryBuilders.wallTile()
+                "BasicTile", basicTileBuilder(),
+                "CaveTile", caveTileBuilder(),
+                "WallTile", wallTileBuilder()
         );
     }
 
@@ -29,18 +29,14 @@ public class ZeldaChunkBuilder extends JsonChunkBuilder {
     }
 
 
-}
-
-class registryBuilders {
-
-    static Tile.Builder basicTile() {
+    static Tile.Builder basicTileBuilder() {
         Displayable basicTileDisplay = SimpleDisplay.withText(".")
                 .andColor(ColorMaker.make(187, false));
 
         return Tile.withTileDisplay(basicTileDisplay);
     }
 
-    static Tile.Builder caveTile() {
+    static Tile.Builder caveTileBuilder() {
         Color caveTileColor = ColorMaker.make(
                 new int[]{175, 175, 175}, false);
 
@@ -50,7 +46,7 @@ class registryBuilders {
         return Tile.withTileDisplay(caveTileDisplay);
     }
 
-    static Tile.Builder wallTile() {
+    static Tile.Builder wallTileBuilder() {
         Displayable wallTileDisplay = SimpleDisplay.withText("#")
                 .andColor(ColorMaker.make(SimpleColor.GREEN));
 

@@ -28,6 +28,14 @@ public class Chunk {
     }
 
 
+    public int getNumOfRows() {
+        return matrix.length;
+    }
+    public int getNumOfColumns() {
+        return matrix[0].length;
+    }
+
+
     @Override
     public String toString() {
         StringBuilder toReturn = new StringBuilder();

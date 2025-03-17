@@ -4,10 +4,14 @@ import display.Displayable;
 import display.SimpleDisplay;
 
 public class Occupant implements Displayable {
-    Displayable display;
+    private final Displayable display;
 
     public static Occupant newOccupant(Displayable display) {
         return new Occupant(display);
+    }
+
+    public static Occupant newOccupant() {
+        return newOccupant(SimpleDisplay.withOnlyText("Occupant"));
     }
 
     public static Occupant withOnlyText(String text) {

@@ -88,6 +88,33 @@ class ChunkTest {
 
 
     @Test
+    void test_getNumOfRows() {
+        initializeTileMatrix(new Tile[][]{
+                {Tile.defaultTile(), Tile.defaultTile(), Tile.defaultTile()},
+                {Tile.defaultTile(), Tile.defaultTile(), Tile.defaultTile()}
+        });
+
+        int expectedNumOfRows = 2;
+        int actualNumOfRows = chunk.getNumOfRows();
+
+        Assertions.assertEquals(expectedNumOfRows, actualNumOfRows);
+    }
+
+    @Test
+    void test_getNumOfCols() {
+        initializeTileMatrix(new Tile[][]{
+                {Tile.defaultTile(), Tile.defaultTile(), Tile.defaultTile()},
+                {Tile.defaultTile(), Tile.defaultTile(), Tile.defaultTile()}
+        });
+
+        int expectedNumOfCols = 3;
+        int actualNumOfCols = chunk.getNumOfColumns();
+
+        Assertions.assertEquals(expectedNumOfCols, actualNumOfCols);
+    }
+
+
+    @Test
     void test_toString_sizeOne() {
         tileMatrixSizeOne(textTile("A"));
 

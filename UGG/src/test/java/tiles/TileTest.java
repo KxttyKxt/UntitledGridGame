@@ -29,7 +29,7 @@ class TileTest {
     }
 
     private Occupant defaultOccupant() {
-        return Occupant.newOccupant(SimpleDisplay.withOnlyText("occupant"));
+        return Occupant.newOccupant();
     }
 
 
