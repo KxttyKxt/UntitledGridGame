@@ -1,6 +1,6 @@
 package tiles;
 
-import com.google.common.collect.Maps;
+import util.Convert;
 
 import java.util.Map;
 
@@ -16,17 +16,7 @@ public class Chunk {
         xMax = tileMatrix[0].length - 1;
         yMax = tileMatrix.length - 1;
 
-        tileMap = convertToMap(tileMatrix);
-    }
-
-    private Map<Point2D, Tile> convertToMap(Tile[][] tileMatrix) {
-        Map<Point2D, Tile> tileMap = Maps.newHashMap();
-
-        for (int x = 0; x <= xMax; x++)
-            for (int y = 0; y <= yMax; y++)
-                tileMap.put(Point2D.of(x, y), tileMatrix[y][x]);
-
-        return tileMap;
+        tileMap = Convert.matrixToPointMap(tileMatrix);
     }
 
 
