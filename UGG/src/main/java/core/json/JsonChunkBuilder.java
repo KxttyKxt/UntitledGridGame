@@ -1,45 +1,34 @@
 package core.json;
 
-import com.jayway.jsonpath.Configuration;
-import com.jayway.jsonpath.JsonPath;
 import core.Chunk;
 import core.Tile;
-import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
 
-public abstract class JsonChunkBuilder {
-    private List<String> pattern;
-    private Map<String, String> patternMap;
+public class JsonChunkBuilder {
+    private final ChunkBuilderTileRegistry chunkBuilderTileRegistry;
+    private JsonParser.JsonDoc doc;
 
-    private final ChunkBuilderTileRegistry chunkBuilderTileRegistry =
-            ChunkBuilderTileRegistry.createRegistryWithMap(createMapForRegistry());
+    public static JsonChunkBuilder usingRegistry(ChunkBuilderTileRegistry registry) {
+        return new JsonChunkBuilder(registry);
+    }
 
-    protected abstract Map<String, Tile.Builder> createMapForRegistry();
+    private JsonChunkBuilder(ChunkBuilderTileRegistry registry) {
+        this.chunkBuilderTileRegistry = registry;
+    }
 
 
-    protected Chunk constructChunkFromJson(URL jsonFileURL) throws IOException {
-        Object jsonDocument = convertToDocument(jsonFileURL);
-
-        pattern = JsonPath.read(jsonDocument, "$.pattern");
-        patternMap = JsonPath.read(jsonDocument, "$.pattern-map");
-
-        return generateChunk();
+    public Chunk constructChunkFromJson(URL jsonFileURL) throws IOException {
+        doc = JsonParser.parseFile(jsonFileURL);return generateChunk();
     }
 
     private Chunk generateChunk() {
-        int rowsInPattern = pattern.size();
-        int rowLength = pattern.getFirst().length();
-
-        Tile[][] matrixForGrid = new Tile[rowsInPattern][rowLength];
+        Tile[][] matrixForGrid = new Tile[doc.rows()][doc.columns()];
 
         for (int row = 0; row < matrixForGrid.length; row++)
             for (int col = 0; col < matrixForGrid[row].length; col++)
-                matrixForGrid[row][col] = getGeneratedTile(pattern.get(row).charAt(col));
+                matrixForGrid[row][col] = getGeneratedTile(doc.fromPattern(row, col));
 
         return new Chunk(matrixForGrid);
     }
@@ -48,22 +37,7 @@ public abstract class JsonChunkBuilder {
         if (patternLetter == ' ')
             return null;
 
-        String tileName = patternMap.get(String.valueOf(patternLetter));
+        String tileName = doc.fromMap(patternLetter);
         return chunkBuilderTileRegistry.get(tileName);
     }
-
-
-    private Object convertToDocument(URL jsonFileURL) throws IOException {
-        String json = readFileToString(jsonFileURL);
-        return convertJsonStringToDocument(json);
-    }
-
-    private String readFileToString(URL jsonFileURL) throws IOException {
-        return IOUtils.toString(jsonFileURL, StandardCharsets.UTF_8);
-    }
-
-    private Object convertJsonStringToDocument(String json) {
-        return Configuration.defaultConfiguration().jsonProvider().parse(json);
-    }
-
 }

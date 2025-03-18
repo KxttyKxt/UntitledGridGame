@@ -8,8 +8,7 @@ import java.util.Map;
 
 public class ChunkBuilderTileRegistry {
 
-    // Intentionally package-private
-    static ChunkBuilderTileRegistry createRegistryWithMap(Map<String, Tile.Builder> registry) {
+    public static ChunkBuilderTileRegistry createRegistryWithMap(Map<String, Tile.Builder> registry) {
         return new ChunkBuilderTileRegistry(registry);
     }
 

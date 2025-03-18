@@ -1,0 +1,11 @@
+{
+    "pattern": [
+        "BBB",
+        "A A",
+        "BBB"
+    ],
+    "pattern-map": {
+        "A": "A",
+        "B": "B"
+    }
+}

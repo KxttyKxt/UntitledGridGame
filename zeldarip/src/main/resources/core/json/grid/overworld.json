@@ -1,0 +1,10 @@
+{
+    "pattern": [
+        "1",
+        "2"
+    ],
+    "pattern-map": {
+        "1": "north-of-start",
+        "2": "start"
+    }
+}

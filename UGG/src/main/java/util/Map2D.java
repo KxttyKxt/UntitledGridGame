@@ -5,8 +5,8 @@ import core.Point2D;
 
 import java.util.Map;
 
-public class Convert {
-    public static <T> Map<Point2D, T> matrixToPointMap(T[][] matrix) {
+public class Map2D {
+    public static <T> Map<Point2D, T> of(T[][] matrix) {
         Map<Point2D, T> toReturn = Maps.newHashMap();
         int xMax = matrix[0].length - 1;
         int yMax = matrix.length - 1;

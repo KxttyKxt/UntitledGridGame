@@ -1,0 +1,9 @@
+{
+    "pattern": [
+        "1 2"
+    ],
+    "pattern-map": {
+        "1": "test-chunk-1",
+        "2": "test-chunk-2"
+    }
+}

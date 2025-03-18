@@ -1,6 +1,6 @@
 package core;
 
-import util.Convert;
+import util.Map2D;
 
 import java.util.Map;
 
@@ -9,7 +9,7 @@ public class ChunkGrid {
     private Chunk activeChunk;
 
     public static ChunkGrid newGrid(Chunk[][] chunks) {
-        return new ChunkGrid(Convert.matrixToPointMap(chunks));
+        return new ChunkGrid(Map2D.of(chunks));
     }
 
     private ChunkGrid(Map<Point2D, Chunk> chunkMap) {
@@ -28,5 +28,15 @@ public class ChunkGrid {
     public String toString() {
         return activeChunk.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ChunkGrid that = (ChunkGrid) o;
+        return this.chunkMap.equals(that.chunkMap);
+    }
+
 
 }

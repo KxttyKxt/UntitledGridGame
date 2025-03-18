@@ -1,6 +1,6 @@
 package core;
 
-import util.Convert;
+import util.Map2D;
 
 import java.util.Map;
 
@@ -16,7 +16,7 @@ public class Chunk {
         xMax = tileMatrix[0].length - 1;
         yMax = tileMatrix.length - 1;
 
-        tileMap = Convert.matrixToPointMap(tileMatrix);
+        tileMap = Map2D.of(tileMatrix);
     }
 
 
