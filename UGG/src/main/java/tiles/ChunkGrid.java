@@ -17,6 +17,9 @@ public class ChunkGrid {
         setActiveChunk(Point2D.of(0, 0));
     }
 
+    public Chunk getActiveChunk() {
+        return activeChunk;
+    }
     public void setActiveChunk(Point2D pointOfChunk) {
         activeChunk = chunkMap.get(pointOfChunk);
     }
@@ -25,4 +28,5 @@ public class ChunkGrid {
     public String toString() {
         return activeChunk.toString();
     }
+
 }

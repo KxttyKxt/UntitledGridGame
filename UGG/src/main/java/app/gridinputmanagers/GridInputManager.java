@@ -1,22 +1,22 @@
-package app.chunkinputmanagers;
+package app.gridinputmanagers;
 
 import app.input.InputHandler;
-import tiles.Chunk;
+import tiles.ChunkGrid;
 
-public abstract class ChunkInputManager<T> {
+public abstract class GridInputManager<T> {
     private final InputHandler<T> inputHandler;
-    Chunk chunk;
+    ChunkGrid chunkGrid;
 
-    public ChunkInputManager(InputHandler<T> inputHandler, Chunk chunk) {
+    public GridInputManager(InputHandler<T> inputHandler, ChunkGrid chunkGrid) {
         this.inputHandler = inputHandler;
-        this.chunk = chunk;
+        this.chunkGrid = chunkGrid;
     }
 
     public void enable() {
         boolean enabled = true;
 
         while (enabled) {
-            displayChunk();
+            displayActiveChunk();
             T input = receiveInput();
             enabled = manageInput(input);
         }
@@ -29,7 +29,7 @@ public abstract class ChunkInputManager<T> {
     }
 
     abstract boolean manageInput(T input);
-    abstract void displayChunk();
+    abstract void displayActiveChunk();
 
     void closeInputHandler() {
         inputHandler.close();

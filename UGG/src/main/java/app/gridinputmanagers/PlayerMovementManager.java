@@ -1,14 +1,14 @@
-package app.chunkinputmanagers;
+package app.gridinputmanagers;
 
 import app.input.ScannerHandler;
 import colors.ColorMaker;
 import colors.SimpleColor;
 import display.SimpleDisplay;
-import tiles.Chunk;
+import tiles.ChunkGrid;
 import tiles.Occupant;
 import tiles.Point2D;
 
-public class PlayerMovementManager extends ChunkInputManager<String> {
+public class PlayerMovementManager extends GridInputManager<String> {
     private final Occupant player = Occupant.newOccupant(
             SimpleDisplay.withText("@player")
             .andColor(ColorMaker.make(SimpleColor.CYAN))
@@ -16,10 +16,10 @@ public class PlayerMovementManager extends ChunkInputManager<String> {
 
     private Point2D playerPosition;
 
-    public PlayerMovementManager(Chunk chunk, Point2D spawnPoint) {
-        super(new ScannerHandler(), chunk);
+    public PlayerMovementManager(ChunkGrid chunkGrid, Point2D spawnPoint) {
+        super(new ScannerHandler(), chunkGrid);
 
-        chunk.addOccupant(player, spawnPoint);
+        chunkGrid.getActiveChunk().addOccupant(player, spawnPoint);
         playerPosition = spawnPoint;
     }
 
@@ -27,7 +27,7 @@ public class PlayerMovementManager extends ChunkInputManager<String> {
     boolean manageInput(String input) {
         switch (input.toLowerCase().trim()) {
             case "7" -> movePlayer(Point2D.of(-1, -1)); // Left & Up
-            case "8" -> movePlayer(Point2D.of(0, -1)); // Up
+            case "8" -> movePlayer(Point2D.of(0, -1));  // Up
             case "9" -> movePlayer(Point2D.of(1, -1));  // Right & Up
 
             case "4" -> movePlayer(Point2D.of(-1, 0));  // Left
@@ -38,7 +38,7 @@ public class PlayerMovementManager extends ChunkInputManager<String> {
             case "2" -> movePlayer(Point2D.of(0, 1));   // Down
             case "3" -> movePlayer(Point2D.of(1, 1));   // Right & Down
 
-            case "0" -> { return false; }   // Quit
+            case "0" -> { return false; }               // Quit
 
             default -> System.err.printf("Input '%s' not recognized. Please try again.%n", input);
         }
@@ -52,7 +52,7 @@ public class PlayerMovementManager extends ChunkInputManager<String> {
         boolean movedSuccessfully = false;
 
         try {
-            movedSuccessfully = chunk.transferOccupant(playerPosition, targetPosition);
+            movedSuccessfully = chunkGrid.getActiveChunk().transferOccupant(playerPosition, targetPosition);
         }
         catch (NullPointerException ignoredTargetPosNullOrOutOfBoundsException) {
 
@@ -66,7 +66,7 @@ public class PlayerMovementManager extends ChunkInputManager<String> {
     }
 
     @Override
-    void displayChunk() {
-        System.out.printf("%s%n%s%n", chunk, player);
+    void displayActiveChunk() {
+        System.out.printf("%s%n%s%n", chunkGrid.getActiveChunk(), player);
     }
 }

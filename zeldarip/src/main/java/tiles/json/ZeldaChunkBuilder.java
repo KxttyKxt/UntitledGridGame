@@ -26,7 +26,7 @@ public class ZeldaChunkBuilder extends JsonChunkBuilder {
         );
     }
 
-    public Chunk constructGridFromJson() throws IOException {
+    public Chunk constructChunkFromJson() throws IOException {
         URL url = ZeldaChunkBuilder.class.getResource("chunk/north-of-start.json");
         return super.constructGridFromJson(url);
     }

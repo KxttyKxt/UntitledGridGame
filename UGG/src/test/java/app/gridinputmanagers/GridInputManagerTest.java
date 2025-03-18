@@ -1,18 +1,19 @@
-package app.chunkinputmanagers;
+package app.gridinputmanagers;
 
 import app.input.InputHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tiles.Chunk;
+import tiles.ChunkGrid;
 import tiles.Tile;
 
-class ChunkInputManagerTest {
+class GridInputManagerTest {
     @BeforeEach
     public void resetMockManager() {
-        manager = new MockChunkInputManager();
+        manager = new MockGridInputManager();
     }
-    MockChunkInputManager manager;
+    MockGridInputManager manager;
 
     @Test
     void test_enable() {
@@ -33,8 +34,8 @@ class ChunkInputManagerTest {
     }
 
     @Test
-    void test_displayChunk() {
-        manager.displayChunk();
+    void test_displayActiveChunk() {
+        manager.displayActiveChunk();
 
         String expectedGridDisplay = String.format("Grid Display%n");
         String actualGridDisplay = manager.shownGridDisplay;
@@ -68,7 +69,7 @@ class ChunkInputManagerTest {
 }
 
 
-class MockChunkInputManager extends ChunkInputManager<String> {
+class MockGridInputManager extends GridInputManager<String> {
     boolean disabledCorrectly = false;
     boolean handledEmptyInput = false;
     boolean pong = false;
@@ -76,10 +77,10 @@ class MockChunkInputManager extends ChunkInputManager<String> {
 
     String shownGridDisplay = "";
 
-    public MockChunkInputManager() {
+    public MockGridInputManager() {
         super(
                 new MockInputHandler(),
-                new Chunk(new Tile[][]{{Tile.defaultTile()}})
+                ChunkGrid.newGrid(new Chunk[][]{{new Chunk(new Tile[][]{{Tile.defaultTile()}})}})
         );
     }
 
@@ -104,7 +105,7 @@ class MockChunkInputManager extends ChunkInputManager<String> {
     }
 
     @Override
-    void displayChunk() {
+    void displayActiveChunk() {
         shownGridDisplay = String.format("Grid Display%n");
         System.out.printf(shownGridDisplay);
     }
