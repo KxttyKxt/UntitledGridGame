@@ -1,7 +1,7 @@
 package util;
 
 import com.google.common.collect.Maps;
-import tiles.Point2D;
+import core.Point2D;
 
 import java.util.Map;
 

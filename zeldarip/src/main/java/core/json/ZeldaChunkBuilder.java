@@ -1,13 +1,13 @@
-package tiles.json;
+package core.json;
 
 import colors.Color;
 import colors.ColorMaker;
 import colors.SimpleColor;
+import core.Chunk;
+import core.Occupant;
+import core.Tile;
 import display.Displayable;
 import display.SimpleDisplay;
-import tiles.Chunk;
-import tiles.Occupant;
-import tiles.Tile;
 
 import java.io.IOException;
 import java.net.URL;

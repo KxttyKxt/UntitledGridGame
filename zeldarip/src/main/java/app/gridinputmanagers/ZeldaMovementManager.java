@@ -1,9 +1,9 @@
 package app.gridinputmanagers;
 
-import tiles.Chunk;
-import tiles.ChunkGrid;
-import tiles.Point2D;
-import tiles.json.ZeldaChunkBuilder;
+import core.Chunk;
+import core.ChunkGrid;
+import core.Point2D;
+import core.json.ZeldaChunkBuilder;
 
 import java.io.IOException;
 

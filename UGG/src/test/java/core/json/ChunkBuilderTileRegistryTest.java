@@ -1,9 +1,9 @@
-package tiles.json;
+package core.json;
 
+import core.Tile;
 import display.SimpleDisplay;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import tiles.Tile;
 
 import java.util.Map;
 

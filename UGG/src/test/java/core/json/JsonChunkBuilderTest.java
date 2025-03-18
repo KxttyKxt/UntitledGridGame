@@ -1,10 +1,10 @@
-package tiles.json;
+package core.json;
 
+import core.Chunk;
+import core.Tile;
 import display.SimpleDisplay;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import tiles.Chunk;
-import tiles.Tile;
 
 import java.io.IOException;
 import java.net.URL;

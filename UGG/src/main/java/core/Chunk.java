@@ -1,4 +1,4 @@
-package tiles;
+package core;
 
 import util.Convert;
 

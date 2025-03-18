@@ -1,4 +1,4 @@
-package tiles;
+package core;
 
 public record Point2D(
         int x, int y

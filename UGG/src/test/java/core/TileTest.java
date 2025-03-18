@@ -1,4 +1,4 @@
-package tiles;
+package core;
 
 import colors.ColorMaker;
 import colors.SimpleColor;

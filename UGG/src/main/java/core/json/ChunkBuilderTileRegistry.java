@@ -1,8 +1,8 @@
-package tiles.json;
+package core.json;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import tiles.Tile;
+import core.Tile;
 
 import java.util.Map;
 

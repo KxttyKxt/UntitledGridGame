@@ -1,7 +1,7 @@
 package app.gridinputmanagers;
 
 import app.input.InputHandler;
-import tiles.ChunkGrid;
+import core.ChunkGrid;
 
 public abstract class GridInputManager<T> {
     private final InputHandler<T> inputHandler;

@@ -1,4 +1,4 @@
-package tiles.json;
+package core.json;
 
 public abstract class JsonGridBuilder {
 

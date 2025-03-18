@@ -3,10 +3,10 @@ package app.gridinputmanagers;
 import app.input.ScannerHandler;
 import colors.ColorMaker;
 import colors.SimpleColor;
+import core.ChunkGrid;
+import core.Occupant;
+import core.Point2D;
 import display.SimpleDisplay;
-import tiles.ChunkGrid;
-import tiles.Occupant;
-import tiles.Point2D;
 
 public class PlayerMovementManager extends GridInputManager<String> {
     private final Occupant player = Occupant.newOccupant(

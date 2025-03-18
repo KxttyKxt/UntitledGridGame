@@ -1,12 +1,12 @@
 package app.gridinputmanagers;
 
 import app.input.InputHandler;
+import core.Chunk;
+import core.ChunkGrid;
+import core.Tile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tiles.Chunk;
-import tiles.ChunkGrid;
-import tiles.Tile;
 
 class GridInputManagerTest {
     @BeforeEach

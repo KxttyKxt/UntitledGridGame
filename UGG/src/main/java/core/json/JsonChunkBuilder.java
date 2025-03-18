@@ -1,10 +1,10 @@
-package tiles.json;
+package core.json;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
+import core.Chunk;
+import core.Tile;
 import org.apache.commons.io.IOUtils;
-import tiles.Chunk;
-import tiles.Tile;
 
 import java.io.IOException;
 import java.net.URL;

@@ -1,4 +1,4 @@
-package tiles;
+package core;
 
 import display.SimpleDisplay;
 import org.junit.jupiter.api.Assertions;
