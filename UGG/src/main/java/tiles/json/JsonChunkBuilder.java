@@ -22,16 +22,16 @@ public abstract class JsonChunkBuilder {
     protected abstract Map<String, Tile.Builder> createMapForRegistry();
 
 
-    protected Chunk constructGridFromJson(URL jsonFileURL) throws IOException {
+    protected Chunk constructChunkFromJson(URL jsonFileURL) throws IOException {
         Object jsonDocument = convertToDocument(jsonFileURL);
 
         pattern = JsonPath.read(jsonDocument, "$.pattern");
         patternMap = JsonPath.read(jsonDocument, "$.pattern-map");
 
-        return generateGrid();
+        return generateChunk();
     }
 
-    private Chunk generateGrid() {
+    private Chunk generateChunk() {
         int rowsInPattern = pattern.size();
         int rowLength = pattern.getFirst().length();
 

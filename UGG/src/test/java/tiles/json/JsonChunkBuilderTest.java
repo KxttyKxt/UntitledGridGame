@@ -24,7 +24,7 @@ class JsonChunkBuilderTest {
     };
 
     @Test
-    void test_constructGridFromJson() throws IOException {
+    void test_constructChunkFromJson() throws IOException {
         URL testJsonURL = this.getClass().getResource("chunk/test-chunk.json");
 
         Chunk expectedChunk = new Chunk(new Tile[][]{
@@ -32,7 +32,7 @@ class JsonChunkBuilderTest {
                 { Tile.withOnlyText("B"), null,                   Tile.withOnlyText("B") },
                 { Tile.withOnlyText("A"), Tile.withOnlyText("A"), Tile.withOnlyText("A") }
         });
-        Chunk actualChunk = chunkBuilder.constructGridFromJson(testJsonURL);
+        Chunk actualChunk = chunkBuilder.constructChunkFromJson(testJsonURL);
 
         Assertions.assertEquals(expectedChunk, actualChunk);
     }
