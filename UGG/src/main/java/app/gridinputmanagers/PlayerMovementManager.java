@@ -30,20 +30,30 @@ public class PlayerMovementManager extends GridInputManager<String> {
 
     @Override
     boolean manageInput(String input) {
-        switch (input.toLowerCase().trim()) {
-            case "7" -> movePlayer(Point2D.of(-1, -1)); // Left & Up
-            case "8" -> movePlayer(Point2D.of(0, -1));  // Up
-            case "9" -> movePlayer(Point2D.of(1, -1));  // Right & Up
+        for (char singleInput : input.toCharArray()) {
+            boolean stayEnabled = manageInput(singleInput);
 
-            case "4" -> movePlayer(Point2D.of(-1, 0));  // Left
-            case "5" -> movePlayer(Point2D.of(0, 0));   // Nowhere
-            case "6" -> movePlayer(Point2D.of(1, 0));   // Right
+            if (!stayEnabled)
+                return false;
+        }
 
-            case "1" -> movePlayer(Point2D.of(-1, 1));  // Left & Down
-            case "2" -> movePlayer(Point2D.of(0, 1));   // Down
-            case "3" -> movePlayer(Point2D.of(1, 1));   // Right & Down
+        return true;
+    }
+    boolean manageInput(char input) {
+        switch (input) {
+            case '7' -> movePlayer(Point2D.of(-1, -1)); // Left & Up
+            case '8' -> movePlayer(Point2D.of(0, -1));  // Up
+            case '9' -> movePlayer(Point2D.of(1, -1));  // Right & Up
 
-            case "0" -> { return false; }               // Quit
+            case '4' -> movePlayer(Point2D.of(-1, 0));  // Left
+            case '5' -> movePlayer(Point2D.of(0, 0));   // Nowhere
+            case '6' -> movePlayer(Point2D.of(1, 0));   // Right
+
+            case '1' -> movePlayer(Point2D.of(-1, 1));  // Left & Down
+            case '2' -> movePlayer(Point2D.of(0, 1));   // Down
+            case '3' -> movePlayer(Point2D.of(1, 1));   // Right & Down
+
+            case '0' -> { return false; }               // Quit
 
             default -> System.err.printf("Input '%s' not recognized. Please try again.%n", input);
         }

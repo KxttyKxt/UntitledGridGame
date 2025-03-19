@@ -74,6 +74,14 @@ class TileTest {
     }
 
     @Test
+    void test_transferOccupantTo_false_secondIsNull() {
+        Tile tileA = tileA();
+        tileA.addOccupant(Occupant.newOccupant());
+
+        Assertions.assertFalse(tileA.transferOccupantTo(null));
+    }
+
+    @Test
     void test_transferContentsTo_false_bothHaveOccupant() {
         Occupant occupantA = blueJunkOccupant();
         Occupant occupantB = Occupant.newOccupant(
