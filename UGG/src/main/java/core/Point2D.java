@@ -7,6 +7,7 @@ public record Point2D(
         return new Point2D(x, y);
     }
 
+
     public Point2D delta(Point2D delta) {
         return new Point2D(this.x + delta.x, this.y + delta.y);
     }
@@ -16,11 +17,6 @@ public record Point2D(
             return false;
         else
             return x <= upperBounds.x() && y <= upperBounds.y();
-    }
-
-    @Override
-    public String toString() {
-        return String.format("x:%d, y:%d", x, y);
     }
 
     public Point2D outOfRangeDelta(Point2D upperBounds) {
@@ -38,5 +34,11 @@ public record Point2D(
             rangeDeltaY = -1;
 
         return Point2D.of(rangeDeltaX, rangeDeltaY);
+    }
+
+
+    @Override
+    public String toString() {
+        return String.format("x:%d, y:%d", x, y);
     }
 }

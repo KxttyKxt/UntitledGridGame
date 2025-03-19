@@ -12,7 +12,11 @@ public class Chunk {
     private final int xMax;
     private final int yMax;
 
-    public Chunk(Tile[][] tileMatrix) {
+    public static Chunk newChunk(Tile[][] tileMatrix) {
+        return new Chunk(tileMatrix);
+    }
+
+    private Chunk(Tile[][] tileMatrix) {
         xMax = tileMatrix[0].length - 1;
         yMax = tileMatrix.length - 1;
 

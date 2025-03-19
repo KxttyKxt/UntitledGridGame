@@ -32,7 +32,7 @@ class ChunkTest {
     }
 
     private void initializeTileMatrix(Tile[][] tilesForMatrix) {
-        chunk = new Chunk(tilesForMatrix);
+        chunk = Chunk.newChunk(tilesForMatrix);
     }
 
 
@@ -88,6 +88,84 @@ class ChunkTest {
 
 
     @Test
+    void test_transferOccupantAcrossChunks_true() {
+        Chunk chunk1 = Chunk.newChunk(new Tile[][]{{Tile.defaultTile(), Tile.defaultTile()}});
+        Chunk chunk2 = Chunk.newChunk(new Tile[][]{{Tile.defaultTile()}, {Tile.defaultTile()}});
+
+        Occupant occupant = Occupant.newOccupant();
+        chunk1.addOccupant(occupant, Point2D.of(1, 0));
+
+        Point2D originPoint = Point2D.of(1, 0);
+        Point2D destinationPoint = Point2D.of(0, 1);
+
+        Assertions.assertTrue(chunk1.transferOccupantAcrossChunks(originPoint, chunk2, destinationPoint));
+    }
+
+    @Test
+    void test_transferOccupantAcrossChunks_false() {
+        Chunk chunk1 = Chunk.newChunk(new Tile[][]{{Tile.defaultTile(), Tile.defaultTile()}});
+        Chunk chunk2 = Chunk.newChunk(new Tile[][]{{Tile.defaultTile()}, {Tile.defaultTile()}});
+
+        Occupant occupant1 = Occupant.newOccupant();
+        chunk1.addOccupant(occupant1, Point2D.of(1, 0));
+
+        Occupant occupant2 = Occupant.newOccupant();
+        chunk2.addOccupant(occupant2, Point2D.of(0, 1));
+
+        Point2D originPoint = Point2D.of(1, 0);
+        Point2D destinationPoint = Point2D.of(0, 1);
+
+        Assertions.assertFalse(chunk1.transferOccupantAcrossChunks(originPoint, chunk2, destinationPoint));
+    }
+
+    @Test
+    void test_transferOccupantAcrossChunks_null() {
+        Chunk chunk1 = Chunk.newChunk(new Tile[][]{{Tile.defaultTile(), Tile.defaultTile()}});
+        Chunk chunk2 = Chunk.newChunk(new Tile[2][1]);
+
+        Occupant occupant1 = Occupant.newOccupant();
+        chunk1.addOccupant(occupant1, Point2D.of(1, 0));
+
+        Point2D originPoint = Point2D.of(1, 0);
+        Point2D destinationPoint = Point2D.of(0, 1);
+
+        boolean exceptionWasThrown = false;
+
+        try {
+            chunk1.transferOccupantAcrossChunks(originPoint, chunk2, destinationPoint);
+        }
+        catch (NullPointerException nullTileAtDestinationPointException) {
+            exceptionWasThrown = true;
+        }
+        finally {
+            Assertions.assertTrue(exceptionWasThrown);
+        }
+    }
+
+
+    @Test
+    void test_upperBounds() {
+        Chunk chunk = Chunk.newChunk(new Tile[5][5]);
+
+        Point2D expectedUpperBounds = Point2D.of(4, 4);
+        Point2D actualUpperBounds = chunk.upperBounds();
+
+        Assertions.assertEquals(expectedUpperBounds, actualUpperBounds);
+    }
+
+
+    @Test
+    void test_ranges() {
+        Chunk chunk = Chunk.newChunk(new Tile[5][5]);
+
+        Point2D expectedUpperBounds = Point2D.of(5, 5);
+        Point2D actualUpperBounds = chunk.ranges();
+
+        Assertions.assertEquals(expectedUpperBounds, actualUpperBounds);
+    }
+
+
+    @Test
     void test_toString_sizeOne() {
         tileMatrixSizeOne(textTile("A"));
 
@@ -99,7 +177,6 @@ class ChunkTest {
         initializeTileMatrix(new Tile[][]{{null}});
         Assertions.assertEquals(chunk.toString(), Chunk.NULL_CELL);
     }
-
 
     @Test
     void test_toString_sizeTwo() {
@@ -113,7 +190,6 @@ class ChunkTest {
         initializeTileMatrix(new Tile[][]{{null, null}});
         Assertions.assertEquals(Chunk.NULL_CELL.repeat(2), chunk.toString());
     }
-
 
     @Test
     void test_toString_sizeTwoByTwo_tile() {
@@ -155,7 +231,7 @@ class ChunkTest {
     @Test
     void test_equals_matrices() {
         tileMatrixSizeOne(Tile.defaultTile());
-        Chunk newChunk = new Chunk(new Tile[][]{{Tile.defaultTile()}});
+        Chunk newChunk = Chunk.newChunk(new Tile[][]{{Tile.defaultTile()}});
 
         Assertions.assertEquals(chunk, newChunk);
     }
@@ -177,7 +253,7 @@ class ChunkTest {
     @Test
     void test_notEquals_differentMatrices() {
         tileMatrixSizeOne(Tile.defaultTile());
-        Chunk newChunk = new Chunk(new Tile[][]{{Tile.withOnlyText("different")}});
+        Chunk newChunk = Chunk.newChunk(new Tile[][]{{Tile.withOnlyText("different")}});
 
         Assertions.assertNotEquals(chunk, newChunk);
     }
@@ -185,7 +261,7 @@ class ChunkTest {
     @Test
     void test_notEquals_differentMatrixSizes() {
         tileMatrixSizeOne(Tile.defaultTile());
-        Chunk newChunk = new Chunk(new Tile[][]{{Tile.defaultTile(), Tile.defaultTile()}});
+        Chunk newChunk = Chunk.newChunk(new Tile[][]{{Tile.defaultTile(), Tile.defaultTile()}});
 
         Assertions.assertNotEquals(chunk, newChunk);
     }

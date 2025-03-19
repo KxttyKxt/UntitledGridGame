@@ -30,7 +30,7 @@ public class JsonChunkBuilder {
             for (int col = 0; col < matrixForGrid[row].length; col++)
                 matrixForGrid[row][col] = getGeneratedTile(doc.fromPattern(row, col));
 
-        return new Chunk(matrixForGrid);
+        return Chunk.newChunk(matrixForGrid);
     }
 
     private Tile getGeneratedTile(char patternLetter) {

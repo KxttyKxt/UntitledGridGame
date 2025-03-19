@@ -80,7 +80,7 @@ class MockGridInputManager extends GridInputManager<String> {
     public MockGridInputManager() {
         super(
                 new MockInputHandler(),
-                ChunkGrid.newGrid(new Chunk[][]{{new Chunk(new Tile[][]{{Tile.defaultTile()}})}})
+                ChunkGrid.newGrid(new Chunk[][]{{Chunk.newChunk(new Tile[][]{{Tile.defaultTile()}})}})
         );
     }
 

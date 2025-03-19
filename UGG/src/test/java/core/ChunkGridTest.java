@@ -8,11 +8,43 @@ class ChunkGridTest {
         return ChunkGrid.newGrid(new Chunk[][]{{chunk1(), chunk2()}});
     }
     private Chunk chunk1() {
-        return new Chunk(new Tile[][]{{Tile.withOnlyText("1")}});
+        return Chunk.newChunk(new Tile[][]{{Tile.withOnlyText("1")}});
     }
     private Chunk chunk2() {
-        return new Chunk(new Tile[][]{{Tile.withOnlyText("2")}});
+        return Chunk.newChunk(new Tile[][]{{Tile.withOnlyText("2")}});
     }
+
+
+    @Test
+    void test_getChunk_00() {
+        Chunk chunk1 = chunk1();
+        Chunk chunk2 = chunk2();
+
+        ChunkGrid grid = ChunkGrid.newGrid(new Chunk[][]{{chunk1, chunk2}});
+
+        Assertions.assertSame(chunk1, grid.getChunk(Point2D.of(0, 0)));
+    }
+
+    @Test
+    void test_getChunk_01() {
+        Chunk chunk1 = chunk1();
+        Chunk chunk2 = chunk2();
+
+        ChunkGrid grid = ChunkGrid.newGrid(new Chunk[][]{{chunk1, chunk2}});
+
+        Assertions.assertSame(chunk2, grid.getChunk(Point2D.of(1, 0)));
+    }
+
+    @Test
+    void test_getChunk_Null() {
+        Chunk chunk1 = chunk1();
+        Chunk chunk2 = chunk2();
+
+        ChunkGrid grid = ChunkGrid.newGrid(new Chunk[][]{{chunk1, chunk2}});
+
+        Assertions.assertNull(grid.getChunk(Point2D.of(1000, 1000)));
+    }
+
 
     @Test
     void test_equals_same() {

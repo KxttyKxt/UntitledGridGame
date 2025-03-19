@@ -18,7 +18,7 @@ class JsonChunkBuilderTest {
     void test_constructChunkFromJson() throws IOException {
         URL testJsonURL = this.getClass().getResource("chunk/test-chunk-1.json");
 
-        Chunk expectedChunk = new Chunk(new Tile[][]{
+        Chunk expectedChunk = Chunk.newChunk(new Tile[][]{
                 { Tile.withOnlyText("A"), Tile.withOnlyText("A"), Tile.withOnlyText("A") },
                 { Tile.withOnlyText("B"), null,                   Tile.withOnlyText("B") },
                 { Tile.withOnlyText("A"), Tile.withOnlyText("A"), Tile.withOnlyText("A") }
