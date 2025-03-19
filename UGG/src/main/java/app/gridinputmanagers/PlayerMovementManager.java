@@ -3,6 +3,7 @@ package app.gridinputmanagers;
 import app.input.ScannerHandler;
 import colors.ColorMaker;
 import colors.SimpleColor;
+import core.Chunk;
 import core.ChunkGrid;
 import core.Occupant;
 import core.Point2D;
@@ -14,13 +15,16 @@ public class PlayerMovementManager extends GridInputManager<String> {
             .andColor(ColorMaker.make(SimpleColor.CYAN))
     );
 
-    private Point2D playerPosition;
+    private Point2D playerPositionInChunk;
+    private Point2D chunkPositionInGrid;
 
-    public PlayerMovementManager(ChunkGrid chunkGrid, Point2D spawnPoint) {
+    public PlayerMovementManager(ChunkGrid chunkGrid, Point2D spawnPoint, Point2D chunkPoint) {
         super(new ScannerHandler(), chunkGrid);
 
-        chunkGrid.getActiveChunk().addOccupant(player, spawnPoint);
-        playerPosition = spawnPoint;
+        playerPositionInChunk = spawnPoint;
+        chunkPositionInGrid = chunkPoint;
+
+        currentChunk().addOccupant(player, spawnPoint);
     }
 
     @Override
@@ -46,27 +50,79 @@ public class PlayerMovementManager extends GridInputManager<String> {
         return true;
     }
 
+
     private void movePlayer(Point2D delta) {
-        Point2D targetPosition = playerPosition.delta(delta);
+        Point2D targetPoint = playerPositionInChunk.delta(delta);
 
-        boolean movedSuccessfully = false;
+        if (targetPoint.withinRange(chunkUpperBounds()))
+            movePlayerWithinChunk(targetPoint);
+        else
+            movePlayerAcrossChunks(targetPoint);
+    }
 
-        try {
-            movedSuccessfully = chunkGrid.getActiveChunk().transferOccupant(playerPosition, targetPosition);
-        }
-        catch (NullPointerException ignoredTargetPosNullOrOutOfBoundsException) {
+    private void movePlayerWithinChunk(Point2D targetPoint) {
+        boolean movedSuccessfully = currentChunk()
+                .transferOccupant(playerPositionInChunk, targetPoint);
 
+        if (movedSuccessfully)
+            playerPositionInChunk = targetPoint;
+        else
+            System.err.printf("Could not move player to Tile at target point (%s)%n", targetPoint);
+    }
+
+    private void movePlayerAcrossChunks(Point2D targetPoint) {
+        Point2D chunkDelta = targetPoint.outOfRangeDelta(chunkUpperBounds());
+        Point2D newChunkPoint = chunkPositionInGrid.delta(chunkDelta);
+        Chunk newChunk = chunkGrid.getChunk(newChunkPoint);
+
+        Point2D chunkSizes = currentChunk().ranges();
+        Point2D adjustedTargetPoint;
+        int adjustedTargetX = targetPoint.x();
+        int adjustedTargetY = targetPoint.y();
+
+        if (chunkDelta.x() == 1)
+            adjustedTargetX -= chunkSizes.x();
+        else if (chunkDelta.x() == -1)
+            adjustedTargetX += chunkSizes.x();
+
+        if (chunkDelta.y() == 1)
+            adjustedTargetY -= chunkSizes.y();
+        else if (chunkDelta.y() == -1)
+            adjustedTargetY += chunkSizes.y();
+
+        adjustedTargetPoint = Point2D.of(adjustedTargetX, adjustedTargetY);
+
+        boolean newChunkIsNull = newChunk == null;
+        boolean movedSuccessfully = !newChunkIsNull && currentChunk().transferOccupantAcrossChunks(
+                playerPositionInChunk, newChunk, adjustedTargetPoint);
+
+        if (movedSuccessfully) {
+            chunkPositionInGrid = chunkPositionInGrid.delta(chunkDelta);
+            playerPositionInChunk = adjustedTargetPoint;
         }
-        finally {
-            if (movedSuccessfully) {
-                playerPosition = targetPosition;
-            } else
-                System.err.printf("Player could not be moved to [%s].%n", targetPosition);
+        else {
+            if (newChunkIsNull) System.err.printf(
+                    "No chunk found at grid point (%s).%n",
+                    newChunkPoint
+            );
+            else System.err.printf(
+                    "Chunk was found at point (%s), but could not move to Tile at target point (%s).%n",
+                    newChunkPoint, adjustedTargetPoint
+            );
         }
+    }
+
+
+    private Chunk currentChunk() {
+        return chunkGrid.getChunk(chunkPositionInGrid);
+    }
+
+    private Point2D chunkUpperBounds() {
+        return currentChunk().upperBounds();
     }
 
     @Override
     void displayActiveChunk() {
-        System.out.printf("%s%n%s%n", chunkGrid.getActiveChunk(), player);
+        System.out.printf("%s%n%s%n", currentChunk(), player);
     }
 }

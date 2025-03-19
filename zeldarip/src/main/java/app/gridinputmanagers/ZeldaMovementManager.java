@@ -21,12 +21,13 @@ public class ZeldaMovementManager extends PlayerMovementManager {
     public static ZeldaMovementManager fromGridFile(URL jsonFileURL) throws IOException {
         ChunkGrid chunkGrid = chunkGrid(jsonFileURL);
         Point2D spawnPoint = Point2D.of(6, 7);
+        Point2D chunkPoint = Point2D.of(0, 1);
 
-        return new ZeldaMovementManager(chunkGrid, spawnPoint);
+        return new ZeldaMovementManager(chunkGrid, spawnPoint, chunkPoint);
     }
 
-    private ZeldaMovementManager(ChunkGrid chunkGrid, Point2D spawnPoint) {
-        super(chunkGrid, spawnPoint);
+    private ZeldaMovementManager(ChunkGrid chunkGrid, Point2D spawnPoint, Point2D chunkPoint) {
+        super(chunkGrid, spawnPoint, chunkPoint);
     }
 
 

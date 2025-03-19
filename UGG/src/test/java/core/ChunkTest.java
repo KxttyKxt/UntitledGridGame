@@ -12,7 +12,7 @@ class ChunkTest {
 
     private Tile tileWithContents() {
         Tile toReturn = Tile.defaultTile();
-        toReturn.addContents(defaultOccupant());
+        toReturn.addOccupant(defaultOccupant());
 
         return toReturn;
     }
@@ -71,7 +71,7 @@ class ChunkTest {
         Tile contentsTile = tileWithContents();
 
         Tile alsoContentsTile = Tile.defaultTile();
-        alsoContentsTile.addContents(Occupant.newOccupant(SimpleDisplay.withOnlyText("occupant too")));
+        alsoContentsTile.addOccupant(Occupant.newOccupant(SimpleDisplay.withOnlyText("occupant too")));
 
         tileMatrixSizeTwoAcross(contentsTile, alsoContentsTile);
         Assertions.assertFalse(chunk.transferOccupant(originPoint, acrossPoint));

@@ -22,7 +22,7 @@ public class Chunk {
 
     public boolean addOccupant(Occupant occupant, Point2D point) {
         Tile tileToAddContentsTo = tileMap.get(point);
-        return tileToAddContentsTo.addContents(occupant);
+        return tileToAddContentsTo.addOccupant(occupant);
     }
 
     public boolean transferOccupant(Point2D from, Point2D to) {
@@ -33,6 +33,21 @@ public class Chunk {
     }
     private boolean transferOccupant(Tile origin, Tile destination) {
         return origin.transferOccupantTo(destination);
+    }
+
+    public boolean transferOccupantAcrossChunks(Point2D originTilePoint, Chunk destChunk, Point2D newChunkTilePoint) {
+        Tile origin = this.tileMap.get(originTilePoint);
+        Tile destination = destChunk.tileMap.get(newChunkTilePoint);
+
+        return transferOccupant(origin, destination);
+    }
+
+    public Point2D upperBounds() {
+        return Point2D.of(xMax, yMax);
+    }
+
+    public Point2D ranges() {
+        return upperBounds().delta(Point2D.of(1, 1));
     }
 
 

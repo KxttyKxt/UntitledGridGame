@@ -64,7 +64,7 @@ public class Tile implements Displayable {
     }
 
 
-    boolean addContents(Occupant occupant) {
+    boolean addOccupant(Occupant occupant) {
         if (this.contentsAreEmpty()) {
             this.setOccupant(occupant);
             return true;

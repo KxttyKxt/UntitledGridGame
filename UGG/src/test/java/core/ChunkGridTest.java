@@ -15,25 +15,6 @@ class ChunkGridTest {
     }
 
     @Test
-    void test_setActive() {
-        ChunkGrid grid = grid();
-        Assertions.assertEquals(chunk1(), grid.getActiveChunk());
-
-        grid.setActiveChunk(Point2D.of(1,0));
-        Assertions.assertEquals(chunk2(), grid.getActiveChunk());
-    }
-
-    @Test
-    void test_toString() {
-        ChunkGrid grid = grid();
-        Assertions.assertEquals(chunk1().toString(), grid.toString());
-
-        grid.setActiveChunk(Point2D.of(1,0));
-        Assertions.assertEquals(chunk2().toString(), grid.toString());
-    }
-
-
-    @Test
     void test_equals_same() {
         ChunkGrid grid = grid();
         Assertions.assertEquals(grid, grid);

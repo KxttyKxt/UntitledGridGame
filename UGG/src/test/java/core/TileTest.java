@@ -34,21 +34,21 @@ class TileTest {
 
 
     @Test
-    void test_addContents_true() {
+    void test_addOccupant_true() {
         Tile tile = Tile.defaultTile();
         Occupant occupant = defaultOccupant();
 
-        Assertions.assertTrue(tile.addContents(occupant));
+        Assertions.assertTrue(tile.addOccupant(occupant));
     }
 
     @Test
-    void test_addContents_false() {
+    void test_addOccupant_false() {
         Occupant preExistingOccupant = Occupant.withOnlyText("Old");
         Occupant occupantToAdd = Occupant.withOnlyText("New");
 
         Tile tile = Tile.defaultTile();
-        Assertions.assertTrue(tile.addContents(preExistingOccupant));
-        Assertions.assertFalse(tile.addContents(occupantToAdd));
+        Assertions.assertTrue(tile.addOccupant(preExistingOccupant));
+        Assertions.assertFalse(tile.addOccupant(occupantToAdd));
     }
 
 
@@ -57,7 +57,7 @@ class TileTest {
         Tile tileA = tileA();
         Tile tileB = tileB();
 
-        tileA.addContents(blueJunkOccupant());
+        tileA.addOccupant(blueJunkOccupant());
 
         Assertions.assertTrue(tileA.transferOccupantTo(tileB));
     }
@@ -68,7 +68,7 @@ class TileTest {
         Tile tileA = Tile.withTileDisplay(Tile.defaultTileDisplay).andTraversable(false).build();
         Tile tileB = tileB();
 
-        tileA.addContents(blueJunkOccupant());
+        tileA.addOccupant(blueJunkOccupant());
 
         Assertions.assertTrue(tileA.transferOccupantTo(tileB));
     }
@@ -82,9 +82,9 @@ class TileTest {
         );
 
         Tile tileA = tileA();
-        tileA.addContents(occupantA);
+        tileA.addOccupant(occupantA);
         Tile tileB = tileB();
-        tileB.addContents(occupantB);
+        tileB.addOccupant(occupantB);
 
         Assertions.assertFalse(tileA.transferOccupantTo(tileB));
     }
@@ -102,7 +102,7 @@ class TileTest {
         Tile tileA = tileA();
         Tile tileB = tileB();
 
-        tileB.addContents(blueJunkOccupant());
+        tileB.addOccupant(blueJunkOccupant());
 
         Assertions.assertFalse(tileA.transferOccupantTo(tileB));
     }
