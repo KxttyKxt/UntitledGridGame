@@ -1,0 +1,23 @@
+{
+    "pattern": [
+        "##T.T.T .T.T.T.T",
+        "##T.T.T..T.T.T.T",
+        "##...@..........",
+        "##....T.@T.T.T..",
+        "#.T.T.....@.....",
+        "......T..T.T.T..",
+        "#.T.+...........",
+        "##....T.@T.T.T..",
+        "##..............",
+        "##TTTTTTTTTTTTTT",
+        "##TTTTTTTTTTTTTT"
+    ],
+    "pattern-map": {
+        "#": "WallTile",
+        ".": "BasicTile",
+        "T": "TreeTile",
+        "+": "SecretStairsTile",
+
+        "@": "BasicTile_Octorok"
+    }
+}

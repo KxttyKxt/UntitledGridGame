@@ -1,10 +1,12 @@
 {
     "pattern": [
-        "1",
-        "2"
+        "NT",
+        "+E"
     ],
     "pattern-map": {
-        "1": "north-of-start",
-        "2": "start"
+        "N": "north-of-start",
+        "T": "ne-of-start",
+        "+": "start",
+        "E": "east-of-start"
     }
 }

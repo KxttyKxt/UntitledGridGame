@@ -23,11 +23,11 @@ public class ZeldaMovementManager extends PlayerMovementManager {
         Point2D spawnPoint = Point2D.of(6, 7);
         Point2D chunkPoint = Point2D.of(0, 1);
 
-        return new ZeldaMovementManager(chunkGrid, spawnPoint, chunkPoint);
+        return new ZeldaMovementManager(chunkGrid, chunkPoint, spawnPoint);
     }
 
-    private ZeldaMovementManager(ChunkGrid chunkGrid, Point2D spawnPoint, Point2D chunkPoint) {
-        super(chunkGrid, spawnPoint, chunkPoint);
+    private ZeldaMovementManager(ChunkGrid chunkGrid, Point2D chunkPoint, Point2D spawnPoint) {
+        super(chunkGrid, chunkPoint, spawnPoint);
     }
 
 
@@ -41,11 +41,16 @@ public class ZeldaMovementManager extends PlayerMovementManager {
 
     private static ChunkBuilderTileRegistry tileRegistry() {
         return ChunkBuilderTileRegistry.createRegistryWithMap(Map.of(
-                "BasicTile",      basicTileBuilder(),
-                "CaveTile",       caveTileBuilder(),
-                "RockTile",       rockTileBuilder(),
+                "BasicTile", basicTileBuilder(),
+                "CaveTile",  caveTileBuilder(),
+                "RockTile",  rockTileBuilder(),
+                "TreeTile",  treeTileBuilder(),
+                "WallTile",  wallTileBuilder(),
+
                 "SecretCaveTile", secretCaveTileBuilder(),
-                "WallTile",       wallTileBuilder()
+                "SecretStairsTile", secretStairsTileBuilder(),
+
+                "BasicTile_Octorok", octorokTileBuilder()
         ));
     }
 
@@ -65,19 +70,18 @@ public class ZeldaMovementManager extends PlayerMovementManager {
         return Tile.withTileDisplay(caveTileDisplay);
     }
     private static Tile.Builder rockTileBuilder() {
-        Occupant rock = Occupant.newOccupant(SimpleDisplay
-                .withText("@")
-                .andColor(ColorMaker.make(SimpleColor.GREEN)));
-
-        return basicTileBuilder().andOccupant(rock);
-    }
-    private static Tile.Builder secretCaveTileBuilder() {
-        // NYI, looks like a wall
-        Displayable wallTileDisplay = SimpleDisplay.withText("#")
+        Displayable rock = SimpleDisplay
+                .withText("K")
                 .andColor(ColorMaker.make(SimpleColor.GREEN));
 
-        return Tile.withTileDisplay(wallTileDisplay)
-                .andTraversable(false);
+        return Tile.withTileDisplay(rock).andTraversable(false);
+    }
+    private static Tile.Builder treeTileBuilder() {
+        Displayable rock = SimpleDisplay
+                .withText("T")
+                .andColor(ColorMaker.make(SimpleColor.GREEN));
+
+        return Tile.withTileDisplay(rock).andTraversable(false);
     }
     private static Tile.Builder wallTileBuilder() {
         Displayable wallTileDisplay = SimpleDisplay.withText("#")
@@ -86,4 +90,30 @@ public class ZeldaMovementManager extends PlayerMovementManager {
         return Tile.withTileDisplay(wallTileDisplay)
                 .andTraversable(false);
     }
+
+    private static Tile.Builder secretCaveTileBuilder() {
+        // NYI, looks like a wall
+        Displayable wallTileDisplay = SimpleDisplay.withText("#")
+                .andColor(ColorMaker.make(SimpleColor.GREEN));
+
+        return Tile.withTileDisplay(wallTileDisplay)
+                .andTraversable(false);
+    }
+    private static Tile.Builder secretStairsTileBuilder() {
+        // NYI, looks like a tree
+        Displayable wallTileDisplay = SimpleDisplay.withText("T")
+                .andColor(ColorMaker.make(SimpleColor.GREEN));
+
+        return Tile.withTileDisplay(wallTileDisplay)
+                .andTraversable(false);
+    }
+
+    private static Tile.Builder octorokTileBuilder() {
+        Occupant rock = Occupant.newOccupant(SimpleDisplay
+                .withText("@")
+                .andColor(ColorMaker.make(202, false)));
+
+        return basicTileBuilder().andOccupant(rock);
+    }
+
 }

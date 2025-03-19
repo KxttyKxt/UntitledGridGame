@@ -118,30 +118,6 @@ class ChunkTest {
         Assertions.assertFalse(chunk1.transferOccupantAcrossChunks(originPoint, chunk2, destinationPoint));
     }
 
-    @Test
-    void test_transferOccupantAcrossChunks_null() {
-        Chunk chunk1 = Chunk.newChunk(new Tile[][]{{Tile.defaultTile(), Tile.defaultTile()}});
-        Chunk chunk2 = Chunk.newChunk(new Tile[2][1]);
-
-        Occupant occupant1 = Occupant.newOccupant();
-        chunk1.addOccupant(occupant1, Point2D.of(1, 0));
-
-        Point2D originPoint = Point2D.of(1, 0);
-        Point2D destinationPoint = Point2D.of(0, 1);
-
-        boolean exceptionWasThrown = false;
-
-        try {
-            chunk1.transferOccupantAcrossChunks(originPoint, chunk2, destinationPoint);
-        }
-        catch (NullPointerException nullTileAtDestinationPointException) {
-            exceptionWasThrown = true;
-        }
-        finally {
-            Assertions.assertTrue(exceptionWasThrown);
-        }
-    }
-
 
     @Test
     void test_upperBounds() {

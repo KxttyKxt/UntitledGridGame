@@ -78,7 +78,7 @@ public class Tile implements Displayable {
     }
 
     boolean transferOccupantTo(Tile that) {
-        if (!this.contentsAreEmpty() && that.contentsAreEmpty() && that.traversable) {
+        if (that != null && !this.contentsAreEmpty() && that.contentsAreEmpty() && that.traversable) {
             this.swapContentsWith(that);
             return true;
         }

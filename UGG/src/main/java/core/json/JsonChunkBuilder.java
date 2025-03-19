@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.URL;
 
 public class JsonChunkBuilder {
+    // TODO custom errors for JSON-related operations to show file syntax/structure issues
+
     private final ChunkBuilderTileRegistry chunkBuilderTileRegistry;
     private JsonParser.JsonDoc doc;
 

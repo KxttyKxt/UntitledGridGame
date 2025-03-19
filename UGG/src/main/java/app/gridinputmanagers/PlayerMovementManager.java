@@ -18,14 +18,15 @@ public class PlayerMovementManager extends GridInputManager<String> {
     private Point2D playerPositionInChunk;
     private Point2D chunkPositionInGrid;
 
-    public PlayerMovementManager(ChunkGrid chunkGrid, Point2D spawnPoint, Point2D chunkPoint) {
+    public PlayerMovementManager(ChunkGrid chunkGrid, Point2D chunkPoint, Point2D spawnPoint) {
         super(new ScannerHandler(), chunkGrid);
 
-        playerPositionInChunk = spawnPoint;
         chunkPositionInGrid = chunkPoint;
+        playerPositionInChunk = spawnPoint;
 
         currentChunk().addOccupant(player, spawnPoint);
     }
+
 
     @Override
     boolean manageInput(String input) {

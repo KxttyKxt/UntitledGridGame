@@ -21,6 +21,6 @@ public class ChunkBuilderTileRegistry {
 
 
     public Tile get(String registryKey) {
-        return Preconditions.checkNotNull(registry.get(registryKey)).build();
+        return Preconditions.checkNotNull(registry.get(registryKey), "Tile key '%s' not recognized.", registryKey).build();
     }
 }
